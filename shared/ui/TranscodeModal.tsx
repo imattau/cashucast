@@ -1,10 +1,13 @@
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { createRPCClient } from '../rpc';
 
 /**
- * TranscodeModal simulates ffmpeg transcoding with a progress bar.
- * When transcoding completes it returns a magnet link and displays
- * a snackbar confirmation.
+ * TranscodeModal uses ffmpeg.wasm to transcode a selected file and seeds
+ * the result via the torrent worker. Progress is reported by ffmpeg and once
+ * seeding completes the resulting magnet URI is returned and a snackbar is
+ * shown to the user.
  */
 export interface TranscodeModalProps {
   open: boolean;
@@ -12,27 +15,57 @@ export interface TranscodeModalProps {
   onComplete: (magnet: string) => void;
 }
 
-export const TranscodeModal: React.FC<TranscodeModalProps> = ({ open, file, onComplete }) => {
+export const TranscodeModal: React.FC<TranscodeModalProps> = ({
+  open,
+  file,
+  onComplete,
+}) => {
   const [progress, setProgress] = React.useState(0);
   const [showSnackbar, setShowSnackbar] = React.useState(false);
 
   React.useEffect(() => {
-    if (!open) return;
+    if (!open || !file) return;
+    let cancelled = false;
     setProgress(0);
-    const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 100) {
-          clearInterval(interval);
-          const magnet = `magnet:?xt=urn:btih:${Math.random().toString(36).slice(2)}`;
+
+    const ffmpeg = createFFmpeg({ log: false });
+    ffmpeg.setProgress(({ ratio }) => {
+      if (!cancelled) setProgress(Math.min(100, Math.round(ratio * 100)));
+    });
+
+    const worker = new Worker(
+      new URL('../../packages/worker-torrent/index.ts', import.meta.url),
+      { type: 'module' }
+    );
+    const call = createRPCClient(worker);
+
+    const run = async () => {
+      try {
+        await ffmpeg.load();
+        ffmpeg.FS('writeFile', 'input', await fetchFile(file));
+        await ffmpeg.run('-i', 'input', '-c:v', 'libx264', '-f', 'mp4', 'out.mp4');
+        const data = ffmpeg.FS('readFile', 'out.mp4');
+        const blob = new Blob([data.buffer], { type: 'video/mp4' });
+        const magnet = (await call('seedFile', blob as any)) as string;
+        if (!cancelled) {
+          setProgress(100);
           onComplete(magnet);
           setShowSnackbar(true);
-          return 100;
         }
-        return p + 10;
-      });
-    }, 200);
-    return () => clearInterval(interval);
-  }, [open, onComplete, file]);
+      } catch (err) {
+        if (!cancelled) setProgress(100);
+      } finally {
+        worker.terminate();
+      }
+    };
+
+    run();
+
+    return () => {
+      cancelled = true;
+      worker.terminate();
+    };
+  }, [open, file, onComplete]);
 
   return (
     <>

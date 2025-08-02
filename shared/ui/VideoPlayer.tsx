@@ -38,8 +38,16 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ magnet }) => {
     };
   }, [magnet]);
 
-  if (!src) {
+  if (src === null) {
     return <SkeletonLoader className="w-full h-full" />;
+  }
+
+  if (src === '') {
+    return (
+      <div className="flex h-full w-full items-center justify-center bg-gray-200 text-sm">
+        Failed to load video
+      </div>
+    );
   }
 
   return (
