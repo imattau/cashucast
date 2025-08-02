@@ -1,12 +1,21 @@
-import DHT from 'bittorrent-dht';
-// wrtc shim needed for DHT in browser worker
-// @ts-ignore
-import wrtc from 'wrtc';
-import { useSettings } from '../../shared/store/settings';
 import WebTorrent from 'webtorrent';
+import { createRequire } from 'module';
+import { useSettings } from '../../shared/store/settings';
 import { createRPCHandler } from '../../shared/rpc';
 import { cache, touch, prune } from '../../worker-ssb/src/blobCache';
 import { getSSB } from '../../worker-ssb/src/instance';
+
+const require = createRequire(import.meta.url);
+let wrtc: any;
+let DHT: any;
+try {
+  DHT = require('bittorrent-dht');
+  // wrtc shim needed for DHT in browser worker
+  // @ts-ignore
+  wrtc = require('wrtc');
+} catch {
+  // optional deps may be absent in test environment
+}
 
 const { trackerUrls: trackers, rtcConfig } = useSettings.getState();
 const client = new WebTorrent({ tracker: { rtcConfig } });
@@ -14,7 +23,7 @@ const client = new WebTorrent({ tracker: { rtcConfig } });
 // ── DHT bridge  ─────────────────────────────────────────────
 const { enableDht, roomUrl } = useSettings.getState();
 let dht: any;
-if (enableDht) {
+if (enableDht && DHT) {
   dht = new DHT({ wrtc, bootstrap: [`wss://dht.${new URL(roomUrl).hostname}`] });
   dht.listen(20000);
   client.on('torrent', (t) => dht.announce(t.infoHash, 20000));
