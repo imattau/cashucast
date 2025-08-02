@@ -29,15 +29,12 @@ export const useBalanceStore = create<BalanceState>((set, get) => ({
   balance: 0,
   txs: [],
   setBalance: (balance) =>
-    set(
-      (state) => {
-        if (balance > state.balance) {
-          triggerConfetti();
-        }
-        return { balance };
-      },
-      true,
-    ),
+    set((state) => {
+      if (balance > state.balance) {
+        triggerConfetti();
+      }
+      return { balance };
+    }),
   mint: async (amount) => {
     try {
       const res = await fetch('/mint', {
@@ -46,34 +43,25 @@ export const useBalanceStore = create<BalanceState>((set, get) => ({
       });
       if (!res.ok) throw new Error('mint failed');
       get().setBalance(get().balance + amount);
-      set(
-        (state) => ({
-          txs: [...state.txs, { id: makeId(), type: 'mint', amount, status: 'success' }],
-        }),
-        true,
-      );
+      set((state) => ({
+        txs: [...state.txs, { id: makeId(), type: 'mint', amount, status: 'success' }],
+      }));
     } catch {
-      set(
-        (state) => ({
-          txs: [...state.txs, { id: makeId(), type: 'mint', amount, status: 'failed' }],
-        }),
-        true,
-      );
+      set((state) => ({
+        txs: [...state.txs, { id: makeId(), type: 'mint', amount, status: 'failed' }],
+      }));
       throw new Error('mint unreachable');
     }
   },
   zap: (amount) =>
-    set(
-      (state) => {
-        if (state.balance >= amount) {
-          triggerConfetti();
-          return {
-            balance: state.balance - amount,
-            txs: [...state.txs, { id: makeId(), type: 'zap', amount, status: 'success' }],
-          };
-        }
-        return state;
-      },
-      true,
-    ),
+    set((state) => {
+      if (state.balance >= amount) {
+        triggerConfetti();
+        return {
+          balance: state.balance - amount,
+          txs: [...state.txs, { id: makeId(), type: 'zap', amount, status: 'success' }],
+        };
+      }
+      return state;
+    }),
 }));
