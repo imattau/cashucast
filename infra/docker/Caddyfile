@@ -9,3 +9,9 @@ tracker.cashucast.app {
     encode zstd gzip
     rate_limit * 40r/s
 }
+
+dht.cashucast.app {
+    reverse_proxy / ws://dht-bridge:6881
+    encode zstd gzip
+    rate_limit * 30r/s
+}
