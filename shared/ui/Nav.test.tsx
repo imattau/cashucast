@@ -6,11 +6,11 @@ import { useBalanceStore } from './balanceStore';
 
 describe('Nav', () => {
   beforeEach(() => {
-    useBalanceStore.setState({ balance: 0, txs: [] }, true);
+    useBalanceStore.setState({ balance: 0, txs: [] });
   });
 
   it('renders logo and balance chip', () => {
-    useBalanceStore.setState({ balance: 123, txs: [] }, true);
+    useBalanceStore.setState({ balance: 123, txs: [] });
     const html = renderToStaticMarkup(<Nav />);
     expect(html).toContain('CashuCast');
     expect(html).toContain('123 sats');

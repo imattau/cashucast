@@ -55,6 +55,19 @@ async function storeBlock(pubKey: string) {
   });
 }
 
+async function getBlockedPubKeys(): Promise<Set<string>> {
+  const db = await dbPromise;
+  if (!db) return new Set();
+  return await new Promise<Set<string>>((resolve, reject) => {
+    const tx = db.transaction('blocks', 'readonly');
+    const req = tx.objectStore('blocks').getAll();
+    req.onsuccess = () => {
+      resolve(new Set(req.result.map((r: any) => r.pubKey)));
+    };
+    req.onerror = () => reject(req.error);
+  });
+}
+
 createRPCHandler(self as any, {
   publishPost: async (post: Post) => {
     // TODO: publish post to SSB
@@ -62,11 +75,26 @@ createRPCHandler(self as any, {
     return post;
   },
   queryFeed: async (_opts) => {
-    // TODO: query feed
-    return mockPosts;
+    const blocked = await getBlockedPubKeys();
+    const thresholdEnv =
+      (self as any).SSB_REPORT_THRESHOLD ??
+      (self as any).process?.env?.SSB_REPORT_THRESHOLD;
+    const threshold = Number(thresholdEnv ?? 5);
+    return mockPosts.filter((post) => {
+      if (blocked.has(post.author.pubkey)) return false;
+      const reporters = new Set(
+        (post.reports ?? []).map((r) => r.fromPk)
+      );
+      return reporters.size < threshold;
+    });
   },
   reportPost: async (postId: string, reason: string) => {
-    const msg = { type: 'report', target: postId, reason };
+    const report = { fromPk: 'local', reason, ts: Date.now() };
+    const post = mockPosts.find((p) => p.id === postId);
+    if (post) {
+      post.reports = [...(post.reports ?? []), report];
+    }
+    const msg = { type: 'report', target: postId, reason, fromPk: report.fromPk };
     mockLog.push(msg);
     return msg;
   },
