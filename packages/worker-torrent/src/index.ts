@@ -25,6 +25,11 @@ const { enableDht, roomUrl } = useSettings.getState();
 let dht: any;
 if (enableDht && DHT) {
   dht = new DHT({ wrtc, bootstrap: [`wss://dht.${new URL(roomUrl).hostname}`] });
+  const timeout = setTimeout(() => {
+    postMessage({ type: 'dht_unreachable' });
+    dht.destroy();
+  }, 5000);
+  dht.on('ready', () => clearTimeout(timeout));
   dht.listen(20000);
   client.on('torrent', (t) => dht.announce(t.infoHash, 20000));
 }
