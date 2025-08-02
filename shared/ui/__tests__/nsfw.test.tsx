@@ -21,13 +21,17 @@ describe('NSFW toggle', () => {
   });
 
   it('hides NSFW content by default', () => {
-    const html = renderToStaticMarkup(<TimelineCard author="a" magnet={magnet} nsfw />);
+    const html = renderToStaticMarkup(
+      <TimelineCard name="a" avatarUrl="" magnet={magnet} nsfw />,
+    );
     expect(html).toContain('NSFW – Tap to view');
   });
 
   it('shows NSFW content when enabled', () => {
     useSettingsStore.getState().setShowNSFW(true);
-    const html = renderToStaticMarkup(<TimelineCard author="a" magnet={magnet} nsfw />);
+    const html = renderToStaticMarkup(
+      <TimelineCard name="a" avatarUrl="" magnet={magnet} nsfw />,
+    );
     expect(html).not.toContain('NSFW – Tap to view');
   });
 });
