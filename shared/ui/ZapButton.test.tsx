@@ -11,20 +11,20 @@ describe('ZapButton', () => {
 
   it('disables amounts above balance', () => {
     useBalanceStore.setState({ balance: 50, txs: [] });
-    const html = renderToStaticMarkup(<ZapButton />);
+    const html = renderToStaticMarkup(<ZapButton receiverPk="pk" />);
     const disabledCount = (html.match(/disabled=""/g) || []).length;
     expect(disabledCount).toBe(2);
   });
 
   it('enables all amounts when balance high enough', () => {
     useBalanceStore.setState({ balance: 2000, txs: [] });
-    const html = renderToStaticMarkup(<ZapButton />);
+    const html = renderToStaticMarkup(<ZapButton receiverPk="pk" />);
     expect(html).not.toContain('disabled=""');
   });
 
   it('disables all amounts when disabled prop set', () => {
     useBalanceStore.setState({ balance: 2000, txs: [] });
-    const html = renderToStaticMarkup(<ZapButton disabled />);
+    const html = renderToStaticMarkup(<ZapButton receiverPk="pk" disabled />);
     const disabledCount = (html.match(/disabled=""/g) || []).length;
     expect(disabledCount).toBe(3);
   });
