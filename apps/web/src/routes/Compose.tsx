@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { UploadDropzone, TranscodeModal, CaptionTextarea, PublishBtn } from '../../shared/ui';
+import {
+  UploadDropzone,
+  TranscodeModal,
+  CaptionTextarea,
+  PublishBtn,
+} from '../../shared/ui';
+import { createRPCClient } from '../../shared/rpc';
 import ThumbnailPicker from '../components/ThumbnailPicker';
 import TagInput from '../components/TagInput';
 
@@ -9,6 +15,7 @@ export default function Compose() {
   const [thumbHash, setThumbHash] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  const [nsfw, setNSFW] = useState(false);
 
   const handleFile = (f: File) => {
     setFile(f);
@@ -17,7 +24,23 @@ export default function Compose() {
   };
 
   const onPublish = async () => {
-    // placeholder publish logic
+    if (!magnet) return;
+    const worker = new Worker(
+      new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
+      { type: 'module' },
+    );
+    const call = createRPCClient(worker);
+    await call('publishPost', {
+      id: crypto.randomUUID(),
+      magnet,
+      text: caption,
+      nsfw,
+      tags,
+      thumbnail: thumbHash ?? undefined,
+      ts: Date.now(),
+      author: { name: 'anon', pubkey: 'anon', avatarUrl: '' },
+    });
+    worker.terminate();
   };
 
   return (
@@ -29,6 +52,14 @@ export default function Compose() {
           {magnet && <ThumbnailPicker file={file} onSelect={setThumbHash} />}
           <CaptionTextarea value={caption} onChange={setCaption} />
           <TagInput value={tags} setValue={setTags} />
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={nsfw}
+              onChange={(e) => setNSFW(e.target.checked)}
+            />
+            <span>Mark as 18+ content</span>
+          </label>
           <PublishBtn
             magnet={magnet && thumbHash && tags.length <= 10 ? magnet : undefined}
             onPublish={onPublish}
