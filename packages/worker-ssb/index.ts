@@ -11,23 +11,69 @@ const mockPosts: Post[] = [
     author: { name: 'Alice', pubkey: 'alicepk' },
     text: 'Hello from SSB',
     magnet: 'magnet:?xt=urn:btih:alice',
+    nsfw: false,
   },
   {
     id: '2',
     author: { name: 'Bob', pubkey: 'bobpk' },
     text: 'Another post on the network',
     magnet: 'magnet:?xt=urn:btih:bob',
+    nsfw: false,
   },
 ];
+
+// Temporary in-memory log for SSB-style messages such as reports or blocks.
+// This simulates appending to the SSB log.
+const mockLog: any[] = [];
+
+// Very small helper around IndexedDB for persisting blocked pubkeys. This is
+// extremely minimal and only suitable for tests or development.
+const dbPromise = new Promise<any>((resolve, reject) => {
+  const req = (self as any).indexedDB?.open('ssb', 1);
+  if (!req) {
+    resolve(null);
+    return;
+  }
+  req.onupgradeneeded = () => {
+    const db = req.result;
+    if (!db.objectStoreNames.contains('blocks')) {
+      db.createObjectStore('blocks', { keyPath: 'pubKey' });
+    }
+  };
+  req.onsuccess = () => resolve(req.result);
+  req.onerror = () => reject(req.error);
+});
+
+async function storeBlock(pubKey: string) {
+  const db = await dbPromise;
+  if (!db) return;
+  await new Promise<void>((resolve, reject) => {
+    const tx = db.transaction('blocks', 'readwrite');
+    tx.objectStore('blocks').put({ pubKey });
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
 
 createRPCHandler(self as any, {
   publishPost: async (post: Post) => {
     // TODO: publish post to SSB
-    mockPosts.push(post);
+    mockPosts.push({ ...post, nsfw: post.nsfw ?? false });
     return post;
   },
   queryFeed: async (_opts) => {
     // TODO: query feed
     return mockPosts;
+  },
+  reportPost: async (postId: string, reason: string) => {
+    const msg = { type: 'report', target: postId, reason };
+    mockLog.push(msg);
+    return msg;
+  },
+  blockUser: async (pubKey: string) => {
+    await storeBlock(pubKey);
+    const msg = { type: 'block', target: pubKey };
+    mockLog.push(msg);
+    return msg;
   },
 });

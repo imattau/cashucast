@@ -10,6 +10,8 @@ const Magnet = z.any();
 export const MethodDefinitions = {
   publishPost: z.tuple([PostSchema]),
   queryFeed: z.tuple([QueryOpts]),
+  reportPost: z.tuple([z.string(), z.string()]),
+  blockUser: z.tuple([z.string()]),
   seedFile: z.tuple([FileSchema]),
   stream: z.tuple([Magnet]),
   mint: z.tuple([z.number()]),
@@ -19,6 +21,8 @@ export const MethodDefinitions = {
 export const MethodsSchema = z.union([
   z.object({ ns: z.literal('ssb'), fn: z.literal('publishPost'), args: MethodDefinitions.publishPost }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('queryFeed'), args: MethodDefinitions.queryFeed }),
+  z.object({ ns: z.literal('ssb'), fn: z.literal('reportPost'), args: MethodDefinitions.reportPost }),
+  z.object({ ns: z.literal('ssb'), fn: z.literal('blockUser'), args: MethodDefinitions.blockUser }),
   z.object({ ns: z.literal('torrent'), fn: z.literal('seedFile'), args: MethodDefinitions.seedFile }),
   z.object({ ns: z.literal('torrent'), fn: z.literal('stream'), args: MethodDefinitions.stream }),
   z.object({ ns: z.literal('cashu'), fn: z.literal('mint'), args: MethodDefinitions.mint }),
@@ -45,6 +49,8 @@ type RPCPort = {
 const methodArgSchemas: Record<MethodName, z.ZodTuple<any, any>> = {
   publishPost: MethodDefinitions.publishPost,
   queryFeed: MethodDefinitions.queryFeed,
+  reportPost: MethodDefinitions.reportPost,
+  blockUser: MethodDefinitions.blockUser,
   seedFile: MethodDefinitions.seedFile,
   stream: MethodDefinitions.stream,
   mint: MethodDefinitions.mint,
