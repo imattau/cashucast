@@ -21,9 +21,17 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   onZap,
 }) => {
   const addZap = useSocialStore((s) => s.addZap);
-  const handleZap = (amt: number) => {
+  const [sending, setSending] = React.useState(false);
+  const handleZap = async (amt: number) => {
     addZap(creatorId, amt);
-    onZap?.(amt);
+    if (onZap) {
+      try {
+        setSending(true);
+        await onZap(amt);
+      } finally {
+        setSending(false);
+      }
+    }
   };
   return (
     <article className="h-[90vh] w-full bg-white rounded-card shadow-sm flex flex-col">
@@ -32,7 +40,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
       </div>
       <footer className="p-4 flex items-center justify-between">
         <span className="font-semibold">{author}</span>
-        {onZap && <ZapButton onZap={handleZap} />}
+        {onZap && <ZapButton onZap={handleZap} disabled={sending} />}
       </footer>
     </article>
   );

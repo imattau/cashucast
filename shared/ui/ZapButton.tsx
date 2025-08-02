@@ -3,11 +3,17 @@ import { useBalanceStore } from './balanceStore';
 
 export interface ZapButtonProps {
   onZap?: (amount: number) => void;
+  /** Disable all zap options */
+  disabled?: boolean;
 }
 
 const amounts = [21, 100, 1000];
 
-const ZapOption: React.FC<{ amount: number; onZap?: (amt: number) => void }> = ({ amount, onZap }) => {
+const ZapOption: React.FC<{
+  amount: number;
+  onZap?: (amt: number) => void;
+  disabled?: boolean;
+}> = ({ amount, onZap, disabled }) => {
   const balance =
     typeof window === 'undefined'
       ? useBalanceStore.getState().balance
@@ -51,7 +57,7 @@ const ZapOption: React.FC<{ amount: number; onZap?: (amt: number) => void }> = (
   return (
     <button
       className="px-2 py-1 bg-purple-600 text-white rounded disabled:opacity-50"
-      disabled={balance < amount}
+      disabled={disabled || balance < amount}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerLeave}
@@ -61,10 +67,10 @@ const ZapOption: React.FC<{ amount: number; onZap?: (amt: number) => void }> = (
   );
 };
 
-export const ZapButton: React.FC<ZapButtonProps> = ({ onZap }) => (
+export const ZapButton: React.FC<ZapButtonProps> = ({ onZap, disabled }) => (
   <div className="flex gap-2">
     {amounts.map((amt) => (
-      <ZapOption key={amt} amount={amt} onZap={onZap} />
+      <ZapOption key={amt} amount={amt} onZap={onZap} disabled={disabled} />
     ))}
   </div>
 );
