@@ -91,12 +91,12 @@ describe('worker-ssb feed filtering', () => {
     const { call, cleanup } = await setup();
     await call('publishPost', {
       id: 'a',
-      author: { name: 'A', pubkey: 'blockme' },
+      author: { name: 'A', pubkey: 'blockme', avatarUrl: 'https://example.com/a.png' },
       magnet: 'magnet:?xt=urn:btih:a',
     });
     await call('publishPost', {
       id: 'b',
-      author: { name: 'B', pubkey: 'keep' },
+      author: { name: 'B', pubkey: 'keep', avatarUrl: 'https://example.com/b.png' },
       magnet: 'magnet:?xt=urn:btih:b',
     });
     await call('blockUser', 'blockme');
@@ -111,13 +111,13 @@ describe('worker-ssb feed filtering', () => {
     self.SSB_REPORT_THRESHOLD = 2;
     await call('publishPost', {
       id: 'c',
-      author: { name: 'C', pubkey: 'c' },
+      author: { name: 'C', pubkey: 'c', avatarUrl: 'https://example.com/c.png' },
       magnet: 'magnet:?xt=urn:btih:c',
       reports: [{ fromPk: 'x', reason: 'spam', ts: 0 }],
     });
     await call('publishPost', {
       id: 'd',
-      author: { name: 'D', pubkey: 'd' },
+      author: { name: 'D', pubkey: 'd', avatarUrl: 'https://example.com/d.png' },
       magnet: 'magnet:?xt=urn:btih:d',
       reports: [
         { fromPk: 'x', reason: 'spam', ts: 0 },

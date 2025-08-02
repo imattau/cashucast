@@ -5,6 +5,7 @@ export const PostSchema = z.object({
   author: z.object({
     name: z.string(),
     pubkey: z.string(),
+    avatarUrl: z.string(),
   }),
   /** Magnet link for the post's clip */
   magnet: z.string(),
