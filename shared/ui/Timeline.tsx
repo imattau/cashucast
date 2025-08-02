@@ -8,6 +8,7 @@ import { SkeletonLoader } from './SkeletonLoader';
 import { createRPCClient } from '../rpc';
 import type { Post } from '../types';
 import { useSocialStore } from './socialStore';
+import { useFilters } from '../store/filters';
 
 /**
  * Timeline that renders SSB posts inside `TimelineCard`s. Navigation between
@@ -19,21 +20,27 @@ export const Timeline: React.FC = () => {
   const ssbClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
   const [walletOpen, setWalletOpen] = useState(false);
   const isModerator = useSocialStore((s) => s.isModerator);
+  const tags = useFilters((s) => s.tags);
 
-  // load posts from the SSB worker
+  // create worker client
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const worker = new Worker(
       new URL('../../packages/worker-ssb/index.ts', import.meta.url),
       { type: 'module' }
     );
-    const call = createRPCClient(worker);
-    ssbClient.current = call;
-    call('queryFeed', {})
-      .then((p) => setPosts(p as Post[]))
-      .catch(() => setPosts([]));
+    ssbClient.current = createRPCClient(worker);
     return () => worker.terminate();
   }, []);
+
+  // load posts when filters change
+  useEffect(() => {
+    if (!ssbClient.current) return;
+    ssbClient
+      .current('queryFeed', { includeTags: tags })
+      .then((p) => setPosts(p as Post[]))
+      .catch(() => setPosts([]));
+  }, [tags]);
 
   const handleReport = useCallback(
     (postId: string, reason: string) => {
