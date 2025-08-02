@@ -38,5 +38,24 @@ describe('TimelineCard', () => {
     );
     expect(html).not.toContain('⚑ 3');
   });
+
+  it('renders avatar, username, menu button, and caption gradient', () => {
+    const html = renderToStaticMarkup(
+      <TimelineCard
+        name="Alice"
+        avatarUrl="/alice.png"
+        text="hello world"
+        magnet={magnet}
+        postId="1"
+        authorPubKey="pubkey"
+        onReport={() => {}}
+        onBlock={() => {}}
+      />,
+    );
+    expect(html).toContain('<img src="/alice.png"');
+    expect(html).toContain('<span class="font-semibold">Alice</span>');
+    expect(html).toContain('aria-label="Open post menu"');
+    expect(html).toContain('bg-black/60');
+  });
 });
 

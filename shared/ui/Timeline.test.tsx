@@ -6,7 +6,8 @@ import { Timeline } from './Timeline';
 describe('Timeline', () => {
   it('centers content with blurred sidebars and includes bottom nav', () => {
     const html = renderToStaticMarkup(<Timeline />);
+    expect(html).toContain('max-w-screen-md');
     expect(html).toContain('backdrop-blur');
-    expect(html).toContain('Home');
+    expect(html).toContain('aria-label="Home"');
   });
 });
