@@ -1,11 +1,24 @@
+import DHT from 'bittorrent-dht';
+// wrtc shim needed for DHT in browser worker
+// @ts-ignore
+import wrtc from 'wrtc';
+import { useSettings } from '../../shared/store/settings';
 import WebTorrent from 'webtorrent';
 import { createRPCHandler } from '../../shared/rpc';
-import { useSettings } from '../../shared/store/settings';
 import { cache, touch, prune } from '../../worker-ssb/src/blobCache';
 import { getSSB } from '../../worker-ssb/src/instance';
 
-const { trackerUrls: trackers } = useSettings.getState();
-const client = new WebTorrent();
+const { trackerUrls: trackers, rtcConfig } = useSettings.getState();
+const client = new WebTorrent({ tracker: { rtcConfig } });
+
+// ── DHT bridge  ─────────────────────────────────────────────
+const { enableDht, roomUrl } = useSettings.getState();
+let dht: any;
+if (enableDht) {
+  dht = new DHT({ wrtc, bootstrap: [`wss://dht.${new URL(roomUrl).hostname}`] });
+  dht.listen(20000);
+  client.on('torrent', (t) => dht.announce(t.infoHash, 20000));
+}
 
 function seedFile(file: File): Promise<string> {
   return new Promise((resolve) => {
@@ -43,7 +56,7 @@ async function stream(magnet: string): Promise<string> {
         });
         blobStream.on('error', () => resolve(''));
       } else {
-        client.add(magnet, { announce: trackers }, (torrent: any) => {
+        client.add(magnet, { announce: trackers, dht: !!dht }, (torrent: any) => {
           const file = torrent.files[0];
           file.getBlob(async (error: any, blob: Blob) => {
             if (error) return resolve('');
