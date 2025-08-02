@@ -6,13 +6,13 @@ import { useBalanceStore } from './balanceStore';
 
 describe('BalanceChip', () => {
   beforeEach(() => {
-    useBalanceStore.setState({ balance: 0 }, true);
+    useBalanceStore.setState({ balance: 0, txs: [] }, true);
   });
 
   it('renders balance and updates on change', () => {
     const initial = renderToStaticMarkup(<BalanceChip />);
     expect(initial).toContain('0 sats');
-    useBalanceStore.setState({ balance: 200 }, true);
+    useBalanceStore.setState({ balance: 200, txs: [] }, true);
     const updated = renderToStaticMarkup(<BalanceChip />);
     expect(updated).toContain('200 sats');
   });
