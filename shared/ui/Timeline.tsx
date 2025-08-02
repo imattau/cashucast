@@ -8,7 +8,10 @@ import { createRPCClient } from '../rpc';
 interface Post {
   id: string;
   author: { name: string; pubkey: string };
-  text: string;
+  /** Magnet link for the post's clip */
+  magnet: string;
+  /** Optional text accompanying the clip */
+  text?: string;
 }
 
 /**
@@ -65,12 +68,9 @@ export const Timeline: React.FC = () => {
                 key={post.id}
                 author={post.author.name}
                 creatorId={post.author.pubkey}
+                magnet={post.magnet}
                 onZap={makeZapHandler(post)}
-              >
-                <div className="flex h-full items-center justify-center p-4">
-                  {post.text}
-                </div>
-              </TimelineCard>
+              />
             ))}
           </SwipeContainer>
         </div>
