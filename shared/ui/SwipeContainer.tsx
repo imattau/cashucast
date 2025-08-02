@@ -1,8 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface SwipeContainerProps {
   /** Slides to display. Usually `TimelineCard`s. */
   children: React.ReactNode[];
+  /** Notifies when the active slide changes. */
+  onIndexChange?: (index: number) => void;
 }
 
 /**
@@ -11,14 +13,16 @@ export interface SwipeContainerProps {
  * - Touch swipe support.
  * - Renders only the current slide and \u00b12 siblings for prefetch.
  */
-export const SwipeContainer: React.FC<SwipeContainerProps> = ({ children }) => {
-  const count = React.Children.count(children);
+export const SwipeContainer: React.FC<SwipeContainerProps> = ({
+  children,
+  onIndexChange,
+}) => {
   const [index, setIndex] = useState(0);
   const startY = useRef<number | null>(null);
 
   const next = useCallback(() => {
-    setIndex((i) => Math.min(count - 1, i + 1));
-  }, [count]);
+    setIndex((i) => i + 1);
+  }, []);
 
   const prev = useCallback(() => {
     setIndex((i) => Math.max(0, i - 1));
@@ -42,6 +46,10 @@ export const SwipeContainer: React.FC<SwipeContainerProps> = ({ children }) => {
     }
     startY.current = null;
   };
+
+  useEffect(() => {
+    onIndexChange?.(index);
+  }, [index, onIndexChange]);
 
   return (
     <div
