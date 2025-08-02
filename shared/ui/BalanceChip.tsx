@@ -16,8 +16,8 @@ export const BalanceChip: React.FC = () => {
 
   return (
     <span
-      className={`px-2 py-1 bg-green-200 rounded-full text-sm ${
-        animate ? 'animate-pulse' : ''
+      className={`px-2 py-1 rounded-full text-sm bg-green-200 text-gray-900 dark:bg-green-700 dark:text-white ${
+        animate ? 'motion-safe:animate-pulse' : ''
       }`}
     >
       {balance} sats

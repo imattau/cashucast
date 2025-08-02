@@ -8,7 +8,7 @@ export const Nav: React.FC = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <header className="sticky top-0 z-10 flex items-center justify-between bg-gray-100 p-2 shadow">
+    <header className="sticky top-0 z-10 flex items-center justify-between bg-gray-100 dark:bg-gray-800 p-2 shadow text-gray-900 dark:text-gray-100">
       <div className="flex items-center gap-2 font-bold">
         <img src="/logo.svg" alt="CashuCast logo" className="h-6 w-6" />
         CashuCast
@@ -18,7 +18,7 @@ export const Nav: React.FC = () => {
         <ToggleDarkMode />
         <button
           onClick={() => setOpen(true)}
-          className="rounded bg-gray-200 px-2 py-1"
+          className="rounded bg-gray-200 dark:bg-gray-700 px-2 py-1 text-gray-900 dark:text-gray-100"
         >
           Wallet
         </button>
