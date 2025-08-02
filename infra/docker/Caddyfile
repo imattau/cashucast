@@ -14,4 +14,6 @@ dht.cashucast.app {
     reverse_proxy / ws://dht-bridge:6881
     encode zstd gzip
     rate_limit * 30r/s
+    @health path /health/dht
+    respond @health 200
 }
