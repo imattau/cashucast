@@ -4,6 +4,7 @@ import { useSocialStore } from './socialStore';
 import { VideoPlayer } from './VideoPlayer';
 import { useSettingsStore } from './settingsStore';
 import { BlurOverlay } from './BlurOverlay';
+import { PostMenu } from './PostMenu';
 
 export interface TimelineCardProps {
   /** Author or channel name */
@@ -16,6 +17,14 @@ export interface TimelineCardProps {
   nsfw?: boolean;
   /** Called with sat amount when user zaps */
   onZap?: (amount: number) => void;
+  /** Post id for actions */
+  postId?: string;
+  /** Author pubkey for actions */
+  authorPubKey?: string;
+  /** Called when user reports */
+  onReport?: (postId: string, reason: string) => void;
+  /** Called when user blocks */
+  onBlock?: (pubKey: string) => void;
 }
 
 export const TimelineCard: React.FC<TimelineCardProps> = ({
@@ -24,6 +33,10 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   magnet,
   nsfw,
   onZap,
+  postId,
+  authorPubKey,
+  onReport,
+  onBlock,
 }) => {
   const addZap = useSocialStore((s) => s.addZap);
   const [sending, setSending] = React.useState(false);
@@ -67,7 +80,20 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
       </div>
       <footer className="p-4 flex items-center justify-between">
         <span className="font-semibold">{author}</span>
-        {onZap && <ZapButton onZap={handleZap} disabled={sending} />}
+        <div className="flex items-center gap-2">
+          {onZap && <ZapButton onZap={handleZap} disabled={sending} />}
+          {postId &&
+            authorPubKey &&
+            onReport &&
+            onBlock && (
+              <PostMenu
+                postId={postId}
+                authorPubKey={authorPubKey}
+                onReport={onReport}
+                onBlock={onBlock}
+              />
+            )}
+        </div>
       </footer>
     </article>
   );
