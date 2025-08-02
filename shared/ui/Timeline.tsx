@@ -1,49 +1,56 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SwipeContainer } from './SwipeContainer';
 import { TimelineCard } from './TimelineCard';
 import { BalanceChip } from './BalanceChip';
 import { BottomNav } from './BottomNav';
+import { createRPCClient } from '../rpc';
+
+interface Post {
+  id: string;
+  author: { name: string; pubkey: string };
+  text: string;
+}
 
 /**
- * Demo timeline that renders an infinite list of `TimelineCard`s.
- * Cards are generated on demand and adjacent clips are prefetched
- * when the user navigates with swipe or arrow keys.
+ * Timeline that renders SSB posts inside `TimelineCard`s. Navigation between
+ * cards is handled by `SwipeContainer`, which supports arrow keys and touch
+ * gestures. Zaps trigger the Cashu RPC.
  */
 export const Timeline: React.FC = () => {
-  const [cards, setCards] = useState<React.ReactNode[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const cashuClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
 
-  const ensureCard = useCallback((index: number) => {
-    setCards((prev) => {
-      if (prev[index]) return prev;
-      const next = [...prev];
-      next[index] = (
-        <TimelineCard
-          key={index}
-          author={`Creator ${index}`}
-          onZap={(amt) => console.log('zap', amt)}
-        >
-          <div className="flex h-full items-center justify-center">
-            Clip {index}
-          </div>
-        </TimelineCard>
-      );
-      return next;
-    });
+  // load posts from the SSB worker
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const worker = new Worker(
+      new URL('../../packages/worker-ssb/index.ts', import.meta.url),
+      { type: 'module' }
+    );
+    const call = createRPCClient(worker);
+    call('queryFeed', {})
+      .then((p) => setPosts(p as Post[]))
+      .catch(() => setPosts([]));
+    return () => worker.terminate();
   }, []);
 
-  const handleIndexChange = useCallback(
-    (i: number) => {
-      ensureCard(i);
-      ensureCard(i + 1); // prefetch next
-    },
-    [ensureCard]
-  );
-
+  // prepare Cashu RPC client for zaps
   useEffect(() => {
-    // initial load
-    ensureCard(0);
-    ensureCard(1);
-  }, [ensureCard]);
+    if (typeof window === 'undefined') return;
+    const worker = new Worker(
+      new URL('../../packages/worker-cashu/index.ts', import.meta.url),
+      { type: 'module' }
+    );
+    cashuClient.current = createRPCClient(worker);
+    return () => worker.terminate();
+  }, []);
+
+  const makeZapHandler = useCallback(
+    (post: Post) => (amount: number) => {
+      cashuClient.current?.('sendZap', post.author.pubkey, amount, post.id);
+    },
+    []
+  );
 
   return (
     <div className="relative flex h-screen flex-col">
@@ -52,8 +59,19 @@ export const Timeline: React.FC = () => {
       </header>
       <div className="relative flex-1 flex justify-center">
         <div className="w-full max-w-screen-md">
-          <SwipeContainer onIndexChange={handleIndexChange}>
-            {cards}
+          <SwipeContainer>
+            {posts.map((post) => (
+              <TimelineCard
+                key={post.id}
+                author={post.author.name}
+                creatorId={post.author.pubkey}
+                onZap={makeZapHandler(post)}
+              >
+                <div className="flex h-full items-center justify-center p-4">
+                  {post.text}
+                </div>
+              </TimelineCard>
+            ))}
           </SwipeContainer>
         </div>
         <div className="pointer-events-none fixed inset-y-0 left-0 hidden w-1/4 bg-gray-100/40 backdrop-blur lg:block" />
@@ -63,3 +81,4 @@ export const Timeline: React.FC = () => {
     </div>
   );
 };
+
