@@ -69,6 +69,7 @@ export const Timeline: React.FC = () => {
                   author={post.author.name}
                   creatorId={post.author.pubkey}
                   magnet={post.magnet}
+                  nsfw={post.nsfw}
                   onZap={makeZapHandler(post)}
                 />
               ))}
