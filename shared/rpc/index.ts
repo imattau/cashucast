@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { PostSchema } from '../types';
 
 // Placeholder schemas for complex types
-const QueryOpts = z.any();
+const QueryOpts = z.object({ includeTags: z.array(z.string()).optional() });
 const FileSchema = z.any();
 const Magnet = z.any();
 

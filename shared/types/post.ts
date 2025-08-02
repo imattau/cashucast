@@ -13,6 +13,8 @@ export const PostSchema = z.object({
   text: z.string().optional(),
   /** Whether the post is not safe for work */
   nsfw: z.boolean().optional(),
+  /** Tags associated with the post */
+  tags: z.string().array().max(10).optional(),
   /** Reports about the post from other users */
   reports: z
     .object({

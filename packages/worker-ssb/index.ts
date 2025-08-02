@@ -18,17 +18,29 @@ const { roomUrl } = useSettings.getState();
 const mockPosts: Post[] = [
   {
     id: '1',
-    author: { name: 'Alice', pubkey: 'alicepk', avatarUrl: 'https://example.com/alice.png' },
+    author: {
+      name: 'Alice',
+      pubkey: 'alicepk',
+      avatarUrl: 'https://example.com/alice.png',
+    },
     text: 'Hello from SSB',
     magnet: 'magnet:?xt=urn:btih:alice',
     nsfw: false,
+    tags: ['hello', 'ssb'],
+    ts: Date.now(),
   },
   {
     id: '2',
-    author: { name: 'Bob', pubkey: 'bobpk', avatarUrl: 'https://example.com/bob.png' },
+    author: {
+      name: 'Bob',
+      pubkey: 'bobpk',
+      avatarUrl: 'https://example.com/bob.png',
+    },
     text: 'Another post on the network',
     magnet: 'magnet:?xt=urn:btih:bob',
     nsfw: false,
+    tags: ['network'],
+    ts: Date.now(),
   },
 ];
 
@@ -81,10 +93,15 @@ async function getBlockedPubKeys(): Promise<Set<string>> {
 createRPCHandler(self as any, {
   publishPost: async (post: Post) => {
     // TODO: publish post to SSB
-    mockPosts.push({ ...post, nsfw: post.nsfw ?? false });
+    mockPosts.push({
+      ...post,
+      nsfw: post.nsfw ?? false,
+      ts: post.ts ?? Date.now(),
+    });
     return post;
   },
-  queryFeed: async (_opts) => {
+  queryFeed: async (opts) => {
+    const includeTags = opts?.includeTags ?? [];
     const blocked = await getBlockedPubKeys();
     const thresholdEnv =
       (self as any).SSB_REPORT_THRESHOLD ??
@@ -92,6 +109,10 @@ createRPCHandler(self as any, {
     const threshold = Number(thresholdEnv ?? 5);
     return mockPosts.filter((post) => {
       if (blocked.has(post.author.pubkey)) return false;
+      if (includeTags.length > 0) {
+        const postTags = post.tags ?? [];
+        if (!includeTags.every((t) => postTags.includes(t))) return false;
+      }
       const reporters = new Set(
         (post.reports ?? []).map((r) => r.fromPk)
       );

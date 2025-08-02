@@ -129,5 +129,25 @@ describe('worker-ssb feed filtering', () => {
     expect(feed.some((p) => p.id === 'd')).toBe(false);
     cleanup();
   });
+
+  it('filters posts by included tags', async () => {
+    const { call, cleanup } = await setup();
+    await call('publishPost', {
+      id: 'e',
+      author: { name: 'E', pubkey: 'e', avatarUrl: 'https://example.com/e.png' },
+      magnet: 'magnet:?xt=urn:btih:e',
+      tags: ['dog'],
+    });
+    await call('publishPost', {
+      id: 'f',
+      author: { name: 'F', pubkey: 'f', avatarUrl: 'https://example.com/f.png' },
+      magnet: 'magnet:?xt=urn:btih:f',
+      tags: ['cat'],
+    });
+    const feed: any[] = await call('queryFeed', { includeTags: ['dog'] });
+    expect(feed.some((p) => p.id === 'e')).toBe(true);
+    expect(feed.some((p) => p.id === 'f')).toBe(false);
+    cleanup();
+  });
 });
 
