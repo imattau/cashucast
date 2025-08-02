@@ -1,14 +1,14 @@
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
+import { PostSchema } from '../types';
 
 // Placeholder schemas for complex types
-const Post = z.any();
 const QueryOpts = z.any();
 const FileSchema = z.any();
 const Magnet = z.any();
 
 export const MethodDefinitions = {
-  publishPost: z.tuple([Post]),
+  publishPost: z.tuple([PostSchema]),
   queryFeed: z.tuple([QueryOpts]),
   seedFile: z.tuple([FileSchema]),
   stream: z.tuple([Magnet]),

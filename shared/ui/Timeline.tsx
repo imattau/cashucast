@@ -6,15 +6,7 @@ import { BottomNav } from './BottomNav';
 import { WalletModal } from './WalletModal';
 import { SkeletonLoader } from './SkeletonLoader';
 import { createRPCClient } from '../rpc';
-
-interface Post {
-  id: string;
-  author: { name: string; pubkey: string };
-  /** Magnet link for the post's clip */
-  magnet: string;
-  /** Optional text accompanying the clip */
-  text?: string;
-}
+import type { Post } from '../types';
 
 /**
  * Timeline that renders SSB posts inside `TimelineCard`s. Navigation between
