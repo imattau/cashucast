@@ -42,5 +42,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ magnet }) => {
     return <SkeletonLoader className="w-full h-full" />;
   }
 
-  return <video className="w-full h-full" src={src} muted autoPlay controls />;
+  return (
+    <video
+      className="h-full w-full object-cover"
+      src={src}
+      playsInline
+      muted
+      loop
+      autoPlay
+    />
+  );
 };
