@@ -4,3 +4,5 @@ export * from './ZapButton';
 export * from './SwipeContainer';
 export * from './VideoPlayer';
 export * from './SkeletonLoader';
+export * from './BalanceChip';
+export * from './balanceStore';
