@@ -8,12 +8,17 @@ interface CreatorStats {
 
 interface SocialState {
   creators: Record<string, CreatorStats>;
+  /** Whether the current viewer is a moderator */
+  isModerator: boolean;
+  setModerator: (isMod: boolean) => void;
   toggleFollow: (id: string) => void;
   addZap: (id: string, amount: number) => void;
 }
 
 export const useSocialStore = create<SocialState>((set) => ({
   creators: {},
+  isModerator: false,
+  setModerator: (isModerator) => set({ isModerator }),
   toggleFollow: (id) =>
     set((state) => {
       const current = state.creators[id] || {

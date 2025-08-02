@@ -10,6 +10,8 @@ export interface ProfileProps {
   name: string;
   avatarUrl?: string;
   clips: ClipThumb[];
+  /** Whether the viewed user is blocked */
+  blocked?: boolean;
 }
 
 /**
@@ -20,12 +22,18 @@ export const Profile: React.FC<ProfileProps> = ({
   name,
   avatarUrl,
   clips,
+  blocked,
 }) => {
   const followers = useSocialStore(
     (s) => s.creators[creatorId]?.followers ?? 0,
   );
   return (
     <div className="flex flex-col gap-4 p-4">
+      {blocked && (
+        <div className="rounded bg-gray-200 p-2 text-center text-sm text-gray-700">
+          You have blocked this user.
+        </div>
+      )}
       <header className="flex items-center gap-4">
         <Avatar name={name} url={avatarUrl} />
         <div className="flex flex-col">
