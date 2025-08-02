@@ -25,6 +25,10 @@ export interface TimelineCardProps {
   onReport?: (postId: string, reason: string) => void;
   /** Called when user blocks */
   onBlock?: (pubKey: string) => void;
+  /** Number of reports on the post */
+  reports?: number;
+  /** Whether the current viewer is a moderator */
+  isModerator?: boolean;
 }
 
 export const TimelineCard: React.FC<TimelineCardProps> = ({
@@ -37,6 +41,8 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   authorPubKey,
   onReport,
   onBlock,
+  reports = 0,
+  isModerator,
 }) => {
   const addZap = useSocialStore((s) => s.addZap);
   const [sending, setSending] = React.useState(false);
@@ -79,7 +85,14 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
         )}
       </div>
       <footer className="p-4 flex items-center justify-between">
-        <span className="font-semibold">{author}</span>
+        <span className="font-semibold flex items-center gap-2">
+          {author}
+          {isModerator && reports > 0 && (
+            <span className="rounded-full bg-gray-200 px-2 py-1 text-xs">
+              ⚑ {reports}
+            </span>
+          )}
+        </span>
         <div className="flex items-center gap-2">
           {onZap && <ZapButton onZap={handleZap} disabled={sending} />}
           {postId &&

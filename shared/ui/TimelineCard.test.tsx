@@ -24,5 +24,19 @@ describe('TimelineCard', () => {
     );
     expect(html).not.toContain('NSFW – Tap to view');
   });
+
+  it('shows report badge for moderators', () => {
+    const html = renderToStaticMarkup(
+      <TimelineCard author="a" magnet={magnet} reports={2} isModerator />,
+    );
+    expect(html).toContain('⚑ 2');
+  });
+
+  it('hides report badge for non-moderators', () => {
+    const html = renderToStaticMarkup(
+      <TimelineCard author="a" magnet={magnet} reports={3} />,
+    );
+    expect(html).not.toContain('⚑ 3');
+  });
 });
 

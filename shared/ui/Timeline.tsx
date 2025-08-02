@@ -7,6 +7,7 @@ import { WalletModal } from './WalletModal';
 import { SkeletonLoader } from './SkeletonLoader';
 import { createRPCClient } from '../rpc';
 import type { Post } from '../types';
+import { useSocialStore } from './socialStore';
 
 /**
  * Timeline that renders SSB posts inside `TimelineCard`s. Navigation between
@@ -18,6 +19,7 @@ export const Timeline: React.FC = () => {
   const cashuClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
   const ssbClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
   const [walletOpen, setWalletOpen] = useState(false);
+  const isModerator = useSocialStore((s) => s.isModerator);
 
   // load posts from the SSB worker
   useEffect(() => {
@@ -91,6 +93,8 @@ export const Timeline: React.FC = () => {
                   authorPubKey={post.author.pubkey}
                   onReport={handleReport}
                   onBlock={handleBlock}
+                  reports={post.reports?.length ?? 0}
+                  isModerator={isModerator}
                 />
               ))}
             </SwipeContainer>
