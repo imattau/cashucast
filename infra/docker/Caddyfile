@@ -1,0 +1,11 @@
+room.cashucast.app {
+    reverse_proxy / ws://ssb-room:3000
+    encode zstd gzip
+    rate_limit * 20r/s
+}
+
+tracker.cashucast.app {
+    reverse_proxy / ws://wt-tracker:8000
+    encode zstd gzip
+    rate_limit * 40r/s
+}

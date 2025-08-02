@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  ssb-room:
+    image: ssbc/ssb-room2:latest
+    restart: unless-stopped
+    environment:
+      ROOM_PUBLISH: "true"
+      ROOM_NAME: "CashuCast Room"
+      ROOM_HOST: "room.cashucast.app"
+
+  wt-tracker:
+    image: nickert/webtorrent-tracker:latest
+    command: --ws --stats --whitelist "cashucast.app"
+    restart: unless-stopped
+
+  wt-seeder:
+    image: node:20-alpine
+    volumes: [ "torrent-cache:/cache" ]
+    entrypoint: |
+      sh -c "npm i -g webtorrent-cli && while true; do sleep 3600; done"
+    restart: unless-stopped
+
+volumes:
+  torrent-cache:
