@@ -1,0 +1,28 @@
+import React from 'react';
+
+export interface ClipThumb {
+  id: string;
+  thumbnail: string;
+  title?: string;
+}
+
+export interface ProfileGridProps {
+  clips: ClipThumb[];
+}
+
+/**
+ * Responsive grid of clip thumbnails.
+ * Two columns at >=600px and three columns at >=1024px.
+ */
+export const ProfileGrid: React.FC<ProfileGridProps> = ({ clips }) => (
+  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+    {clips.map((clip) => (
+      <img
+        key={clip.id}
+        src={clip.thumbnail}
+        alt={clip.title ?? 'clip thumbnail'}
+        className="w-full aspect-video object-cover rounded"
+      />
+    ))}
+  </div>
+);
