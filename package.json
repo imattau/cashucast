@@ -11,6 +11,7 @@
   "license": "GPL-3.0-or-later",
   "type": "module",
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
     "canvas-confetti": "^1.9.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
