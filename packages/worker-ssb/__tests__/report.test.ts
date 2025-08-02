@@ -34,33 +34,30 @@ function createPortPair() {
   return { port1, port2 };
 }
 
-async function setup(resetLog: boolean) {
+async function setup() {
   vi.resetModules();
-  if (resetLog) (globalThis as any).__cashuSSBLog = [];
+  (globalThis as any).__cashuSSBLog = [];
   const { port1, port2 } = createPortPair();
   (globalThis as any).self = port1;
   await import('../index');
   const call = createRPCClient(port2);
-  const cleanup = () => {
-    delete (globalThis as any).self;
-  };
-  return { call, cleanup };
+  const cleanup = () => { delete (globalThis as any).self; };
+  return { call, self: port1 as any, cleanup };
 }
 
-describe('worker-ssb replication', () => {
-  it('replicates posts across instances', async () => {
-    const { call, cleanup } = await setup(true);
+describe('worker-ssb reporting', () => {
+  it('hides post after report threshold via reportPost', async () => {
+    const { call, self, cleanup } = await setup();
+    self.SSB_REPORT_THRESHOLD = 1;
     await call('publishPost', {
-      id: 'r1',
-      author: { name: 'R', pubkey: 'r', avatarUrl: 'https://example.com/r.png' },
-      magnet: 'magnet:?xt=urn:btih:r1',
+      id: 'rep1',
+      author: { name: 'R', pubkey: 'r', avatarUrl: '' },
+      magnet: 'magnet:?xt=urn:btih:rep1',
     });
+    await call('reportPost', 'rep1', 'spam');
+    const feed: any[] = await call('queryFeed', {});
+    expect(feed.some((p) => p.id === 'rep1')).toBe(false);
     cleanup();
-
-    const { call: call2, cleanup: cleanup2 } = await setup(false);
-    const feed: any[] = await call2('queryFeed', {});
-    expect(feed.some((p) => p.id === 'r1')).toBe(true);
-    cleanup2();
   });
 });
 
