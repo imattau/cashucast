@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { SwipeContainer } from './SwipeContainer';
 import { TimelineCard } from './TimelineCard';
 import { BalanceChip } from './BalanceChip';
+import { BottomNav } from './BottomNav';
 
 /**
  * Demo timeline that renders an infinite list of `TimelineCard`s.
@@ -45,15 +46,20 @@ export const Timeline: React.FC = () => {
   }, [ensureCard]);
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="relative flex h-screen flex-col">
       <header className="flex justify-end p-2">
         <BalanceChip />
       </header>
-      <div className="flex-1">
-        <SwipeContainer onIndexChange={handleIndexChange}>
-          {cards}
-        </SwipeContainer>
+      <div className="relative flex-1 flex justify-center">
+        <div className="w-full max-w-screen-md">
+          <SwipeContainer onIndexChange={handleIndexChange}>
+            {cards}
+          </SwipeContainer>
+        </div>
+        <div className="pointer-events-none fixed inset-y-0 left-0 hidden w-1/4 bg-gray-100/40 backdrop-blur lg:block" />
+        <div className="pointer-events-none fixed inset-y-0 right-0 hidden w-1/4 bg-gray-100/40 backdrop-blur lg:block" />
       </div>
+      <BottomNav />
     </div>
   );
 };
