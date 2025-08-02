@@ -3,6 +3,7 @@ import { SwipeContainer } from './SwipeContainer';
 import { TimelineCard } from './TimelineCard';
 import { BalanceChip } from './BalanceChip';
 import { BottomNav } from './BottomNav';
+import { WalletModal } from './WalletModal';
 import { createRPCClient } from '../rpc';
 
 interface Post {
@@ -22,6 +23,7 @@ interface Post {
 export const Timeline: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const cashuClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
+  const [walletOpen, setWalletOpen] = useState(false);
 
   // load posts from the SSB worker
   useEffect(() => {
@@ -49,17 +51,19 @@ export const Timeline: React.FC = () => {
   }, []);
 
   const makeZapHandler = useCallback(
-    (post: Post) => (amount: number) => {
-      cashuClient.current?.('sendZap', post.author.pubkey, amount, post.id);
-    },
+    (post: Post) => (amount: number) =>
+      cashuClient.current?.('sendZap', post.author.pubkey, amount, post.id),
     []
   );
 
   return (
     <div className="relative flex h-screen flex-col">
       <header className="flex justify-end p-2">
-        <BalanceChip />
+        <button onClick={() => setWalletOpen(true)}>
+          <BalanceChip />
+        </button>
       </header>
+      <WalletModal open={walletOpen} onOpenChange={setWalletOpen} />
       <div className="relative flex-1 flex justify-center">
         <div className="w-full max-w-screen-md">
           <SwipeContainer>

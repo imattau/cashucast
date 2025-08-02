@@ -21,4 +21,11 @@ describe('ZapButton', () => {
     const html = renderToStaticMarkup(<ZapButton />);
     expect(html).not.toContain('disabled=""');
   });
+
+  it('disables all amounts when disabled prop set', () => {
+    useBalanceStore.setState({ balance: 2000, txs: [] }, true);
+    const html = renderToStaticMarkup(<ZapButton disabled />);
+    const disabledCount = (html.match(/disabled=""/g) || []).length;
+    expect(disabledCount).toBe(3);
+  });
 });

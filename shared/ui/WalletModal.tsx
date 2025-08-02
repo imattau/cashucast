@@ -17,7 +17,16 @@ export const WalletModal: React.FC<WalletModalProps> = ({ open, onOpenChange }) 
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange}>
       <div className="p-4 space-y-4">
-        <BalanceChip />
+        <div className="flex items-center justify-between">
+          <BalanceChip />
+          <button
+            onClick={() => onOpenChange(false)}
+            aria-label="Close wallet"
+            className="rounded bg-gray-200 px-2 py-1"
+          >
+            Close
+          </button>
+        </div>
         <MintPicker />
         <RefillBtn />
         <BackupSeedBtn />
