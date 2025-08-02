@@ -14,6 +14,15 @@ const env = envSchema.parse(import.meta.env);
  * 2. Else fall back to VITE_* values.
  */
 export function getDefaultEndpoints() {
+  if (typeof window === 'undefined') {
+    return {
+      room: env.VITE_ROOM_URL || 'ws://localhost:4545',
+      trackerList: env.VITE_TRACKER_URLS
+        ? JSON.parse(env.VITE_TRACKER_URLS)
+        : ['ws://localhost:8000'],
+    };
+  }
+
   const host = window.location.hostname;
   // pattern: subdomain.domain.tld
   const [, domain, tld] = host.split('.').slice(-3);
