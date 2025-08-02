@@ -103,9 +103,9 @@ function OnboardingContent() {
 
   const [toast, setToast] = useState(false);
 
-  const confirm = () => {
+  const confirm = async () => {
     if (mode === 'new' && keys && mnemonic) {
-      const p = createProfile({
+      const p = await createProfile({
         ssbPk: keys.pk,
         ssbSk: keys.sk,
         cashuMnemonic: mnemonic,
