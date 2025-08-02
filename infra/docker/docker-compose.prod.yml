@@ -21,5 +21,20 @@ services:
       sh -c "npm i -g webtorrent-cli && while true; do sleep 3600; done"
     restart: unless-stopped
 
+  dht-bridge:
+    image: anacrolix/dhttracker:latest   # UDP↔WebSocket
+    restart: unless-stopped
+    environment:
+      ADDR: ":6881"
+    networks: [internal]
+    healthcheck:
+      test: curl -f http://localhost:6881/debug || exit 1
+      interval: 30s
+      retries: 3
+
 volumes:
   torrent-cache:
+
+networks:
+  internal:
+    internal: true
