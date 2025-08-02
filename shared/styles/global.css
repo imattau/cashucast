@@ -1,0 +1,3 @@
+#timeline {
+  scroll-snap-type: y mandatory;
+}
