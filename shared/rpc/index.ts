@@ -16,6 +16,8 @@ export const MethodDefinitions = {
   stream: z.tuple([Magnet]),
   mint: z.tuple([z.number()]),
   sendZap: z.tuple([z.string(), z.number(), z.string()]),
+  initKeys: z.tuple([z.string().optional(), z.string().optional()]),
+  initWallet: z.tuple([z.string().optional()]),
 } as const;
 
 export const MethodsSchema = z.union([
@@ -23,10 +25,12 @@ export const MethodsSchema = z.union([
   z.object({ ns: z.literal('ssb'), fn: z.literal('queryFeed'), args: MethodDefinitions.queryFeed }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('reportPost'), args: MethodDefinitions.reportPost }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('blockUser'), args: MethodDefinitions.blockUser }),
+  z.object({ ns: z.literal('ssb'), fn: z.literal('initKeys'), args: MethodDefinitions.initKeys }),
   z.object({ ns: z.literal('torrent'), fn: z.literal('seedFile'), args: MethodDefinitions.seedFile }),
   z.object({ ns: z.literal('torrent'), fn: z.literal('stream'), args: MethodDefinitions.stream }),
   z.object({ ns: z.literal('cashu'), fn: z.literal('mint'), args: MethodDefinitions.mint }),
   z.object({ ns: z.literal('cashu'), fn: z.literal('sendZap'), args: MethodDefinitions.sendZap }),
+  z.object({ ns: z.literal('cashu'), fn: z.literal('initWallet'), args: MethodDefinitions.initWallet }),
 ]);
 
 export type Methods = z.infer<typeof MethodsSchema>;
@@ -55,6 +59,8 @@ const methodArgSchemas: Record<MethodName, z.ZodTuple<any, any>> = {
   stream: MethodDefinitions.stream,
   mint: MethodDefinitions.mint,
   sendZap: MethodDefinitions.sendZap,
+  initKeys: MethodDefinitions.initKeys,
+  initWallet: MethodDefinitions.initWallet,
 };
 
 export function createRPCClient(port: RPCPort) {
