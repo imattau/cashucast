@@ -4,6 +4,8 @@ import { BalanceChip } from './BalanceChip';
 import { MintPicker } from './MintPicker';
 import { RefillBtn } from './RefillBtn';
 import { TxList } from './TxList';
+import { QuotaBar } from './QuotaBar';
+import { BackupSeedBtn } from './BackupSeedBtn';
 
 export interface WalletModalProps {
   open: boolean;
@@ -18,6 +20,8 @@ export const WalletModal: React.FC<WalletModalProps> = ({ open, onOpenChange }) 
         <BalanceChip />
         <MintPicker />
         <RefillBtn />
+        <BackupSeedBtn />
+        <QuotaBar />
         <TxList />
       </div>
     </BottomSheet>

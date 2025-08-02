@@ -24,3 +24,6 @@ export * from './FollowBtn';
 export * from './ZapStats';
 export * from './ProfileGrid';
 export * from './Profile';
+export * from './ToggleDarkMode';
+export * from './QuotaBar';
+export * from './BackupSeedBtn';
