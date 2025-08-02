@@ -8,14 +8,14 @@ import type { Post } from '../../shared/types';
 const mockPosts: Post[] = [
   {
     id: '1',
-    author: { name: 'Alice', pubkey: 'alicepk' },
+    author: { name: 'Alice', pubkey: 'alicepk', avatarUrl: 'https://example.com/alice.png' },
     text: 'Hello from SSB',
     magnet: 'magnet:?xt=urn:btih:alice',
     nsfw: false,
   },
   {
     id: '2',
-    author: { name: 'Bob', pubkey: 'bobpk' },
+    author: { name: 'Bob', pubkey: 'bobpk', avatarUrl: 'https://example.com/bob.png' },
     text: 'Another post on the network',
     magnet: 'magnet:?xt=urn:btih:bob',
     nsfw: false,

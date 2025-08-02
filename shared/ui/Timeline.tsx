@@ -67,7 +67,7 @@ export const Timeline: React.FC = () => {
                 <TimelineCard
                   key={post.id}
                   name={post.author.name}
-                  avatarUrl=""
+                  avatarUrl={post.author.avatarUrl}
                   text={post.text}
                   magnet={post.magnet}
                   nsfw={post.nsfw}
