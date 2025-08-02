@@ -6,12 +6,19 @@ const shimmerStyle = `
   }
 `;
 
-if (typeof document !== 'undefined' && !document.getElementById('skeleton-loader-style')) {
+let styleAttached = false;
+const attachStyle = () => {
+  if (styleAttached || typeof document === 'undefined') return;
+  if (document.getElementById('skeleton-loader-style')) {
+    styleAttached = true;
+    return;
+  }
   const style = document.createElement('style');
   style.id = 'skeleton-loader-style';
   style.textContent = shimmerStyle;
   document.head.appendChild(style);
-}
+  styleAttached = true;
+};
 
 export interface SkeletonLoaderProps {
   className?: string;
@@ -22,6 +29,7 @@ export interface SkeletonLoaderProps {
  * is loading to prevent layout shifts.
  */
 export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ className }) => {
+  attachStyle();
   return (
     <div className={`relative overflow-hidden bg-gray-200 ${className ?? ''}`}>
       <div

@@ -4,6 +4,7 @@ import { TimelineCard } from './TimelineCard';
 import { BalanceChip } from './BalanceChip';
 import { BottomNav } from './BottomNav';
 import { WalletModal } from './WalletModal';
+import { SkeletonLoader } from './SkeletonLoader';
 import { createRPCClient } from '../rpc';
 
 interface Post {
@@ -21,7 +22,7 @@ interface Post {
  * gestures. Zaps trigger the Cashu RPC.
  */
 export const Timeline: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[] | null>(null);
   const cashuClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
   const [walletOpen, setWalletOpen] = useState(false);
 
@@ -66,17 +67,21 @@ export const Timeline: React.FC = () => {
       <WalletModal open={walletOpen} onOpenChange={setWalletOpen} />
       <div className="relative flex-1 flex justify-center">
         <div className="w-full max-w-screen-md">
-          <SwipeContainer>
-            {posts.map((post) => (
-              <TimelineCard
-                key={post.id}
-                author={post.author.name}
-                creatorId={post.author.pubkey}
-                magnet={post.magnet}
-                onZap={makeZapHandler(post)}
-              />
-            ))}
-          </SwipeContainer>
+          {posts === null ? (
+            <SkeletonLoader className="w-full h-[90vh]" />
+          ) : (
+            <SwipeContainer>
+              {posts.map((post) => (
+                <TimelineCard
+                  key={post.id}
+                  author={post.author.name}
+                  creatorId={post.author.pubkey}
+                  magnet={post.magnet}
+                  onZap={makeZapHandler(post)}
+                />
+              ))}
+            </SwipeContainer>
+          )}
         </div>
         <div className="pointer-events-none fixed inset-y-0 left-0 hidden w-1/4 bg-gray-100/40 backdrop-blur lg:block" />
         <div className="pointer-events-none fixed inset-y-0 right-0 hidden w-1/4 bg-gray-100/40 backdrop-blur lg:block" />
