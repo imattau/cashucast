@@ -12,11 +12,10 @@ import { useSocialStore } from './socialStore';
 /**
  * Timeline that renders SSB posts inside `TimelineCard`s. Navigation between
  * cards is handled by `SwipeContainer`, which supports arrow keys and touch
- * gestures. Zaps trigger the Cashu RPC.
+ * gestures.
  */
 export const Timeline: React.FC = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
-  const cashuClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
   const ssbClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
   const [walletOpen, setWalletOpen] = useState(false);
   const isModerator = useSocialStore((s) => s.isModerator);
@@ -35,23 +34,6 @@ export const Timeline: React.FC = () => {
       .catch(() => setPosts([]));
     return () => worker.terminate();
   }, []);
-
-  // prepare Cashu RPC client for zaps
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const worker = new Worker(
-      new URL('../../packages/worker-cashu/index.ts', import.meta.url),
-      { type: 'module' }
-    );
-    cashuClient.current = createRPCClient(worker);
-    return () => worker.terminate();
-  }, []);
-
-  const makeZapHandler = useCallback(
-    (post: Post) => (amount: number) =>
-      cashuClient.current?.('sendZap', post.author.pubkey, amount, post.id),
-    []
-  );
 
   const handleReport = useCallback(
     (postId: string, reason: string) => {
@@ -84,11 +66,11 @@ export const Timeline: React.FC = () => {
               {posts.map((post) => (
                 <TimelineCard
                   key={post.id}
-                  author={post.author.name}
-                  creatorId={post.author.pubkey}
+                  name={post.author.name}
+                  avatarUrl=""
+                  text={post.text}
                   magnet={post.magnet}
                   nsfw={post.nsfw}
-                  onZap={makeZapHandler(post)}
                   postId={post.id}
                   authorPubKey={post.author.pubkey}
                   onReport={handleReport}
