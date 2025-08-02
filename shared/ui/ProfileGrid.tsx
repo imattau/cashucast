@@ -12,7 +12,9 @@ export interface ProfileGridProps {
 
 /**
  * Responsive grid of clip thumbnails.
- * Two columns at >=600px and three columns at >=1024px.
+ * - Single column below 600px.
+ * - Two columns from 600px up to 1024px.
+ * - Three columns at widths of 1024px and above.
  */
 export const ProfileGrid: React.FC<ProfileGridProps> = ({ clips }) => (
   <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">

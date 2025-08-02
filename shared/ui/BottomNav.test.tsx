@@ -10,4 +10,9 @@ describe('BottomNav', () => {
     expect(html).toContain('+');
     expect(html).toContain('Profile');
   });
+
+  it('hides on wider screens', () => {
+    const html = renderToStaticMarkup(<BottomNav />);
+    expect(html).toContain('sm:hidden');
+  });
 });
