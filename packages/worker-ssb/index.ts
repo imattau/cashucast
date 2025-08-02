@@ -2,6 +2,7 @@ import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
 import { useSettings } from '../../shared/store/settings';
 import { createRequire } from 'module';
+import { generateKeyPairSync } from 'node:crypto';
 
 const require = createRequire(import.meta.url);
 
@@ -10,6 +11,8 @@ const ssbConfig = {
 };
 
 const { roomUrl } = useSettings.getState();
+
+let storedKeys: { sk: string; pk: string } | undefined;
 
 // Temporary in-memory posts so the timeline has content during tests or
 // development. In a real implementation these would come from the SSB
@@ -91,6 +94,21 @@ async function getBlockedPubKeys(): Promise<Set<string>> {
 }
 
 createRPCHandler(self as any, {
+  initKeys: async (sk?: string, pk?: string) => {
+    if (sk && pk) {
+      storedKeys = { sk, pk };
+      return;
+    }
+    const { publicKey, privateKey } = generateKeyPairSync('ed25519');
+    const skStr = privateKey
+      .export({ type: 'pkcs8', format: 'der' })
+      .toString('base64');
+    const pkStr = publicKey
+      .export({ type: 'spki', format: 'der' })
+      .toString('base64');
+    storedKeys = { sk: skStr, pk: pkStr };
+    return { sk: skStr, pk: pkStr };
+  },
   publishPost: async (post: Post) => {
     // TODO: publish post to SSB
     mockPosts.push({
