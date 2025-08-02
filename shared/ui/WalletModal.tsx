@@ -1,21 +1,25 @@
 import React from 'react';
+import { BottomSheet } from './BottomSheet';
+import { BalanceChip } from './BalanceChip';
+import { MintPicker } from './MintPicker';
+import { RefillBtn } from './RefillBtn';
+import { TxList } from './TxList';
 
 export interface WalletModalProps {
-  balance: number;
-  onClose: () => void;
-  visible: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-export const WalletModal: React.FC<WalletModalProps> = ({ balance, onClose, visible }) => {
-  if (!visible) return null;
+/** Wallet view presented in a bottom sheet. */
+export const WalletModal: React.FC<WalletModalProps> = ({ open, onOpenChange }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="bg-white p-4 rounded shadow-lg min-w-[200px]">
-        <div className="mb-4">Balance: {balance}</div>
-        <button className="px-2 py-1 bg-gray-200 rounded" onClick={onClose}>
-          Close
-        </button>
+    <BottomSheet open={open} onOpenChange={onOpenChange}>
+      <div className="p-4 space-y-4">
+        <BalanceChip />
+        <MintPicker />
+        <RefillBtn />
+        <TxList />
       </div>
-    </div>
+    </BottomSheet>
   );
 };
