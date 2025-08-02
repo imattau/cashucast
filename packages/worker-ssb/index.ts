@@ -1,97 +1,13 @@
 import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
-import { useSettings } from '../../shared/store/settings';
-import { createRequire } from 'module';
-import { generateKeyPairSync } from 'node:crypto';
-
-const require = createRequire(import.meta.url);
-
-const ssbConfig = {
-  plugins: [require('ssb-blobs')],
-};
-
-const { roomUrl } = useSettings.getState();
+import { generateKeyPairSync, randomUUID } from 'node:crypto';
+import { getSSB } from './src/instance';
 
 let storedKeys: { sk: string; pk: string } | undefined;
 
-// Temporary in-memory posts so the timeline has content during tests or
-// development. In a real implementation these would come from the SSB
-// network. Each post contains a simple author object, some text and a
-// magnet link to a short clip.
-const mockPosts: Post[] = [
-  {
-    id: '1',
-    author: {
-      name: 'Alice',
-      pubkey: 'alicepk',
-      avatarUrl: 'https://example.com/alice.png',
-    },
-    text: 'Hello from SSB',
-    magnet: 'magnet:?xt=urn:btih:alice',
-    nsfw: false,
-    tags: ['hello', 'ssb'],
-    ts: Date.now(),
-  },
-  {
-    id: '2',
-    author: {
-      name: 'Bob',
-      pubkey: 'bobpk',
-      avatarUrl: 'https://example.com/bob.png',
-    },
-    text: 'Another post on the network',
-    magnet: 'magnet:?xt=urn:btih:bob',
-    nsfw: false,
-    tags: ['network'],
-    ts: Date.now(),
-  },
-];
-
-// Temporary in-memory log for SSB-style messages such as reports or blocks.
-// This simulates appending to the SSB log.
-const mockLog: any[] = [];
-
-// Very small helper around IndexedDB for persisting blocked pubkeys. This is
-// extremely minimal and only suitable for tests or development.
-const dbPromise = new Promise<any>((resolve, reject) => {
-  const req = (self as any).indexedDB?.open('ssb', 1);
-  if (!req) {
-    resolve(null);
-    return;
-  }
-  req.onupgradeneeded = () => {
-    const db = req.result;
-    if (!db.objectStoreNames.contains('blocks')) {
-      db.createObjectStore('blocks', { keyPath: 'pubKey' });
-    }
-  };
-  req.onsuccess = () => resolve(req.result);
-  req.onerror = () => reject(req.error);
-});
-
-async function storeBlock(pubKey: string) {
-  const db = await dbPromise;
-  if (!db) return;
-  await new Promise<void>((resolve, reject) => {
-    const tx = db.transaction('blocks', 'readwrite');
-    tx.objectStore('blocks').put({ pubKey });
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
-}
-
-async function getBlockedPubKeys(): Promise<Set<string>> {
-  const db = await dbPromise;
-  if (!db) return new Set();
-  return await new Promise<Set<string>>((resolve, reject) => {
-    const tx = db.transaction('blocks', 'readonly');
-    const req = tx.objectStore('blocks').getAll();
-    req.onsuccess = () => {
-      resolve(new Set(req.result.map((r: any) => r.pubKey)));
-    };
-    req.onerror = () => reject(req.error);
-  });
-}
+// Global SSB log shared across workers to simulate replication
+const ssbLog: any[] = (globalThis as any).__cashuSSBLog || [];
+(globalThis as any).__cashuSSBLog = ssbLog;
 
 createRPCHandler(self as any, {
   initKeys: async (sk?: string, pk?: string) => {
@@ -110,47 +26,70 @@ createRPCHandler(self as any, {
     return { sk: skStr, pk: pkStr };
   },
   publishPost: async (post: Post) => {
-    // TODO: publish post to SSB
-    mockPosts.push({
+    const id = post.id ?? randomUUID();
+    const fullPost = {
       ...post,
+      id,
       nsfw: post.nsfw ?? false,
       ts: post.ts ?? Date.now(),
-    });
-    return post;
+    };
+    ssbLog.push({ type: 'post', ...fullPost });
+    for (const r of post.reports ?? []) {
+      ssbLog.push({ type: 'report', target: id, ...r });
+    }
+    try {
+      const ssb = getSSB();
+      ssb.db.publish({ type: 'post', ...fullPost }, () => {});
+    } catch (_) {}
+    return fullPost;
   },
   queryFeed: async (opts) => {
     const includeTags = opts?.includeTags ?? [];
-    const blocked = await getBlockedPubKeys();
     const thresholdEnv =
       (self as any).SSB_REPORT_THRESHOLD ??
       (self as any).process?.env?.SSB_REPORT_THRESHOLD;
     const threshold = Number(thresholdEnv ?? 5);
-    return mockPosts.filter((post) => {
+
+    const blocked = new Set(
+      ssbLog.filter((m) => m.type === 'block').map((m) => m.target)
+    );
+    const reportsMap = new Map<string, Set<string>>();
+    for (const msg of ssbLog) {
+      if (msg.type === 'report') {
+        const set = reportsMap.get(msg.target) || new Set();
+        set.add(msg.fromPk);
+        reportsMap.set(msg.target, set);
+      }
+    }
+
+    const posts = ssbLog.filter((m) => m.type === 'post');
+    return posts.filter((post: any) => {
       if (blocked.has(post.author.pubkey)) return false;
       if (includeTags.length > 0) {
         const postTags = post.tags ?? [];
         if (!includeTags.every((t) => postTags.includes(t))) return false;
       }
-      const reporters = new Set(
-        (post.reports ?? []).map((r) => r.fromPk)
-      );
+      const reporters = reportsMap.get(post.id) || new Set();
       return reporters.size < threshold;
     });
   },
   reportPost: async (postId: string, reason: string) => {
     const report = { fromPk: 'local', reason, ts: Date.now() };
-    const post = mockPosts.find((p) => p.id === postId);
-    if (post) {
-      post.reports = [...(post.reports ?? []), report];
-    }
-    const msg = { type: 'report', target: postId, reason, fromPk: report.fromPk };
-    mockLog.push(msg);
+    const msg = { type: 'report', target: postId, ...report };
+    ssbLog.push(msg);
+    try {
+      const ssb = getSSB();
+      ssb.db.publish(msg, () => {});
+    } catch (_) {}
     return msg;
   },
   blockUser: async (pubKey: string) => {
-    await storeBlock(pubKey);
-    const msg = { type: 'block', target: pubKey };
-    mockLog.push(msg);
+    const msg = { type: 'block', target: pubKey, ts: Date.now() };
+    ssbLog.push(msg);
+    try {
+      const ssb = getSSB();
+      ssb.db.publish(msg, () => {});
+    } catch (_) {}
     return msg;
   },
 });

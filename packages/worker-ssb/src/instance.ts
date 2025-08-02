@@ -1,20 +1,29 @@
+import { useSettings } from '../../../shared/store/settings';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
+let ssb: any = (globalThis as any).__cashuSSB;
+
 export function getSSB() {
-  return {
-    blobs: {
-      add() {
-        return {
-          write(_data: any) {},
-          end(cb: (err: any, hash: string) => void) {
-            cb && cb(null, Math.random().toString(36).slice(2));
-          },
-        };
-      },
-      get(_hash: string, cb: (err: any, stream?: any) => void) {
-        cb(new Error('not found'));
-      },
-      rm(_hash: string, cb?: () => void) {
-        cb && cb();
-      },
-    },
-  };
+  if (ssb) return ssb;
+
+  const net = require('ssb-browser-core/net');
+  const { roomUrl } = useSettings.getState();
+
+  ssb = net.init('cashucast-ssb', {}, (stack: any) =>
+    stack.use(require('ssb-blobs'))
+  );
+
+  if (roomUrl) {
+    try {
+      ssb.conn.remember(roomUrl, { type: 'room' });
+      ssb.conn.connect(roomUrl);
+    } catch (err) {
+      // Connection failures are non-fatal in tests
+    }
+  }
+
+  (globalThis as any).__cashuSSB = ssb;
+  return ssb;
 }

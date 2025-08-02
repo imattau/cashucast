@@ -33,52 +33,10 @@ function createPortPair() {
   return { port1, port2 };
 }
 
-function mockIndexedDB(target: any) {
-  const blocked = new Set<string>();
-  const db = {
-    objectStoreNames: { contains: () => true },
-    createObjectStore() {},
-    transaction() {
-      const tx: any = {
-        objectStore() {
-          return {
-            put({ pubKey }: { pubKey: string }) {
-              blocked.add(pubKey);
-              setTimeout(() => tx.oncomplete && tx.oncomplete(), 0);
-            },
-            getAll() {
-              const req: any = {
-                result: Array.from(blocked).map((pk) => ({ pubKey: pk })),
-                onsuccess: null,
-                onerror: null,
-              };
-              setTimeout(() => req.onsuccess && req.onsuccess(), 0);
-              return req;
-            },
-          };
-        },
-        oncomplete: null,
-        onerror: null,
-      };
-      return tx;
-    },
-  };
-  target.indexedDB = {
-    open() {
-      const req: any = { result: db, onupgradeneeded: null, onsuccess: null, onerror: null };
-      setTimeout(() => {
-        req.onupgradeneeded && req.onupgradeneeded();
-        req.onsuccess && req.onsuccess();
-      }, 0);
-      return req;
-    },
-  };
-}
-
 async function setup() {
   vi.resetModules();
+  (globalThis as any).__cashuSSBLog = [];
   const { port1, port2 } = createPortPair();
-  mockIndexedDB(port1);
   (globalThis as any).self = port1;
   await import('../index');
   const call = createRPCClient(port2);
