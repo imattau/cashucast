@@ -4,9 +4,11 @@ import { getDefaultEndpoints } from '../config';
 
 interface SettingsState {
   showNSFW: boolean;
+  maxBlobMB: number;
   roomUrl: string;
   trackerUrls: string[];
   setShowNSFW: (v: boolean) => void;
+  setMaxBlobMB: (mb: number) => void;
   setRoomUrl: (u: string) => void;
   addTracker: (u: string) => void;
   removeTracker: (u: string) => void;
@@ -18,14 +20,19 @@ export const useSettings = create<SettingsState>()(
       const { room, trackerList } = getDefaultEndpoints();
       return {
         showNSFW: false,
+        maxBlobMB: 512,
         roomUrl: room,
         trackerUrls: trackerList,
         setShowNSFW: (v) => set({ showNSFW: v }),
         setRoomUrl: (u) => set({ roomUrl: u }),
         addTracker: (u) =>
           set({ trackerUrls: Array.from(new Set([...get().trackerUrls, u])) }),
-        removeTracker: (u) =>
-          set({ trackerUrls: get().trackerUrls.filter((x) => x !== u) }),
+        removeTracker(u: string) {
+          set({ trackerUrls: get().trackerUrls.filter((x) => x !== u) });
+        },
+        setMaxBlobMB(mb: number) {
+          set({ maxBlobMB: mb });
+        }
       };
     },
     { name: 'cashucast-settings' },
