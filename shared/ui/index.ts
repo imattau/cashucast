@@ -7,6 +7,7 @@ export * from './SkeletonLoader';
 export * from './BalanceChip';
 export * from './balanceStore';
 export * from './socialStore';
+export * from './settingsStore';
 export * from './BottomSheet';
 export * from './MintPicker';
 export * from './MintSelect';
