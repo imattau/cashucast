@@ -1,6 +1,13 @@
 import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
 import { useSettings } from '../../shared/store/settings';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
+const ssbConfig = {
+  plugins: [require('ssb-blobs')],
+};
 
 const { roomUrl } = useSettings.getState();
 
