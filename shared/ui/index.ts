@@ -35,3 +35,4 @@ export * from './ToggleDarkMode';
 export * from './QuotaBar';
 export * from './BackupSeedBtn';
 export * from './Settings';
+export * from './PostMenu';

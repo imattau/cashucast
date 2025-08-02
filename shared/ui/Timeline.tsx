@@ -16,6 +16,7 @@ import type { Post } from '../types';
 export const Timeline: React.FC = () => {
   const [posts, setPosts] = useState<Post[] | null>(null);
   const cashuClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
+  const ssbClient = useRef<ReturnType<typeof createRPCClient> | null>(null);
   const [walletOpen, setWalletOpen] = useState(false);
 
   // load posts from the SSB worker
@@ -26,6 +27,7 @@ export const Timeline: React.FC = () => {
       { type: 'module' }
     );
     const call = createRPCClient(worker);
+    ssbClient.current = call;
     call('queryFeed', {})
       .then((p) => setPosts(p as Post[]))
       .catch(() => setPosts([]));
@@ -49,6 +51,20 @@ export const Timeline: React.FC = () => {
     []
   );
 
+  const handleReport = useCallback(
+    (postId: string, reason: string) => {
+      ssbClient.current?.('reportPost', postId, reason);
+    },
+    []
+  );
+
+  const handleBlock = useCallback((pubKey: string) => {
+    ssbClient.current?.('blockUser', pubKey);
+    setPosts((prev) =>
+      prev ? prev.filter((p) => p.author.pubkey !== pubKey) : prev
+    );
+  }, []);
+
   return (
     <div className="relative flex h-screen flex-col">
       <header className="flex justify-end p-2">
@@ -71,6 +87,10 @@ export const Timeline: React.FC = () => {
                   magnet={post.magnet}
                   nsfw={post.nsfw}
                   onZap={makeZapHandler(post)}
+                  postId={post.id}
+                  authorPubKey={post.author.pubkey}
+                  onReport={handleReport}
+                  onBlock={handleBlock}
                 />
               ))}
             </SwipeContainer>
