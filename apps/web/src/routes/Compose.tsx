@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { UploadDropzone, TranscodeModal, CaptionTextarea, PublishBtn } from '../../shared/ui';
 import ThumbnailPicker from '../components/ThumbnailPicker';
+import TagInput from '../components/TagInput';
 
 export default function Compose() {
   const [file, setFile] = useState<File | null>(null);
   const [magnet, setMagnet] = useState<string | null>(null);
   const [thumbHash, setThumbHash] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
 
   const handleFile = (f: File) => {
     setFile(f);
@@ -26,8 +28,9 @@ export default function Compose() {
           <TranscodeModal open={!magnet} file={file} onComplete={setMagnet} />
           {magnet && <ThumbnailPicker file={file} onSelect={setThumbHash} />}
           <CaptionTextarea value={caption} onChange={setCaption} />
+          <TagInput value={tags} setValue={setTags} />
           <PublishBtn
-            magnet={magnet && thumbHash ? magnet : undefined}
+            magnet={magnet && thumbHash && tags.length <= 10 ? magnet : undefined}
             onPublish={onPublish}
           />
         </>
