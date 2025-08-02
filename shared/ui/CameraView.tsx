@@ -1,5 +1,6 @@
 import React from 'react';
 import { UploadDropzone } from './UploadDropzone';
+import { SkeletonLoader } from './SkeletonLoader';
 
 /**
  * CameraView tries to access the user's webcam and provide a capture button.
@@ -12,6 +13,7 @@ export interface CameraViewProps {
 export const CameraView: React.FC<CameraViewProps> = ({ onCapture }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [error, setError] = React.useState(false);
+  const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
     let stream: MediaStream | null = null;
@@ -21,6 +23,7 @@ export const CameraView: React.FC<CameraViewProps> = ({ onCapture }) => {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          setReady(true);
         }
       } catch (err) {
         setError(true);
@@ -50,7 +53,15 @@ export const CameraView: React.FC<CameraViewProps> = ({ onCapture }) => {
 
   return (
     <div>
-      <video ref={videoRef} autoPlay playsInline className="w-full" />
+      <div className="relative w-full">
+        {!ready && <SkeletonLoader className="w-full aspect-video" />}
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          className={`w-full ${ready ? 'block' : 'hidden'}`}
+        />
+      </div>
       <button className="mt-2" onClick={handleCapture}>
         Capture
       </button>
