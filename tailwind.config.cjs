@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
   content: [
     './apps/**/*.{ts,tsx,js,jsx}',
@@ -30,5 +32,14 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.drop-shadow-lg': {
+          filter:
+            'drop-shadow(0 10px 8px rgba(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgba(0 0 0 / 0.1))',
+        },
+      });
+    }),
+  ],
 };
