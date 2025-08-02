@@ -1,5 +1,8 @@
 import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
+import { useSettings } from '../../shared/store/settings';
+
+const { roomUrl } = useSettings.getState();
 
 // Temporary in-memory posts so the timeline has content during tests or
 // development. In a real implementation these would come from the SSB

@@ -1,4 +1,7 @@
 import { createRPCHandler } from '../../shared/rpc';
+import { useSettings } from '../../shared/store/settings';
+
+const { trackerUrls: trackers } = useSettings.getState();
 
 createRPCHandler(self as any, {
   seedFile: async (file) => {
