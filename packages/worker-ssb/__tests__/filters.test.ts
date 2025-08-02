@@ -1,0 +1,133 @@
+import { describe, it, expect, vi } from 'vitest';
+import { createRPCClient } from '../../../shared/rpc';
+
+function createPortPair() {
+  const listeners1: ((ev: MessageEvent) => void)[] = [];
+  const listeners2: ((ev: MessageEvent) => void)[] = [];
+  const port1 = {
+    postMessage(data: any) {
+      listeners2.forEach((l) => l({ data } as MessageEvent));
+    },
+    addEventListener(_type: 'message', listener: (ev: MessageEvent) => void) {
+      listeners1.push(listener);
+    },
+    removeEventListener(_type: 'message', listener: (ev: MessageEvent) => void) {
+      const idx = listeners1.indexOf(listener);
+      if (idx >= 0) listeners1.splice(idx, 1);
+    },
+    start() {},
+  } as any;
+  const port2 = {
+    postMessage(data: any) {
+      listeners1.forEach((l) => l({ data } as MessageEvent));
+    },
+    addEventListener(_type: 'message', listener: (ev: MessageEvent) => void) {
+      listeners2.push(listener);
+    },
+    removeEventListener(_type: 'message', listener: (ev: MessageEvent) => void) {
+      const idx = listeners2.indexOf(listener);
+      if (idx >= 0) listeners2.splice(idx, 1);
+    },
+    start() {},
+  } as any;
+  return { port1, port2 };
+}
+
+function mockIndexedDB(target: any) {
+  const blocked = new Set<string>();
+  const db = {
+    objectStoreNames: { contains: () => true },
+    createObjectStore() {},
+    transaction() {
+      const tx: any = {
+        objectStore() {
+          return {
+            put({ pubKey }: { pubKey: string }) {
+              blocked.add(pubKey);
+              setTimeout(() => tx.oncomplete && tx.oncomplete(), 0);
+            },
+            getAll() {
+              const req: any = {
+                result: Array.from(blocked).map((pk) => ({ pubKey: pk })),
+                onsuccess: null,
+                onerror: null,
+              };
+              setTimeout(() => req.onsuccess && req.onsuccess(), 0);
+              return req;
+            },
+          };
+        },
+        oncomplete: null,
+        onerror: null,
+      };
+      return tx;
+    },
+  };
+  target.indexedDB = {
+    open() {
+      const req: any = { result: db, onupgradeneeded: null, onsuccess: null, onerror: null };
+      setTimeout(() => {
+        req.onupgradeneeded && req.onupgradeneeded();
+        req.onsuccess && req.onsuccess();
+      }, 0);
+      return req;
+    },
+  };
+}
+
+async function setup() {
+  vi.resetModules();
+  const { port1, port2 } = createPortPair();
+  mockIndexedDB(port1);
+  (globalThis as any).self = port1;
+  await import('../index');
+  const call = createRPCClient(port2);
+  const cleanup = () => { delete (globalThis as any).self; };
+  return { call, self: port1, cleanup };
+}
+
+describe('worker-ssb feed filtering', () => {
+  it('omits posts from blocked users', async () => {
+    const { call, cleanup } = await setup();
+    await call('publishPost', {
+      id: 'a',
+      author: { name: 'A', pubkey: 'blockme' },
+      magnet: 'magnet:?xt=urn:btih:a',
+    });
+    await call('publishPost', {
+      id: 'b',
+      author: { name: 'B', pubkey: 'keep' },
+      magnet: 'magnet:?xt=urn:btih:b',
+    });
+    await call('blockUser', 'blockme');
+    const feed: any[] = await call('queryFeed', {});
+    expect(feed.some((p) => p.author.pubkey === 'blockme')).toBe(false);
+    expect(feed.some((p) => p.author.pubkey === 'keep')).toBe(true);
+    cleanup();
+  });
+
+  it('hides posts meeting report threshold', async () => {
+    const { call, self, cleanup } = await setup();
+    self.SSB_REPORT_THRESHOLD = 2;
+    await call('publishPost', {
+      id: 'c',
+      author: { name: 'C', pubkey: 'c' },
+      magnet: 'magnet:?xt=urn:btih:c',
+      reports: [{ fromPk: 'x', reason: 'spam', ts: 0 }],
+    });
+    await call('publishPost', {
+      id: 'd',
+      author: { name: 'D', pubkey: 'd' },
+      magnet: 'magnet:?xt=urn:btih:d',
+      reports: [
+        { fromPk: 'x', reason: 'spam', ts: 0 },
+        { fromPk: 'y', reason: 'spam', ts: 1 },
+      ],
+    });
+    const feed: any[] = await call('queryFeed', {});
+    expect(feed.some((p) => p.id === 'c')).toBe(true);
+    expect(feed.some((p) => p.id === 'd')).toBe(false);
+    cleanup();
+  });
+});
+
