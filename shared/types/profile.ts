@@ -1,58 +1,103 @@
-import { pbkdf2Sync, randomBytes, createCipheriv, createDecipheriv } from 'crypto';
+const crypto = globalThis.crypto;
 
 const SALT = 'cashucast';
 const ITERATIONS = 100_000;
-const KEYLEN = 32;
-const DIGEST = 'sha256';
+const KEYLEN = 32; // bytes
+const DIGEST = 'SHA-256';
 
-const deriveKeyB64 = (username: string): string =>
-  pbkdf2Sync(username, SALT, ITERATIONS, KEYLEN, DIGEST).toString('base64');
+const encoder = new TextEncoder();
+const decoder = new TextDecoder();
 
-const encrypt = (value: string, username: string): string => {
-  const key = Buffer.from(deriveKeyB64(username), 'base64');
-  const iv = randomBytes(16);
-  const cipher = createCipheriv('aes-256-ctr', key, iv);
-  const encrypted = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()]);
-  return Buffer.concat([iv, encrypted]).toString('base64');
+const bytesToBase64 = (bytes: Uint8Array): string => {
+  if (typeof Buffer !== 'undefined') return Buffer.from(bytes).toString('base64');
+  let binary = '';
+  bytes.forEach((b) => (binary += String.fromCharCode(b)));
+  return btoa(binary);
 };
 
-const decrypt = (payload: string, username: string): string => {
-  const key = Buffer.from(deriveKeyB64(username), 'base64');
-  const buf = Buffer.from(payload, 'base64');
+const base64ToBytes = (b64: string): Uint8Array => {
+  if (typeof Buffer !== 'undefined') return new Uint8Array(Buffer.from(b64, 'base64'));
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+};
+
+const deriveKey = async (username: string): Promise<CryptoKey> => {
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(username),
+    'PBKDF2',
+    false,
+    ['deriveKey'],
+  );
+  return crypto.subtle.deriveKey(
+    {
+      name: 'PBKDF2',
+      salt: encoder.encode(SALT),
+      iterations: ITERATIONS,
+      hash: DIGEST,
+    },
+    keyMaterial,
+    { name: 'AES-CTR', length: KEYLEN * 8 },
+    false,
+    ['encrypt', 'decrypt'],
+  );
+};
+
+const encrypt = async (value: string, username: string): Promise<string> => {
+  const key = await deriveKey(username);
+  const iv = crypto.getRandomValues(new Uint8Array(16));
+  const encrypted = await crypto.subtle.encrypt(
+    { name: 'AES-CTR', counter: iv, length: 128 },
+    key,
+    encoder.encode(value),
+  );
+  const payload = new Uint8Array(iv.length + encrypted.byteLength);
+  payload.set(iv, 0);
+  payload.set(new Uint8Array(encrypted), iv.length);
+  return bytesToBase64(payload);
+};
+
+const decrypt = async (payload: string, username: string): Promise<string> => {
+  const key = await deriveKey(username);
+  const buf = base64ToBytes(payload);
   const iv = buf.slice(0, 16);
   const data = buf.slice(16);
-  const decipher = createDecipheriv('aes-256-ctr', key, iv);
-  const decrypted = Buffer.concat([decipher.update(data), decipher.final()]);
-  return decrypted.toString('utf8');
+  const decrypted = await crypto.subtle.decrypt(
+    { name: 'AES-CTR', counter: iv, length: 128 },
+    key,
+    data,
+  );
+  return decoder.decode(decrypted);
 };
 
 export interface Profile {
   ssbPk: string;
-  ssbSk: string;            // encrypted with b64(pbkdf2(username))
-  cashuMnemonic: string;    // encrypted with b64(pbkdf2(username))
+  ssbSk: string; // encrypted with pbkdf2(username)
+  cashuMnemonic: string; // encrypted with pbkdf2(username)
   username: string;
   avatarBlob?: string;
 }
 
-export const createProfile = (data: {
+export const createProfile = async (data: {
   ssbPk: string;
   ssbSk: string;
   cashuMnemonic: string;
   username: string;
   avatarBlob?: string;
-}): Profile => ({
+}): Promise<Profile> => ({
   ssbPk: data.ssbPk,
-  ssbSk: encrypt(data.ssbSk, data.username),
-  cashuMnemonic: encrypt(data.cashuMnemonic, data.username),
+  ssbSk: await encrypt(data.ssbSk, data.username),
+  cashuMnemonic: await encrypt(data.cashuMnemonic, data.username),
   username: data.username,
   avatarBlob: data.avatarBlob,
 });
 
-export const decryptProfileSecrets = (profile: Profile): {
-  ssbSk: string;
-  cashuMnemonic: string;
-} => ({
-  ssbSk: decrypt(profile.ssbSk, profile.username),
-  cashuMnemonic: decrypt(profile.cashuMnemonic, profile.username),
+export const decryptProfileSecrets = async (
+  profile: Profile,
+): Promise<{ ssbSk: string; cashuMnemonic: string }> => ({
+  ssbSk: await decrypt(profile.ssbSk, profile.username),
+  cashuMnemonic: await decrypt(profile.cashuMnemonic, profile.username),
 });
 
