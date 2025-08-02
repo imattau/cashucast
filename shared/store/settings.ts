@@ -5,10 +5,12 @@ import { getDefaultEndpoints } from '../config';
 interface SettingsState {
   showNSFW: boolean;
   maxBlobMB: number;
+  enableDht: boolean;
   roomUrl: string;
   trackerUrls: string[];
   setShowNSFW: (v: boolean) => void;
   setMaxBlobMB: (mb: number) => void;
+  toggleDht: () => void;
   setRoomUrl: (u: string) => void;
   addTracker: (u: string) => void;
   removeTracker: (u: string) => void;
@@ -21,6 +23,7 @@ export const useSettings = create<SettingsState>()(
       return {
         showNSFW: false,
         maxBlobMB: 512,
+        enableDht: true,
         roomUrl: room,
         trackerUrls: trackerList,
         setShowNSFW: (v) => set({ showNSFW: v }),
@@ -32,7 +35,10 @@ export const useSettings = create<SettingsState>()(
         },
         setMaxBlobMB(mb: number) {
           set({ maxBlobMB: mb });
-        }
+        },
+        toggleDht() {
+          set({ enableDht: !get().enableDht });
+        },
       };
     },
     { name: 'cashucast-settings' },

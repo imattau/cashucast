@@ -2,8 +2,15 @@ import { useState } from 'react';
 import { useSettings } from '../../shared/store/settings';
 
 export default function SettingsNetwork() {
-  const { roomUrl, trackerUrls, setRoomUrl, addTracker, removeTracker } =
-    useSettings();
+  const {
+    roomUrl,
+    trackerUrls,
+    setRoomUrl,
+    addTracker,
+    removeTracker,
+    enableDht,
+    toggleDht,
+  } = useSettings();
   const [newTracker, setNewTracker] = useState('');
 
   return (
@@ -53,6 +60,11 @@ export default function SettingsNetwork() {
           </button>
         </div>
       </div>
+
+      <label className="mt-6 flex items-center gap-2">
+        <input type="checkbox" checked={enableDht} onChange={toggleDht} />
+        <span>Enable DHT bridge (better seeding)</span>
+      </label>
     </div>
   );
 }
