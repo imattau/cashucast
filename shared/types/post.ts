@@ -24,5 +24,13 @@ export const PostSchema = z.object({
     .optional(),
 });
 
-export type Post = z.infer<typeof PostSchema>;
+export interface Post {
+  id: string;
+  magnet: string;
+  text: string;
+  thumbnail?: string;     // blob-hash in ssb-blobs
+  tags?: string[];        // ≤ 10, lower-case, no spaces
+  nsfw?: boolean;
+  ts: number;
+}
 
