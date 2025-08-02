@@ -17,3 +17,4 @@ export * from './ClipTrimSlider';
 export * from './CaptionTextarea';
 export * from './PublishBtn';
 export * from './TranscodeModal';
+export * from './Timeline';
