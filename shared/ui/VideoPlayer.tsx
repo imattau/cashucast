@@ -1,18 +1,46 @@
 import React from 'react';
+import { createRPCClient } from '../rpc';
+import { SkeletonLoader } from './SkeletonLoader';
+
+export interface VideoPlayerProps {
+  /** Magnet link for the video stream */
+  magnet: string;
+}
 
 /**
- * VideoPlayer renders a video element sourced from a mocked magnet stream.
- * The mock stream is represented by a blob URL and the video is muted by default
- * to enable autoplay without user interaction.
+ * VideoPlayer loads a video stream via the torrent worker using the provided
+ * magnet link. While the worker resolves the stream URL a skeleton loader is
+ * displayed to avoid layout shifts. The resulting video autoplays muted so it
+ * can start without user interaction.
  */
-export const VideoPlayer: React.FC = () => {
-  const [src] = React.useState(() => {
-    const blob = new Blob(['mock magnet stream'], { type: 'video/mp4' });
-    if (typeof URL !== 'undefined' && 'createObjectURL' in URL) {
-      return (URL as any).createObjectURL(blob);
-    }
-    return 'blob:mock-video';
-  });
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({ magnet }) => {
+  const [src, setSrc] = React.useState<string | null>(null);
 
-  return <video className="w-full h-full" src={src} muted controls />;
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const worker = new Worker(
+      new URL('../../packages/worker-torrent/index.ts', import.meta.url),
+      { type: 'module' }
+    );
+    const call = createRPCClient(worker);
+    let cancelled = false;
+    call('stream', magnet)
+      .then((url) => {
+        if (!cancelled) setSrc(url as string);
+      })
+      .catch(() => {
+        if (!cancelled) setSrc('');
+      })
+      .finally(() => worker.terminate());
+    return () => {
+      cancelled = true;
+      worker.terminate();
+    };
+  }, [magnet]);
+
+  if (!src) {
+    return <SkeletonLoader className="w-full h-full" />;
+  }
+
+  return <video className="w-full h-full" src={src} muted autoPlay controls />;
 };
