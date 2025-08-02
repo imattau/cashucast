@@ -14,6 +14,9 @@ importers:
       '@radix-ui/react-dialog':
         specifier: ^1.1.14
         version: 1.1.14(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@yaireo/tagify':
+        specifier: ^4.35.3
+        version: 4.35.3(prop-types@15.8.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       canvas-confetti:
         specifier: ^1.9.3
         version: 1.9.3
@@ -583,6 +586,14 @@ packages:
 
   '@vitest/utils@3.2.4':
     resolution: {integrity: sha512-fB2V0JFrQSMsCo9HiSq3Ezpdv4iYaXRG1Sx8edX3MwxfyNn83mKiGzOcH+Fkxt4MHxr3y42fQi1oeAInqgX2QA==}
+
+  '@yaireo/tagify@4.35.3':
+    resolution: {integrity: sha512-YXqNIHoKwZXRxeMSu1E9/CaE/e4rC81RUyg2IaPYh6ZmcAl+7dVi/QoNV1pGu7MLXIqQYpXyXxzDoweIOF7GIw==}
+    engines: {node: '>=16.15.0', npm: '>=9.0.0'}
+    peerDependencies:
+      prop-types: '>15.5.7'
+      react: '*'
+      react-dom: '*'
 
   abstract-leveldown@6.2.3:
     resolution: {integrity: sha512-BsLm5vFMRUrrLeCcRc+G0t2qOaTzpoJQLOubq2XM72eNpjF5UdU5o/5NvlNhx95XHcAvcl8OMXr4mlg/fRgUXQ==}
@@ -1768,6 +1779,12 @@ snapshots:
       '@vitest/pretty-format': 3.2.4
       loupe: 3.2.0
       tinyrainbow: 2.0.0
+
+  '@yaireo/tagify@4.35.3(prop-types@15.8.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      prop-types: 15.8.1
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
 
   abstract-leveldown@6.2.3:
     dependencies:
