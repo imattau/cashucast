@@ -7,6 +7,7 @@ export const PwaPrompt: React.FC = () => {
   const [offline, setOffline] = React.useState(
     typeof navigator !== 'undefined' && !navigator.onLine,
   );
+  const [visible, setVisible] = React.useState(false);
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -25,9 +26,17 @@ export const PwaPrompt: React.FC = () => {
     };
   }, []);
 
+  React.useEffect(() => {
+    setVisible(offline);
+  }, [offline]);
+
   if (offline) {
     return (
-      <div className="bg-red-500 p-2 text-center text-white">
+      <div
+        role="status"
+        aria-live="polite"
+        className={`fixed bottom-0 left-0 right-0 bg-red-600 dark:bg-red-700 p-2 text-center text-white transition-opacity duration-300 motion-reduce:transition-none ${visible ? 'opacity-100' : 'opacity-0'}`}
+      >
         You are offline
       </div>
     );

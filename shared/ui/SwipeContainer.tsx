@@ -64,7 +64,7 @@ export const SwipeContainer: React.FC<SwipeContainerProps> = ({
         if (Math.abs(offset) > 2) return null; // prefetch \u00b12
         return (
           <div
-            className="absolute inset-0 transition-transform duration-300"
+            className="absolute inset-0 transition-transform duration-300 motion-reduce:transition-none motion-reduce:duration-0"
             style={{ transform: `translateY(${offset * 100}%)` }}
           >
             {child}

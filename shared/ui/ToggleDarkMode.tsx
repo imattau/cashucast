@@ -17,17 +17,22 @@ export const ToggleDarkMode: React.FC<React.ButtonHTMLAttributes<HTMLButtonEleme
       localStorage.setItem('theme', dark ? 'dark' : 'light');
     }
   }, [dark]);
+  const label = dark ? 'Switch to light mode' : 'Switch to dark mode';
 
   return (
     <button
       {...props}
+      aria-label={label}
+      aria-pressed={dark}
       onClick={(e) => {
         props.onClick?.(e);
         setDark((d) => !d);
       }}
-      className={`px-2 py-1 rounded bg-gray-200 ${props.className ?? ''}`}
+      className={`px-2 py-1 rounded bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 ${
+        props.className ?? ''
+      }`}
     >
-      {dark ? 'Light Mode' : 'Dark Mode'}
+      <span aria-hidden="true">{dark ? '🌙' : '☀️'}</span>
     </button>
   );
 };
