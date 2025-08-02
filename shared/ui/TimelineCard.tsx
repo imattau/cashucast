@@ -6,6 +6,7 @@ import { PostMenu } from './PostMenu';
 import { Avatar } from './Avatar';
 import { BottomSheet } from './BottomSheet';
 import { Profile } from './Profile';
+import { MoreVertical } from 'lucide-react';
 
 export interface TimelineCardProps {
   /** URL for the author's avatar */
