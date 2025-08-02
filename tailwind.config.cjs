@@ -11,9 +11,9 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: '#FF0759',
-        surface: '#121212',
-        subtleBg: '#1F1F1F',
+        primary:  '#FF0759',   /* TikTok hot-pink */
+        surface:  '#121212',
+        subtleBg:'#1F1F1F',
       },
       keyframes: {
         fadeUp: {

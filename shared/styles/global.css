@@ -1,3 +1,4 @@
+/* snap container for timeline */
 #timeline {
   scroll-snap-type: y mandatory;
 }
