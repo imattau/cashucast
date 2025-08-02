@@ -17,12 +17,13 @@ export const SwipeContainer: React.FC<SwipeContainerProps> = ({
   children,
   onIndexChange,
 }) => {
+  const slides = React.Children.toArray(children) as React.ReactNode[];
   const [index, setIndex] = useState(0);
   const startY = useRef<number | null>(null);
 
   const next = useCallback(() => {
-    setIndex((i) => i + 1);
-  }, []);
+    setIndex((i) => Math.min(slides.length - 1, i + 1));
+  }, [slides.length]);
 
   const prev = useCallback(() => {
     setIndex((i) => Math.max(0, i - 1));
@@ -59,7 +60,7 @@ export const SwipeContainer: React.FC<SwipeContainerProps> = ({
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      {React.Children.map(children, (child, i) => {
+      {slides.map((child, i) => {
         const offset = i - index;
         if (Math.abs(offset) > 2) return null; // prefetch \u00b12
         return (
