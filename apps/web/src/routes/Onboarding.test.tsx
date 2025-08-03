@@ -168,4 +168,35 @@ describe('Onboarding steps', () => {
     });
     expect(container.textContent).toContain('Step 2 of 3');
   });
+
+  it('allows user to reach final confirmation step via import flow', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('Import Existing Profile'),
+    )!;
+    await act(async () => {
+      importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    await act(async () => {
+      useProfile.setState({
+        profile: {
+          ssbPk: 'pk',
+          ssbSk: 'sk',
+          cashuMnemonic: 'mnemonic',
+          username: 'alice',
+        } as any,
+      });
+    });
+    const nextBtn = Array.from(container.querySelectorAll('button')).find(
+      (b) => b.textContent === 'Next',
+    )!;
+    await act(async () => {
+      nextBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.textContent).toContain('Step 3 of 3');
+    expect(container.textContent).toContain('Confirm');
+  });
 });

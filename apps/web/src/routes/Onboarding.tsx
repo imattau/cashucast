@@ -116,9 +116,16 @@ function OnboardingContent() {
         touch(hash, data.byteLength);
         setAvatarHash(hash);
         setAvatarPreview(URL.createObjectURL(blob));
+        const err = validateUsername(username);
+        if (err) {
+          setUsernameError(err);
+          setStep(2);
+        } else {
+          setStep(3);
+        }
       });
     }, 'image/jpeg');
-  }, [avatarSrc, croppedArea]);
+  }, [avatarSrc, croppedArea, username]);
 
   // import states
   const [profileJson, setProfileJson] = useState<any>(null);
@@ -483,7 +490,7 @@ function OnboardingContent() {
               className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={confirm}
             >
-              Next
+              Confirm
             </button>
           </div>
         </div>
