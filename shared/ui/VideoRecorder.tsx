@@ -4,6 +4,8 @@
  */
 import React from 'react';
 
+const MAX_RECORDING_MS = 300_000; // 5 minutes
+
 export interface VideoRecorderProps {
   /** Called when recording completes with the recorded blob */
   onComplete: (blob: Blob) => void;
@@ -21,7 +23,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onComplete }) => {
     let stream: MediaStream | null = null;
     let recorder: MediaRecorder | null = null;
     const chunks: BlobPart[] = [];
-    let timeout: number;
+    let timeout: ReturnType<typeof setTimeout>;
 
     const start = async () => {
       try {
@@ -45,7 +47,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onComplete }) => {
           if (recorder && recorder.state === 'recording') {
             recorder.stop();
           }
-        }, 300000);
+        }, MAX_RECORDING_MS);
       } catch (err) {
         console.error(err);
       }
