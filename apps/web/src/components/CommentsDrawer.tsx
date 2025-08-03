@@ -43,13 +43,19 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
       .catch(() => setComments([]));
   }, [postId, open]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!text.trim()) return;
+    const trimmed = text.trim();
+    if (!trimmed) return;
     // optimistic append
-    setComments((prev) => [...prev, text]);
+    setComments((prev) => [...prev, trimmed]);
     setText('');
-    // TODO: publish comment via worker-ssb
+    try {
+      await rpcRef.current?.('publishComment', { postId, text: trimmed });
+    } catch (_) {
+      // remove optimistic comment on failure
+      setComments((prev) => prev.slice(0, -1));
+    }
   };
 
   return (
