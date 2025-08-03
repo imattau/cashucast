@@ -65,13 +65,14 @@ export const Stepper: React.FC = () => {
             />
             <button
               disabled={!username}
+              aria-disabled={!username}
               onClick={() => {
                 if (typeof window !== 'undefined') {
                   localStorage.setItem('username', username);
                 }
                 setStep(1);
               }}
-              className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+              className="rounded bg-blue-600 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
             >
               Next
             </button>
