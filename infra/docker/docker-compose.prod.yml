@@ -1,6 +1,6 @@
 services:
   ssb-room:
-    image: ssbc/ssb-room2:latest
+    image: staltz/ssb-room:latest
     restart: unless-stopped
     environment:
       ROOM_PUBLISH: "true"
