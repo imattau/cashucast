@@ -96,4 +96,5 @@ $COMPOSE $COMPOSE_FILE_FLAG "$COMPOSE_FILE" up -d
 pnpm install --frozen-lockfile
 
 # ── Run the web app with hot reload ───────────────────────────
-pnpm --filter apps/web dev
+cd apps/web
+pnpm dev
