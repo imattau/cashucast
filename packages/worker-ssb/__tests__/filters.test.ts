@@ -59,7 +59,7 @@ describe('worker-ssb feed filtering', () => {
       magnet: 'magnet:?xt=urn:btih:b',
     });
     await call('blockUser', 'blockme');
-    const feed: any[] = await call('queryFeed', {});
+    const feed = (await call('queryFeed', {})) as any[];
     expect(feed.some((p) => p.author.pubkey === 'blockme')).toBe(false);
     expect(feed.some((p) => p.author.pubkey === 'keep')).toBe(true);
     cleanup();
@@ -83,7 +83,7 @@ describe('worker-ssb feed filtering', () => {
         { fromPk: 'y', reason: 'spam', ts: 1 },
       ],
     });
-    const feed: any[] = await call('queryFeed', {});
+    const feed = (await call('queryFeed', {})) as any[];
     expect(feed.some((p) => p.id === 'c')).toBe(true);
     expect(feed.some((p) => p.id === 'd')).toBe(false);
     cleanup();
@@ -103,7 +103,7 @@ describe('worker-ssb feed filtering', () => {
       magnet: 'magnet:?xt=urn:btih:f',
       tags: ['cat'],
     });
-    const feed: any[] = await call('queryFeed', { includeTags: ['dog'] });
+    const feed = (await call('queryFeed', { includeTags: ['dog'] })) as any[];
     expect(feed.some((p) => p.id === 'e')).toBe(true);
     expect(feed.some((p) => p.id === 'f')).toBe(false);
     cleanup();

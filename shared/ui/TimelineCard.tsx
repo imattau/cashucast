@@ -8,7 +8,7 @@ import { BottomSheet } from './BottomSheet';
 import { Profile } from './Profile';
 import { MoreVertical, MessageCircle } from 'lucide-react';
 import { ZapButton } from './ZapButton';
-import { CommentsDrawer } from '../../apps/web/src/components/CommentsDrawer';
+import { CommentsDrawer } from './CommentsDrawer';
 import { motion } from 'framer-motion';
 
 export interface TimelineCardProps {

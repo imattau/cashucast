@@ -55,7 +55,7 @@ describe('worker-ssb reporting', () => {
       magnet: 'magnet:?xt=urn:btih:rep1',
     });
     await call('reportPost', 'rep1', 'spam');
-    const feed: any[] = await call('queryFeed', {});
+    const feed = (await call('queryFeed', {})) as any[];
     expect(feed.some((p) => p.id === 'rep1')).toBe(false);
     cleanup();
   });

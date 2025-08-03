@@ -71,9 +71,9 @@ createRPCHandler(self as any, {
    * @param post - Post content to publish.
    * @returns The stored post with generated id and defaults.
    */
-  publishPost: async (post: Post) => {
+  publishPost: async (post: Omit<Post, 'ts'> & { ts?: number }) => {
     const id = post.id ?? crypto.randomUUID();
-    const fullPost = {
+    const fullPost: Post = {
       ...post,
       id,
       nsfw: post.nsfw ?? false,

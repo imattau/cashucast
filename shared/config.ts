@@ -5,7 +5,7 @@ const envSchema = z.object({
   VITE_TRACKER_URLS: z.string().optional(), // JSON array string
   VITE_DHT_URL: z.string().optional(),
 });
-const env = envSchema.parse(import.meta.env);
+const env = envSchema.parse((import.meta as any).env);
 
 /**
  * Returns default Room, Tracker and DHT URLs.

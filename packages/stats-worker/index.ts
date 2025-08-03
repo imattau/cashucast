@@ -2,7 +2,6 @@
  * Background worker that periodically polls a tracker for swarm statistics and
  * relays them to the UI thread.
  */
-import ky from 'kyou'; // 4 kB fetch wrapper
 export type CountMap = Record<string /*infoHash*/, number>;
 
 let cache: CountMap = {};
@@ -14,7 +13,8 @@ let cache: CountMap = {};
  */
 export async function refresh(endpoint: string) {
   try {
-    const json = await ky.get(`${endpoint}/stats`).json<any>();
+    const res = await fetch(`${endpoint}/stats`);
+    const json = await res.json();
     cache = Object.fromEntries(
       json.torrents.map((t: any) => [t.infoHash, t.peers])
     );

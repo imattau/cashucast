@@ -58,7 +58,7 @@ describe('worker-ssb replication', () => {
     cleanup();
 
     const { call: call2, cleanup: cleanup2 } = await setup(false);
-    const feed: any[] = await call2('queryFeed', {});
+    const feed = (await call2('queryFeed', {})) as any[];
     expect(feed.some((p) => p.id === 'r1')).toBe(true);
     cleanup2();
   });
