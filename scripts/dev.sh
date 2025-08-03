@@ -45,18 +45,18 @@ fi
 # ── Compose alias ─────────────────────────────────────────────
 if [[ $CTL == "docker" ]]; then
   if $CTL compose version >/dev/null 2>&1; then
-    COMPOSE="docker compose"
+    COMPOSE=($CTL compose)
   elif command -v docker-compose >/dev/null 2>&1; then
-    COMPOSE="docker-compose"
+    COMPOSE=(docker-compose)
   else
     echo "❌  Docker Compose not found." >&2
     exit 1
   fi
 else
   if $CTL compose version >/dev/null 2>&1; then
-    COMPOSE="podman compose"
+    COMPOSE=($CTL compose)
   elif command -v podman-compose >/dev/null 2>&1; then
-    COMPOSE="podman-compose"
+    COMPOSE=(podman-compose)
   else
     echo "❌  Podman Compose not found." >&2
     exit 1
@@ -66,7 +66,7 @@ fi
 echo "🔧  Using container runtime: $CTL"
 
 # ── Pre-flight daemon check ───────────────────────────────────
-if ! $CTL info >/dev/null 2>&1 && ! $COMPOSE version >/dev/null 2>&1; then
+if ! $CTL info >/dev/null 2>&1 && ! "${COMPOSE[@]}" version >/dev/null 2>&1; then
   echo "❌  $CTL daemon is unavailable. Is it running?" >&2
   exit 1
 fi
@@ -77,9 +77,9 @@ fi
 # output of `config` to determine which one is available without contacting
 # the daemon.
 COMPOSE_FILE=infra/docker/docker-compose.dev.yml
-help_output=$($COMPOSE config --help 2>&1) || {
+help_output=$("${COMPOSE[@]}" config --help 2>&1) || {
   echo "$help_output" >&2
-  echo "❌  Unable to run '$COMPOSE config --help'." >&2
+  echo "❌  Unable to run '${COMPOSE[*]} config --help'." >&2
   exit 1
 }
 if echo "$help_output" | grep -q -- '--file'; then
@@ -90,7 +90,7 @@ else
   COMPOSE_FILE_FLAG="-f"
 fi
 
-$COMPOSE $COMPOSE_FILE_FLAG "$COMPOSE_FILE" up -d
+"${COMPOSE[@]}" "$COMPOSE_FILE_FLAG" "$COMPOSE_FILE" up -d
 
 # ── Node dependencies ─────────────────────────────────────────
 pnpm install --frozen-lockfile
