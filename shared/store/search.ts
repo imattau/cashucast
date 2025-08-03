@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * search module.
+ */
 import { create } from 'zustand';
 import type { Post } from '../types';
 

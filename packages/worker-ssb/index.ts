@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Entry point for the packages/worker-ssb module.
+ */
 /**
  * Worker handling Secure Scuttlebutt (SSB) style feed operations and full-text
  * search. Exposes an RPC API used by the application to publish and query

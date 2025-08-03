@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Entry point for the packages/stats-worker module.
+ */
 /**
  * Background worker that periodically polls a tracker for swarm statistics and
  * relays them to the UI thread.

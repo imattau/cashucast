@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for BlurOverlay.
+ */
 import React from 'react';
 
 export interface BlurOverlayProps extends React.HTMLAttributes<HTMLDivElement> {

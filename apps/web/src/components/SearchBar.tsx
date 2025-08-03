@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for SearchBar.
+ */
 import React, { useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 import { createRPCClient } from '../../shared/rpc';

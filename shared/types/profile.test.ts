@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for profile.
+ */
 import { describe, expect, it } from 'vitest';
 import { createProfile, decryptProfileSecrets } from './profile';
 

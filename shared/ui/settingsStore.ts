@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * settingsStore module.
+ */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 

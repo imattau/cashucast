@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for Stepper.
+ */
 import React from 'react';
 import { MintSelect } from './MintSelect';
 import { InstallBanner } from './InstallBanner';

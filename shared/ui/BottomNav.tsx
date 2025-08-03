@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for BottomNav.
+ */
 import React from 'react';
 import FabRecord from './FabRecord';
 import { Compass } from 'lucide-react';

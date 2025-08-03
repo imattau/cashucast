@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for cashu.
+ */
 import { describe, it, expect, vi } from 'vitest';
 import { createRPCClient } from '../../../shared/rpc';
 import { MintQuoteState } from '@cashu/cashu-ts';

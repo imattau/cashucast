@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * filters module.
+ */
 import { create } from 'zustand';
 
 /**

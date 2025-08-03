@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for SettingsStorage.
+ */
 import { useSettings } from '../../shared/store/settings';
 import { setMaxCacheMB } from '../../../../packages/worker-ssb/src/blobCache';
 

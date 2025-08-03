@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * post module.
+ */
 import { z } from 'zod';
 
 export const PostSchema = z.object({

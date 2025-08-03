@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for router.
+ */
 import React from 'react';
 import Onboarding from './routes/Onboarding';
 import Compose from './routes/Compose';

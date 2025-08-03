@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * profile module.
+ */
 import { z } from 'zod';
 
 const crypto = globalThis.crypto;

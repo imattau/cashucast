@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for WalletModal.
+ */
 import React from 'react';
 import { BottomSheet } from './BottomSheet';
 import { BalanceChip } from './BalanceChip';

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for FilterBar.
+ */
 import React, { useEffect, useState } from 'react';
 import TagInput from './TagInput';
 import { useFilters } from '../../shared/store/filters';

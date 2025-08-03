@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for Profile.
+ */
 import React from 'react';
 import { Avatar } from './Avatar';
 import { FollowBtn } from './FollowBtn';

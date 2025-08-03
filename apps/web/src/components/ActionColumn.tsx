@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for ActionColumn.
+ */
 import { Zap, MessageCircle, Repeat } from 'lucide-react';
 
 declare const workerSsb: { publish: (data: any) => void };

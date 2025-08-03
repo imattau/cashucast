@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for Nav.
+ */
 import React from 'react';
 import { WalletModal } from './WalletModal';
 import { ToggleDarkMode } from './ToggleDarkMode';

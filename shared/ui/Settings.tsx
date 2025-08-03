@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for Settings.
+ */
 import React from 'react';
 import { useSettingsStore } from './settingsStore';
 

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Configuration for vitest.
+ */
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({

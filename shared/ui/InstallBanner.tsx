@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for InstallBanner.
+ */
 import React from 'react';
 
 export interface InstallBannerProps {

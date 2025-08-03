@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for PwaPrompt.
+ */
 import React from 'react';
 import { InstallBanner } from './InstallBanner';
 

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for MintPicker.
+ */
 import React from 'react';
 
 /** Simple mint picker placeholder component. */

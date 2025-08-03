@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for profile.
+ */
 import { beforeEach, describe, expect, it } from 'vitest';
 import { useProfile } from './profile';
 import type { Profile } from '../types/profile';

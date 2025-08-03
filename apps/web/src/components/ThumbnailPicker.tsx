@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for ThumbnailPicker.
+ */
 import { useState, useEffect, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import { FFmpeg } from '@ffmpeg/ffmpeg';

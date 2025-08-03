@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for ToggleDarkMode.
+ */
 import React from 'react';
 
 /** Toggle between light and dark themes and persist choice to localStorage. */

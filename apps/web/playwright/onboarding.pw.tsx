@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for onboarding.
+ */
 import React from 'react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import Onboarding from '../src/routes/Onboarding';

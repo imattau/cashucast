@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for onboarding.
+ */
 /// <reference types="cypress" />
 
 describe('Onboarding new account flow', () => {

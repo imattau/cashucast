@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * bootStatsWorker module.
+ */
 import { useSettings } from '../shared/store/settings';
 export const statsWorker = (() => {
   const w = new Worker(

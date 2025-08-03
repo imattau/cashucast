@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for BalanceChip.
+ */
 import React, { useEffect, useState } from 'react';
 import { useBalanceStore } from './balanceStore';
 

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for SkeletonLoader.
+ */
 /** @vitest-environment jsdom */
 
 import React from 'react';

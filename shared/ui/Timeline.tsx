@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for Timeline.
+ */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SwipeContainer } from './SwipeContainer';
 import { TimelineCard } from './TimelineCard';

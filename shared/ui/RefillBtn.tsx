@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for RefillBtn.
+ */
 import React from 'react';
 import { useBalanceStore } from './balanceStore';
 

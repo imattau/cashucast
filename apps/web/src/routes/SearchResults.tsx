@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for SearchResults.
+ */
 import React from 'react';
 import { TimelineCard } from '../components/TimelineCard';
 import { useSearch } from '../../shared/store/search';

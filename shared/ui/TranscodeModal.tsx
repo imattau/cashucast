@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for TranscodeModal.
+ */
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { FFmpeg } from '@ffmpeg/ffmpeg';

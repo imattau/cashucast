@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for VideoPlayer.
+ */
 import React from 'react';
 import { createRPCClient } from '../rpc';
 import { SkeletonLoader } from './SkeletonLoader';

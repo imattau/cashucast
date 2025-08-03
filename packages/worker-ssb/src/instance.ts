@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * instance module.
+ */
 import { useSettings } from '../../../shared/store/settings';
 import randomAccessIdb from 'random-access-idb';
 

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Entry point for the shared/ui module.
+ */
 export * from './TimelineCard';
 export * from './WalletModal';
 export * from './ZapButton';
