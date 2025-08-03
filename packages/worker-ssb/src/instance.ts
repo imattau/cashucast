@@ -1,5 +1,4 @@
 import { useSettings } from '../../../shared/store/settings';
-import * as ssbBlobs from 'ssb-blobs';
 
 // `ssb-browser-core/net` is a CommonJS module which doesn't expose a default
 // export when bundled for ESM environments (such as Vite). Using a static ES
@@ -16,7 +15,7 @@ export function getSSB() {
 
   const { roomUrl } = useSettings.getState();
 
-  ssb = initSSB('cashucast-ssb', {}, (stack: any) => stack.use(ssbBlobs));
+  ssb = initSSB('cashucast-ssb');
 
   if (roomUrl) {
     try {

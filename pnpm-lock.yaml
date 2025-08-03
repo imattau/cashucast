@@ -56,9 +56,6 @@ importers:
       react-easy-crop:
         specifier: ^5.5.0
         version: 5.5.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      ssb-blobs:
-        specifier: ^2.0.1
-        version: 2.0.1
       ssb-browser-core:
         specifier: 14.0.0
         version: 14.0.0
@@ -1217,9 +1214,6 @@ packages:
   blake2b@2.1.4:
     resolution: {integrity: sha512-AyBuuJNI64gIvwx13qiICz6H6hpmjvYS5DGkG6jbXMOT8Z3WUJ3V1X0FlhIoT1b/5JtHE3ki+xjtMvu1nn+t9A==}
 
-  blake2s@1.1.0:
-    resolution: {integrity: sha512-lvCxvg+up7AmujO8vijTi4GsbIOuusWa+b/nN5+VAanFjzbauq0er5VzgjTC6pevhEO8SYTzY784zS2KQauO0A==}
-
   blake3@2.1.7:
     resolution: {integrity: sha512-5d+TdKJvju96IyEaGJ0eO6CHbckWi+NBrCezGYM/WsnI3R03aLL2TWfsuZSh1rs0fTv/L3ps/r0vykjYurcIwA==}
 
@@ -1337,27 +1331,6 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
-
-  cont@1.0.3:
-    resolution: {integrity: sha512-lZzUsnNnzBW4EN+Mll8J54cdHn6JzKyHpa9ftxxsPwkWfhdYRIHph9dFdmi0ibfqhnvR103tQ61eAF57FF87IA==}
-
-  continuable-hash@0.1.4:
-    resolution: {integrity: sha512-Gu5kdDzwmCymZ2tROViH0VYSd0iXDDaOjn8iG51FyZreS6OuqEJAE+a3sJ6/Ky6roKOHYHDYD8Ttxj+a1tyYrg==}
-
-  continuable-list@0.1.6:
-    resolution: {integrity: sha512-dqfYFtC/YRR4fUuZyJ8A+VKX/oV8E+atSCCcOvkuHsB6MFkiyI9LrDlUXCnHYowuuDu5vYqcAiRU2hiGXtcb7w==}
-
-  continuable-para@1.2.0:
-    resolution: {integrity: sha512-XjPo974RGEJqnvFVT9PWxG97d/NCg58mwmWDbKXqTZBZuUnMIjkx0vde+xerkUuymk8DR+YUAcllK8J5/O4Leg==}
-
-  continuable-series@1.2.0:
-    resolution: {integrity: sha512-xMAlREs3m/IM0VCzuh0TRBXpjd6tl6zi3cMgiwcywIPFcCmNlcFNA6XCtA2cEx6Kq7EE6c1JVDVl3WGepp6a5g==}
-
-  continuable@1.1.8:
-    resolution: {integrity: sha512-DrVON8s+uwIH+OJa/HdbLE7ViLKpDeF0+flOhLf7hKtffIvyI2l38i7jq6G5i2GFqodpkz7RJPq60VkmwxfVnA==}
-
-  continuable@1.2.0:
-    resolution: {integrity: sha512-DMksZyrS34yEX+DTGyt9h8/6ONHRBH+PpQ5ev3YdCy5J41r0nMNv+psAujoeoT1mJf+fzKhzacR9o1M1ys2tBQ==}
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
@@ -2238,9 +2211,6 @@ packages:
     resolution: {integrity: sha512-ZNgfHZkC1A1xec7aUE7Tq6ArIXE7pygzbf3jNX1wlK15STqenGGURrqM79puk3j2cscC9Keu/ULQM3dET3xLCQ==}
     engines: {node: '>=12'}
 
-  multiblob@1.13.8:
-    resolution: {integrity: sha512-YXNUflHc7I7iUiLctHMTvwDQOjMbCv+Pdbf+1lScFOsjP/CSZgwblRknPntcD+KEPGFudXPBtJR10TIrun3zmQ==}
-
   multicb@1.2.2:
     resolution: {integrity: sha512-PZM4dhYFmCF6uZGWpEmoPMUqJBywS9IcAgybT2GmSpYI1BvGvoWSdbio+ik+q/YD2vodhvslESWIS3NnkKYdqQ==}
 
@@ -2471,9 +2441,6 @@ packages:
   pull-cat@1.1.11:
     resolution: {integrity: sha512-i3w+xZ3DCtTVz8S62hBOuNLRHqVDsHMNZmgrZsjPnsxXUgbWtXEee84lo1XswE7W2a3WHyqsNuDJTjVLAQR8xg==}
 
-  pull-catch@1.1.0:
-    resolution: {integrity: sha512-x6DkWZfBVvYrjUIcFroe3GtBkZcRINi8PsYgx3qBYluIeawLn4Z5oJI++WE5AJPbIZBmxHFx+zIvQmhRYaSeFA==}
-
   pull-cont@0.1.1:
     resolution: {integrity: sha512-OAJRFBoEW00F0++qkeNuIWdaUwqrlZGj/6JAm+094iWKDnuzBXUWi2IipDqNa+yzIJrOE8BjwugiyGtLvPAk4w==}
 
@@ -2486,21 +2453,8 @@ packages:
   pull-drain-gently@1.1.0:
     resolution: {integrity: sha512-ZUPsNrn8jkU6Y2B4w8Jz3gXAmjSpb+qn4AQhAL8qTWUHULglH16ANr+6qnfOEa1kUoUGVCQZaORTd2NSQFAnhA==}
 
-  pull-file@0.5.0:
-    resolution: {integrity: sha512-4s/IfBLebH/eWUlhp3F3M29mk+B1cryp3W99t/k9J/c033f+HyLLVB2EAMGoN02j8ff7ObkLF1tMaHok3nGS6Q==}
-
-  pull-file@1.1.0:
-    resolution: {integrity: sha512-yP3hNN3C0PrxA5isqyzHvsvFxd7Ohjvp4aLreeHm8mhnipxUfbY08Mk7o/KDsnR8N4WT9W3CqMDysU+ZufMr6w==}
-
   pull-flatmap@0.0.1:
     resolution: {integrity: sha512-9BgwZPZ6J22kPf9ExoVI3m2yMHdCK8uPf58p6L63t36IgH7NrCX+p3QV8cQ4JmYjwvXDZzimVuJ7IW7iLxm7cA==}
-
-  pull-fs@1.1.6:
-    resolution: {integrity: sha512-xO+d44h/FdlSW61RpxUdqLhNz5vHKnjqEyGaXIVvZa5TxkOvIzhkWd7BXqH8oakXCxb8NozN6F/w1BtfP8Z64Q==}
-
-  pull-glob@1.0.7:
-    resolution: {integrity: sha512-nQrhcraiOUfMYiFoJyGLICb5AzlmWm5Vzwhqt+wNuimCG1kqrjdWycw5Dk9xQbHYbq5U55hs3Hee0qZgpjZ3bA==}
-    hasBin: true
 
   pull-goodbye@0.0.3:
     resolution: {integrity: sha512-fl3RcIHKsxFaygdU3dcwSznLr73HYGOEU9IshpiatYSV+PW3TOUEjtfdu1L8uIsUoDajJz3HM/+mG0mFD4+v5A==}
@@ -2556,20 +2510,11 @@ packages:
   pull-through@1.0.18:
     resolution: {integrity: sha512-t8BBRdKstI/JoWS3FAXRnBvo1ahoLcKo8nm8ZUzr4OUgIf47RodD6HjnPIpw/d6HQZaMu+TotLAYCNwLTnvcNw==}
 
-  pull-traverse@1.0.3:
-    resolution: {integrity: sha512-tdvTsDPh7PwuBEJ3o7DI6h/bQ5ocm9W0TYWNWEQ37ZS9Mt9aRfJqfvmAIdrpg3DgahU9PSITX0fYg8xTbqEdjQ==}
-
-  pull-utf8-decoder@1.0.2:
-    resolution: {integrity: sha512-hpGheDlDMMEOkiBwXpiUqaFVR0SlGb23vZyJuHe1s8CWGJVcDEzhy9HHUEIuPjTEajYb90ikKsDmt6lkmTtk5g==}
-
   pull-websocket@3.4.2:
     resolution: {integrity: sha512-hGFWC4/fzRdO2FEsyR9woVzgv/yG4PIk3RXPN4azBpomGzGQFRUORwKQDS3j7RAIy8tjvN2W+qjU8jNn2NWeNQ==}
 
   pull-window@2.1.4:
     resolution: {integrity: sha512-cbDzN76BMlcGG46OImrgpkMf/VkCnupj8JhsrpBw3aWBM9ye345aYnqitmZCgauBkc0HbbRRn9hCnsa3k2FNUg==}
-
-  pull-write-file@0.2.4:
-    resolution: {integrity: sha512-XqtjwmjObiJYj/ojJskRayIzlmP6ufzG6Ec5oSd/qhlUWr4zMsAcJoiSPjUi079QFqvlb54HaWCBkbpg2zZiKQ==}
 
   punycode@1.4.1:
     resolution: {integrity: sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==}
@@ -2919,9 +2864,6 @@ packages:
 
   ssb-bfe@3.7.0:
     resolution: {integrity: sha512-uJVMPAQhnm8Vz+5H7mP36kGhu0ZIloiDkNrkiO/xGWcr8gMv+GXX2DyNNPD7j0xZmL7HfFqgTvPXFeuni2w4IQ==}
-
-  ssb-blobs@2.0.1:
-    resolution: {integrity: sha512-WuF96Yc8bd0l62wGxpQNT2OGf2XEhdMLEYsWJeXilYtEJLW+IZoO4YUjPanmp4fkhU2KunN+a/cQr6vqDqLphA==}
 
   ssb-box2@2.3.0:
     resolution: {integrity: sha512-oPtupvneFUUb5IItf/Y4Et4ZYL8iU5t3VyH70v7vgrxZeDFmDhwUtsFiRU8+526Av99ztyhEONx/UQOimgGXig==}
@@ -4510,8 +4452,6 @@ snapshots:
       blake2b-wasm: 2.4.0
       nanoassert: 2.0.0
 
-  blake2s@1.1.0: {}
-
   blake3@2.1.7: {}
 
   brace-expansion@1.1.12:
@@ -4646,31 +4586,6 @@ snapshots:
   commander@2.20.3: {}
 
   concat-map@0.0.1: {}
-
-  cont@1.0.3:
-    dependencies:
-      continuable: 1.2.0
-      continuable-para: 1.2.0
-      continuable-series: 1.2.0
-
-  continuable-hash@0.1.4:
-    dependencies:
-      continuable: 1.1.8
-
-  continuable-list@0.1.6:
-    dependencies:
-      continuable: 1.1.8
-
-  continuable-para@1.2.0:
-    dependencies:
-      continuable-hash: 0.1.4
-      continuable-list: 0.1.6
-
-  continuable-series@1.2.0: {}
-
-  continuable@1.1.8: {}
-
-  continuable@1.2.0: {}
 
   convert-source-map@2.0.0: {}
 
@@ -5734,24 +5649,6 @@ snapshots:
       range-parser: 1.2.1
       stream-to-pull-stream: 1.7.3
 
-  multiblob@1.13.8:
-    dependencies:
-      blake2s: 1.1.0
-      clarify-error: 1.0.0
-      cont: 1.0.3
-      mkdirp: 1.0.4
-      pull-catch: 1.1.0
-      pull-defer: 0.2.3
-      pull-file: 1.1.0
-      pull-glob: 1.0.7
-      pull-live: 1.0.1
-      pull-notify: 0.1.2
-      pull-paramap: 1.2.2
-      pull-stream: 3.7.0
-      pull-write-file: 0.2.4
-      rimraf: 3.0.2
-      stream-to-pull-stream: 1.7.3
-
   multicb@1.2.2: {}
 
   multiserver-address@1.0.1:
@@ -5980,8 +5877,6 @@ snapshots:
 
   pull-cat@1.1.11: {}
 
-  pull-catch@1.1.0: {}
-
   pull-cont@0.1.1: {}
 
   pull-cursor@3.0.0:
@@ -5997,27 +5892,7 @@ snapshots:
       cpu-percentage: 1.0.3
       pull-pause: 0.0.2
 
-  pull-file@0.5.0:
-    dependencies:
-      pull-utf8-decoder: 1.0.2
-
-  pull-file@1.1.0:
-    dependencies:
-      pull-utf8-decoder: 1.0.2
-
   pull-flatmap@0.0.1: {}
-
-  pull-fs@1.1.6:
-    dependencies:
-      pull-file: 0.5.0
-      pull-stream: 3.7.0
-      pull-traverse: 1.0.3
-      pull-write-file: 0.2.4
-
-  pull-glob@1.0.7:
-    dependencies:
-      pull-fs: 1.1.6
-      pull-stream: 3.7.0
 
   pull-goodbye@0.0.3:
     dependencies:
@@ -6094,10 +5969,6 @@ snapshots:
     dependencies:
       looper: 3.0.0
 
-  pull-traverse@1.0.3: {}
-
-  pull-utf8-decoder@1.0.2: {}
-
   pull-websocket@3.4.2:
     dependencies:
       relative-url: 1.0.2
@@ -6110,8 +5981,6 @@ snapshots:
   pull-window@2.1.4:
     dependencies:
       looper: 2.0.0
-
-  pull-write-file@0.2.4: {}
 
   punycode@1.4.1: {}
 
@@ -6575,17 +6444,6 @@ snapshots:
       ssb-bfe-spec: 0.8.0
       ssb-ref: 2.16.0
       ssb-uri2: 2.4.1
-
-  ssb-blobs@2.0.1:
-    dependencies:
-      level: 6.0.1
-      multiblob: 1.13.8
-      obz: 1.1.1
-      pull-defer: 0.2.3
-      pull-level: 2.0.4
-      pull-notify: 0.1.2
-      pull-stream: 3.7.0
-      ssb-ref: 2.16.0
 
   ssb-box2@2.3.0:
     dependencies:
