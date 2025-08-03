@@ -4,6 +4,6 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    exclude: ['ssb-blobs', 'ssb-browser-core/net'],
+    exclude: ['ssb-blobs'],
   },
 });
