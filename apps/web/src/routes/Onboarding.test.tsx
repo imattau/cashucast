@@ -14,16 +14,19 @@ import { createRoot } from 'react-dom/client';
 vi.mock('../../shared/rpc', () => ({
   createRPCClient: () => () => Promise.resolve(undefined),
 }));
+const dropHandlers: ((files: File[]) => void)[] = [];
 vi.mock('react-dropzone', () => ({
-  default: ({ onDrop, children }: any) =>
-    children({
+  default: ({ onDrop, children }: any) => {
+    dropHandlers.push(onDrop);
+    return children({
       getRootProps: (props: any = {}) => props,
       getInputProps: (props: any = {}) => ({
         ...props,
         onChange: (e: any) => onDrop(Array.from(e.target.files)),
       }),
       open: () => {},
-    }),
+    });
+  },
 }));
 
 import Onboarding from './Onboarding';
@@ -76,6 +79,7 @@ beforeEach(() => {
   globalThis.Worker = MockWorker;
   useProfile.setState({ profile: undefined });
   document.body.innerHTML = '';
+  dropHandlers.length = 0;
 });
 
 describe('Onboarding steps', () => {
@@ -106,8 +110,142 @@ describe('Onboarding steps', () => {
     await act(async () => {
       importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
-    expect(container.textContent).toContain('Drop profile backup JSON');
-    expect(container.textContent).toContain('Drop wallet backup JSON');
+    expect(container.textContent).toContain('Profile Backup');
+    expect(container.textContent).toContain('Wallet Backup');
+  });
+
+  it(
+    'shows profile success message when dropping valid profile backup and enables Next after wallet backup',
+    async () => {
+      const { container, root } = setupDom();
+      await act(async () => {
+        root.render(<Onboarding />);
+      });
+      const importBtn = Array.from(container.querySelectorAll('button')).find(
+        (b) => b.textContent?.includes('Import Existing Profile'),
+      )!;
+      await act(async () => {
+        importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      });
+      const profileFile = {
+        text: () =>
+          Promise.resolve(
+            JSON.stringify({ ssbPk: 'pk', ssbSk: 'sk', username: 'alice' }),
+          ),
+      } as any;
+      await act(async () => {
+        dropHandlers[0]([profileFile]);
+      });
+      await new Promise((r) => setTimeout(r, 0));
+      await new Promise((r) => setTimeout(r, 0));
+      expect(container.textContent).toContain('Profile backup loaded');
+      expect(container.textContent).not.toContain('Wallet backup loaded');
+      const nextBtn = Array.from(container.querySelectorAll('button')).find(
+        (b) => b.textContent === 'Next',
+      )!;
+      expect(nextBtn.disabled).toBe(true);
+      const walletFile = {
+        text: () => Promise.resolve(JSON.stringify({ cashuMnemonic: 'mnemonic' })),
+      } as any;
+      await act(async () => {
+        dropHandlers[1]([walletFile]);
+      });
+      await new Promise((r) => setTimeout(r, 0));
+      await new Promise((r) => setTimeout(r, 0));
+      expect(container.textContent).toContain('Wallet backup loaded');
+      expect(nextBtn.disabled).toBe(false);
+    },
+  );
+
+  it('shows wallet success message when dropping valid wallet backup only', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('Import Existing Profile'),
+    )!;
+    await act(async () => {
+      importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const walletFile = {
+      text: () => Promise.resolve(JSON.stringify({ cashuMnemonic: 'mnemonic' })),
+    } as any;
+    await act(async () => {
+      dropHandlers[1]([walletFile]);
+    });
+    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(container.textContent).toContain('Wallet backup loaded');
+    expect(container.textContent).not.toContain('Profile backup loaded');
+    const nextBtn = Array.from(container.querySelectorAll('button')).find(
+      (b) => b.textContent === 'Next',
+    )!;
+    expect(nextBtn.disabled).toBe(true);
+  });
+
+  it('misplacing backups shows errors without affecting other drop zone', async () => {
+    // wallet file dropped into profile zone
+    {
+      const { container, root } = setupDom();
+      await act(async () => {
+        root.render(<Onboarding />);
+      });
+      const importBtn = Array.from(container.querySelectorAll('button')).find(
+        (b) => b.textContent?.includes('Import Existing Profile'),
+      )!;
+      await act(async () => {
+        importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      });
+      const walletFile = {
+        text: () => Promise.resolve(JSON.stringify({ cashuMnemonic: 'mnemonic' })),
+      } as any;
+      await act(async () => {
+        dropHandlers[0]([walletFile]);
+      });
+      await new Promise((r) => setTimeout(r, 0));
+      await new Promise((r) => setTimeout(r, 0));
+      expect(container.textContent).toContain('Invalid profile backup');
+      expect(container.textContent).not.toContain('Invalid wallet backup');
+      expect(container.textContent).not.toContain('Wallet backup loaded');
+      const nextBtn = Array.from(container.querySelectorAll('button')).find(
+        (b) => b.textContent === 'Next',
+      )!;
+      expect(nextBtn.disabled).toBe(true);
+    }
+
+    // profile file dropped into wallet zone
+    {
+      dropHandlers.length = 0;
+      const { container, root } = setupDom();
+      await act(async () => {
+        root.render(<Onboarding />);
+      });
+      const importBtn = Array.from(container.querySelectorAll('button')).find(
+        (b) => b.textContent?.includes('Import Existing Profile'),
+      )!;
+      await act(async () => {
+        importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      });
+      const profileFile = {
+        text: () =>
+          Promise.resolve(
+            JSON.stringify({ ssbPk: 'pk', ssbSk: 'sk', username: 'alice' }),
+          ),
+      } as any;
+      await act(async () => {
+        dropHandlers[1]([profileFile]);
+      });
+      await new Promise((r) => setTimeout(r, 0));
+      await new Promise((r) => setTimeout(r, 0));
+      expect(container.textContent).toContain('Invalid wallet backup');
+      expect(container.textContent).not.toContain('Invalid profile backup');
+      expect(container.textContent).not.toContain('Profile backup loaded');
+      const nextBtn = Array.from(container.querySelectorAll('button')).find(
+        (b) => b.textContent === 'Next',
+      )!;
+      expect(nextBtn.disabled).toBe(true);
+    }
   });
 
   it('shows an error for invalid username', async () => {
