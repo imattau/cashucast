@@ -12,7 +12,7 @@ import { createProfile } from '../../shared/types/profile';
 import { getSSB } from '../../../../packages/worker-ssb/src/instance';
 import { touch } from '../../../../packages/worker-ssb/src/blobCache';
 import { z } from 'zod';
-import { UserPlus, Upload } from 'lucide-react';
+import { UserPlus, Upload, DownloadCloud } from 'lucide-react';
 import { Avatar } from '../../shared/ui/Avatar';
 
 // schemas for validating imported backups
@@ -209,30 +209,31 @@ function OnboardingContent() {
             Create a new profile or import one you already have.
           </p>
           <button
-            className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 rounded min-w-[44px] min-h-[44px]"
+            type="button"
             onClick={() => {
               setMode('new');
               setStep(2);
             }}
+            className="w-full flex items-center gap-3 bg-primary text-white px-5 py-4 rounded-lg shadow hover:bg-primary/90 transition-colors"
           >
-            <UserPlus className="h-5 w-5" />
+            <UserPlus size={24} />
             <div className="text-left">
-              <div>New Account</div>
-              <div className="text-xs text-blue-100">Start from scratch</div>
+              <p className="font-semibold">New Account</p>
+              <p className="text-sm text-white/80">Start from scratch</p>
             </div>
           </button>
           <button
-            className="flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white px-4 py-3 rounded min-w-[44px] min-h-[44px]"
+            type="button"
             onClick={() => {
               setMode('import');
               setStep(2);
             }}
-            aria-label="Import Existing Profile"
+            className="w-full flex items-center gap-3 border border-white/30 text-white px-5 py-4 rounded-lg hover:bg-white/5 transition-colors"
           >
-            <Upload className="h-5 w-5" />
+            <DownloadCloud size={24} />
             <div className="text-left">
-              <div>Import Existing Profile</div>
-              <div className="text-xs text-green-100">Use a saved backup</div>
+              <p className="font-semibold">Import Existing</p>
+              <p className="text-sm text-white/80">Bring your backup</p>
             </div>
           </button>
         </div>

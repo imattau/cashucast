@@ -91,11 +91,11 @@ describe('Onboarding steps', () => {
     });
 
     expect(container.textContent).toContain('New Account');
-    expect(container.textContent).toContain('Import Existing Profile');
+    expect(container.textContent).toContain('Import Existing');
     const buttons = Array.from(container.querySelectorAll('button'));
     const newBtn = buttons.find((b) => b.textContent?.includes('New Account'))!;
     const importBtn = buttons.find((b) =>
-      b.textContent?.includes('Import Existing Profile'),
+      b.textContent?.includes('Import Existing'),
     );
     expect(importBtn).toBeTruthy();
     await act(async () => {
@@ -110,7 +110,7 @@ describe('Onboarding steps', () => {
       root.render(<Onboarding />);
     });
     const importBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent?.includes('Import Existing Profile'),
+      (b) => b.textContent?.includes('Import Existing'),
     )!;
     await act(async () => {
       importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -144,7 +144,7 @@ describe('Onboarding steps', () => {
         root.render(<Onboarding />);
       });
       const importBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Import Existing Profile'),
+        (b) => b.textContent?.includes('Import Existing'),
       )!;
       await act(async () => {
         importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -185,7 +185,7 @@ describe('Onboarding steps', () => {
       root.render(<Onboarding />);
     });
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import Existing Profile'),
+      b.textContent?.includes('Import Existing'),
     )!;
     await act(async () => {
       importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -214,7 +214,7 @@ describe('Onboarding steps', () => {
         root.render(<Onboarding />);
       });
       const importBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Import Existing Profile'),
+        (b) => b.textContent?.includes('Import Existing'),
       )!;
       await act(async () => {
         importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -245,7 +245,7 @@ describe('Onboarding steps', () => {
         root.render(<Onboarding />);
       });
       const importBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Import Existing Profile'),
+        (b) => b.textContent?.includes('Import Existing'),
       )!;
       await act(async () => {
         importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -299,7 +299,7 @@ describe('Onboarding steps', () => {
       root.render(<Onboarding />);
     });
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import Existing Profile'),
+      b.textContent?.includes('Import Existing'),
     )!;
     await act(async () => {
       importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -351,7 +351,7 @@ describe('Onboarding steps', () => {
       root.render(<Onboarding />);
     });
     const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Import Existing Profile'),
+      b.textContent?.includes('Import Existing'),
     )!;
     await act(async () => {
       importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
