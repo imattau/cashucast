@@ -7,7 +7,8 @@ export default function ssbReservedWordsFix(): VitePlugin {
     name: 'ssb-reserved-words-fix',
     enforce: 'pre',
     transform(code: string, id: string) {
-      if (id.includes('ssb-subset-ql/ql0.js')) {
+      const normalized = id.replace(/\\/g, '/');
+      if (normalized.includes('ssb-subset-ql/ql0.js')) {
         let transformed = code.replace(
           'const { author, type, private } = query',
           'const { author, type, private: isPrivate } = query',
@@ -18,7 +19,7 @@ export default function ssbReservedWordsFix(): VitePlugin {
         );
         return { code: transformed, map: null };
       }
-      if (id.includes('ssb-bendy-butt/validation.js')) {
+      if (normalized.includes('ssb-bendy-butt/validation.js')) {
         let transformed = code.replace(
           "const public = authorBFE.subarray(2).toString('base64') + '.ed25519'",
           "const publicKey = authorBFE.subarray(2).toString('base64') + '.ed25519'",
@@ -29,7 +30,7 @@ export default function ssbReservedWordsFix(): VitePlugin {
         );
         return { code: transformed, map: null };
       }
-      if (id.includes('ssb-browser-core/net.js')) {
+      if (normalized.includes('ssb-browser-core/net.js')) {
         let transformed = code
           .replace("const SecretStack = require('secret-stack')", "import SecretStack from 'secret-stack';")
           .replace("const caps = require('ssb-caps')", "import caps from 'ssb-caps';")
@@ -39,7 +40,7 @@ export default function ssbReservedWordsFix(): VitePlugin {
           .replace('exports.init = function', 'export function init');
         return { code: transformed, map: null };
       }
-      if (id.includes('ssb-browser-core/dist/bundle-core.js')) {
+      if (normalized.includes('ssb-browser-core/dist/bundle-core.js')) {
         let transformed = code
           .replace(
             'persistentStorage=navigator.persistentStorage||navigator.webkitPersistentStorage',
@@ -51,7 +52,7 @@ export default function ssbReservedWordsFix(): VitePlugin {
           );
         return { code: transformed, map: null };
       }
-      if (id.includes('ssb-blobs/index.js')) {
+      if (normalized.includes('ssb-blobs/index.js')) {
         let transformed = code.replace(
           "const path = require('path')",
           "import path from 'path';",
@@ -67,7 +68,7 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
   return {
     name: 'ssb-reserved-words-fix-esbuild',
     setup(build) {
-      build.onLoad({ filter: /ssb-subset-ql\/ql0\.js$/ }, async (args) => {
+      build.onLoad({ filter: /ssb-subset-ql[\\/]ql0\.js$/ }, async (args) => {
         let code = await readFile(args.path, 'utf8');
         code = code
           .replace(
@@ -78,7 +79,7 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
         return { contents: code, loader: 'js' };
       });
 
-      build.onLoad({ filter: /ssb-bendy-butt\/validation\.js$/ }, async (args) => {
+      build.onLoad({ filter: /ssb-bendy-butt[\\/]validation\.js$/ }, async (args) => {
         let code = await readFile(args.path, 'utf8');
         code = code
           .replace(
@@ -92,7 +93,7 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
         return { contents: code, loader: 'js' };
       });
 
-      build.onLoad({ filter: /ssb-browser-core\/net\.js$/ }, async (args) => {
+      build.onLoad({ filter: /ssb-browser-core[\\/]net\.js$/ }, async (args) => {
         let code = await readFile(args.path, 'utf8');
         code = code
           .replace("const SecretStack = require('secret-stack')", "import SecretStack from 'secret-stack';")
@@ -104,7 +105,7 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
         return { contents: code, loader: 'js' };
       });
 
-      build.onLoad({ filter: /ssb-browser-core\/dist\/bundle-core\.js$/ }, async (args) => {
+      build.onLoad({ filter: /ssb-browser-core[\\/]dist[\\/]bundle-core\.js$/ }, async (args) => {
         let code = await readFile(args.path, 'utf8');
         code = code
           .replace(
@@ -118,7 +119,7 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
         return { contents: code, loader: 'js' };
       });
 
-      build.onLoad({ filter: /ssb-blobs\/index\.js$/ }, async (args) => {
+      build.onLoad({ filter: /ssb-blobs[\\/]index\.js$/ }, async (args) => {
         let code = await readFile(args.path, 'utf8');
         code = code.replace(
           "const path = require('path')",
