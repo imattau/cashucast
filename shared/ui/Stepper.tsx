@@ -43,7 +43,7 @@ export const Stepper: React.FC = () => {
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
         <Dialog.Content
           aria-modal="true"
-          className="fixed left-1/2 top-1/2 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 rounded bg-white p-4 sm:p-6 mx-4 sm:mx-0 focus:outline-none"
+          className="fixed left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded bg-white p-4 sm:p-6 md:p-8 mx-4 sm:mx-0 focus:outline-none"
         >
           <div
             role="progressbar"
@@ -79,7 +79,7 @@ export const Stepper: React.FC = () => {
                   }
                   setStep(1);
                 }}
-                className="rounded bg-blue-600 px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 text-white disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Next
               </button>

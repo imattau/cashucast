@@ -187,7 +187,7 @@ function OnboardingContent() {
   };
 
   return (
-    <div ref={containerRef} className="space-y-4">
+    <div ref={containerRef} className="space-y-4 sm:space-y-6 md:space-y-8">
       <div aria-live="polite" className="sr-only">
         {stepTitle}
       </div>
@@ -199,7 +199,7 @@ function OnboardingContent() {
             Create a new profile or import one you already have.
           </p>
           <button
-            className="flex items-center gap-2 bg-blue-500 text-white py-2 px-4 rounded"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded"
             onClick={() => {
               setMode('new');
               setStep(2);
@@ -212,7 +212,7 @@ function OnboardingContent() {
             </div>
           </button>
           <button
-            className="flex items-center gap-2 bg-green-500 text-white py-2 px-4 rounded"
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded"
             onClick={() => {
               setMode('import');
               setStep(2);
@@ -299,7 +299,7 @@ function OnboardingContent() {
                 />
               </div>
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
                 onClick={saveAvatar}
               >
                 Use Avatar
@@ -314,13 +314,13 @@ function OnboardingContent() {
           )}
           <div className="flex justify-between">
             <button
-              className="bg-gray-200 text-gray-700 py-2 px-4 rounded"
+              className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => setStep(1)}
             >
               Back
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded"
+              className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => {
                 const err = validateUsername(username);
                 if (err) {
@@ -430,13 +430,13 @@ function OnboardingContent() {
           </Dropzone>
           <div className="flex justify-between">
             <button
-              className="bg-gray-200 text-gray-700 py-2 px-4 rounded"
+              className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => setStep(1)}
             >
               Back
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded"
+              className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => setStep(3)}
               disabled={!profile}
             >
@@ -455,13 +455,13 @@ function OnboardingContent() {
           </div>
           <div className="flex justify-between">
             <button
-              className="bg-gray-200 text-gray-700 py-2 px-4 rounded"
+              className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => setStep(2)}
             >
               Back
             </button>
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded"
+              className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={confirm}
             >
               Next
@@ -482,12 +482,12 @@ export default function Onboarding() {
   return (
     <Dialog.Root open>
       <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-      <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4">
+      <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8">
         <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
         <Dialog.Description className="sr-only">
           Set up your profile to start using CashuCast
         </Dialog.Description>
-        <div className="bg-white rounded p-4 w-full max-w-md">
+        <div className="w-full max-w-md rounded bg-white p-4 sm:p-6 md:p-8">
           <OnboardingContent />
         </div>
       </Dialog.Content>
@@ -502,12 +502,12 @@ export function OnboardingDialog() {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-      <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4">
+      <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8">
         <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
         <Dialog.Description className="sr-only">
           Set up your profile to start using CashuCast
         </Dialog.Description>
-        <div className="bg-white rounded p-4 w-full max-w-md">
+        <div className="w-full max-w-md rounded bg-white p-4 sm:p-6 md:p-8">
           <OnboardingContent />
         </div>
       </Dialog.Content>
