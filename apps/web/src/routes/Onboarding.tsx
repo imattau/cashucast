@@ -13,6 +13,7 @@ import { getSSB } from '../../../../packages/worker-ssb/src/instance';
 import { touch } from '../../../../packages/worker-ssb/src/blobCache';
 import { z } from 'zod';
 import { UserPlus, Upload } from 'lucide-react';
+import { Avatar } from '../../shared/ui/Avatar';
 
 // schema for validating imported profile backups
 const ProfileSchema = z.object({
@@ -488,8 +489,19 @@ function OnboardingContent() {
       {step === 3 && (
         <div className="space-y-4">
           <div className="flex items-center gap-4">
-            {avatarPreview && (
-              <img src={avatarPreview} className="w-16 h-16 rounded-full" />
+            {avatarPreview ? (
+              <img
+                src={avatarPreview}
+                alt="Avatar preview"
+                className="w-[128px] h-[128px] rounded-full border object-cover"
+              />
+            ) : (
+              <div className="w-[128px] h-[128px] rounded-full border">
+                <Avatar
+                  name={(mode === 'new' ? username : profile?.username) ?? ''}
+                  size={128}
+                />
+              </div>
             )}
             <span>{mode === 'new' ? username : profile?.username}</span>
           </div>
