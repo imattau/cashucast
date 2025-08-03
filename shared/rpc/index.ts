@@ -4,7 +4,6 @@
  * that calls across the boundary are validated.
  */
 import { z } from 'zod';
-import { randomUUID } from 'node:crypto';
 import { PostSchema } from '../types';
 
 // Placeholder schemas for complex types
@@ -91,7 +90,7 @@ const methodArgSchemas: Record<MethodName, z.ZodTuple<any, any>> = {
 export function createRPCClient(port: RPCPort) {
   return function call<T extends MethodName>(method: T, ...params: MethodArgs<T>): Promise<unknown> {
     methodArgSchemas[method].parse(params);
-    const id = randomUUID();
+    const id = (globalThis.crypto as Crypto).randomUUID();
     return new Promise((resolve) => {
       const listener = (ev: MessageEvent) => {
         const data = ev.data;
