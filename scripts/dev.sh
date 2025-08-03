@@ -66,7 +66,11 @@ fi
 echo "🔧  Using container runtime: $CTL"
 
 # ── Local side-car stack (room, tracker, regtest mint) ────────
-$COMPOSE -f infra/docker/docker-compose.dev.yml up -d
+# Some runtimes (notably certain podman compose builds) do not
+# support the short `-f` flag when specifying compose files. Using the
+# long form keeps the command compatible with both Docker and Podman
+# implementations of compose.
+$COMPOSE --file infra/docker/docker-compose.dev.yml up -d
 
 # ── Node dependencies ─────────────────────────────────────────
 pnpm install --frozen-lockfile
