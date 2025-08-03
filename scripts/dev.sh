@@ -71,7 +71,7 @@ if ! $CTL info >/dev/null 2>&1 && ! $COMPOSE version >/dev/null 2>&1; then
   exit 1
 fi
 
-# ── Local side-car stack (room, tracker, regtest mint) ────────
+# ── Local side-car stack (room, tracker, seeder, DHT bridge, regtest mint) ────────
 # Some compose implementations only support either the short `-f` flag or
 # the long `--file` flag when selecting the compose file. Inspect the help
 # output of `config` to determine which one is available without contacting
