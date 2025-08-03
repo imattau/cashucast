@@ -11,6 +11,7 @@ import {
 } from '../../../shared/ui';
 import { MessageCircle } from 'lucide-react';
 import { CommentsDrawer } from './CommentsDrawer';
+import BoostBadge from './BoostBadge';
 import { motion } from 'framer-motion';
 import { createRPCClient } from '../../../shared/rpc';
 
@@ -35,6 +36,8 @@ export interface TimelineCardProps {
   onBlock?: (pubKey: string) => void;
   /** Number of reports on the post */
   reports?: number;
+  /** Users who reposted this post */
+  boosters?: string[];
   /** Whether the current viewer is a moderator */
   isModerator?: boolean;
 }
@@ -50,6 +53,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   onReport,
   onBlock,
   reports = 0,
+  boosters = [],
   isModerator,
 }) => {
   const showNSFW = useSettingsStore((s) => s.showNSFW);
@@ -140,6 +144,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
                   ↻
                 </button>
               )}
+              <BoostBadge users={boosters} />
               {authorPubKey && postId && (
                 <ZapButton receiverPk={authorPubKey} refId={postId} />
               )}

@@ -24,6 +24,15 @@ export const PostSchema = z.object({
     })
     .array()
     .optional(),
+  /** Users who reposted this post */
+  boosters: z
+    .object({
+      name: z.string(),
+      pubkey: z.string(),
+      avatarUrl: z.string(),
+    })
+    .array()
+    .optional(),
 });
 
 export interface Post {
@@ -40,5 +49,6 @@ export interface Post {
   nsfw?: boolean;
   ts: number;
   reports?: { fromPk: string; reason: string; ts: number }[];
+  boosters?: { name: string; pubkey: string; avatarUrl: string }[];
 }
 
