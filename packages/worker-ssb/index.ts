@@ -2,7 +2,7 @@ import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
 import { generateKeyPairSync, randomUUID } from 'node:crypto';
 import { getSSB } from './src/instance';
-import { createRequire } from 'module';
+import MiniSearch from 'minisearch';
 
 let storedKeys: { sk: string; pk: string } | undefined;
 
@@ -10,14 +10,13 @@ let storedKeys: { sk: string; pk: string } | undefined;
 const ssbLog: any[] = (globalThis as any).__cashuSSBLog || [];
 (globalThis as any).__cashuSSBLog = ssbLog;
 
-// attempt to initialise fulltext search plugin
-try {
-  const require = createRequire(import.meta.url);
-  const fulltext = require('jitdb-plugin-fulltext');
-  const ssb = getSSB();
-  ssb.db.use(fulltext);
-  ssb.db.fulltext?.init([{ field: 'text' }]);
-} catch (_) {}
+// simple full-text index using MiniSearch
+const mini = new MiniSearch({ fields: ['text'], storeFields: ['id'] });
+
+// index any existing posts in the log
+for (const msg of ssbLog) {
+  if (msg.type === 'post') mini.add({ id: msg.id, text: msg.text || '' });
+}
 
 createRPCHandler(self as any, {
   initKeys: async (sk?: string, pk?: string) => {
@@ -44,6 +43,7 @@ createRPCHandler(self as any, {
       ts: post.ts ?? Date.now(),
     };
     ssbLog.push({ type: 'post', ...fullPost });
+    mini.add({ id, text: fullPost.text || '' });
     for (const r of post.reports ?? []) {
       ssbLog.push({ type: 'report', target: id, ...r });
     }
@@ -84,22 +84,11 @@ createRPCHandler(self as any, {
     });
   },
   searchPosts: async (query: string, limit = 20) => {
-    try {
-      const ssb = getSSB();
-      const fulltext = ssb.db.fulltext;
-      if (fulltext?.search) {
-        return await new Promise((resolve) => {
-          fulltext.search({ query, limit }, (err: any, res: any) => {
-            resolve(err ? [] : res);
-          });
-        });
-      }
-    } catch (_) {}
-    const posts = ssbLog.filter((m) => m.type === 'post');
-    const q = query.toLowerCase();
-    return posts
-      .filter((p: any) => (p.text || '').toLowerCase().includes(q))
-      .slice(0, limit);
+    const results = mini.search(query, { prefix: true }).slice(0, limit);
+    const posts = new Map(
+      ssbLog.filter((m) => m.type === 'post').map((p: any) => [p.id, p])
+    );
+    return results.map((r) => posts.get(r.id)).filter(Boolean);
   },
   reportPost: async (postId: string, reason: string) => {
     const report = { fromPk: 'local', reason, ts: Date.now() };

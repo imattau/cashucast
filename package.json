@@ -20,6 +20,7 @@
     "bittorrent-dht": "^11.0.10",
     "canvas-confetti": "^1.9.3",
     "lucide-react": "^0.536.0",
+    "minisearch": "^7.1.2",
     "quick-lru": "^7.0.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
