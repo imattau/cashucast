@@ -21,7 +21,9 @@ Bootstrap a fresh Linux machine with all dependencies by running:
 ```
 
 The script installs Node.js 20, pnpm and a container engine (Docker or Podman) before running
-`pnpm install --frozen-lockfile`.
+`pnpm install --frozen-lockfile`.  Depending on your system, container commands may require root
+privileges or membership in the engine's group.  If you encounter permission errors, run the
+commands with `sudo` or add your user to the appropriate group.
 
 If you prefer to install the prerequisites manually, run the following commands on a fresh
 Linux machine:
