@@ -3,14 +3,26 @@
 # Usage (as root):  curl -sL https://raw.githubusercontent.com/<your-org>/cashucast/main/scripts/install_server.sh | bash
 set -e
 
-APT_PKGS="docker.io docker-compose caddy ufw fail2ban git"
+CONTAINER_RUNTIME=${CONTAINER_RUNTIME:-$(command -v podman >/dev/null 2>&1 && echo podman || echo docker)}
+
+BASE_PKGS="caddy ufw fail2ban git"
+if [ "$CONTAINER_RUNTIME" = "podman" ]; then
+  APT_PKGS="podman podman-compose $BASE_PKGS"
+  COMPOSE_CMD="podman compose"
+  SERVICE="podman"
+else
+  APT_PKGS="docker.io docker-compose $BASE_PKGS"
+  COMPOSE_CMD="docker compose"
+  SERVICE="docker"
+fi
+
 export DEBIAN_FRONTEND=noninteractive
 
 echo "🔑  Installing base packages…"
 apt-get update -y
 apt-get install -y $APT_PKGS
 
-systemctl enable --now docker
+systemctl enable --now $SERVICE
 
 echo "🔒  Configuring UFW…"
 ufw allow OpenSSH
@@ -21,8 +33,8 @@ echo "📦  Cloning repo & starting stack…"
 mkdir -p /opt
 git clone https://github.com/<your-org>/cashucast /opt/cashucast
 cd /opt/cashucast/infra/docker
-docker compose -f docker-compose.prod.yml pull
-docker compose -f docker-compose.prod.yml up -d
+$COMPOSE_CMD -f docker-compose.prod.yml pull
+$COMPOSE_CMD -f docker-compose.prod.yml up -d
 
 echo "🌐  Reloading Caddy (auto-TLS)…"
 cp /opt/cashucast/infra/docker/Caddyfile /etc/caddy/Caddyfile
