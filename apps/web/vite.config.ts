@@ -18,7 +18,7 @@ export default defineConfig({
     alias: {
       path: path.resolve(__dirname, 'path-shim.ts'),
       // stub fs for browser compatibility
-      fs: path.resolve(__dirname, 'empty-module.js'),
+      fs: path.resolve(__dirname, 'src/empty-fs.js'),
     },
   },
   optimizeDeps: {
