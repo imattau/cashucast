@@ -14,9 +14,34 @@ services:
     command: --ws --stats
     ports: [ "8000:8000" ]
 
+  wt-seeder:
+    image: node:20-alpine
+    volumes: [ "torrent-cache:/cache" ]
+    entrypoint: |
+      sh -c "npm i -g webtorrent-cli && while true; do sleep 3600; done"
+    restart: unless-stopped
+
+  dht-bridge:
+    image: anacrolix/dhttracker:latest   # UDP↔WebSocket
+    restart: unless-stopped
+    environment:
+      ADDR: ":6881"
+    networks: [internal]
+    healthcheck:
+      test: curl -f http://localhost:6881/debug || exit 1
+      interval: 30s
+      retries: 3
+
   cashu-mint:
     image: cashubtc/mintd:latest
     ports: [ "3333:3333" ]
     environment:
       MINT_HOST: "0.0.0.0"
       MINT_PRIVATE_KEY: "regtestkey"
+
+volumes:
+  torrent-cache:
+
+networks:
+  internal:
+    internal: true
