@@ -103,7 +103,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
           </BlurOverlay>
         )}
         <div className="absolute bottom-0 left-0 right-0 text-white">
-          <div className={`flex items-center justify-between p-4 ${text ? 'mb-[-8px]' : ''}`}>
+          <div className={`flex items-center justify-between p-4 ${text ? '-mb-2' : ''}`}>
             <button
               type="button"
               className="flex items-center gap-2"
