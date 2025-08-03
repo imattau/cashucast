@@ -4,24 +4,11 @@
  * retrieval across sessions.
  */
 import WebTorrent from 'webtorrent';
-import { createRequire } from 'module';
 import { useSettings } from '../../shared/store/settings';
 import { createRPCHandler } from '../../shared/rpc';
 import { cache, touch, prune } from '../../worker-ssb/src/blobCache';
 import { getSSB } from '../../worker-ssb/src/instance';
 import { getDefaultEndpoints } from '../../shared/config';
-
-const require = createRequire(import.meta.url);
-let wrtc: any;
-let DHT: any;
-try {
-  DHT = require('bittorrent-dht');
-  // wrtc shim needed for DHT in browser worker
-  // @ts-ignore
-  wrtc = require('wrtc');
-} catch {
-  // optional deps may be absent in test environment
-}
 
 const { trackerUrls: trackers, rtcConfig } = useSettings.getState();
 const client = new WebTorrent({ tracker: { rtcConfig } });
@@ -30,15 +17,25 @@ const client = new WebTorrent({ tracker: { rtcConfig } });
 const { enableDht } = useSettings.getState();
 const { dht: dhtUrl } = getDefaultEndpoints();
 let dht: any;
-if (enableDht && DHT) {
-  dht = new DHT({ wrtc, bootstrap: [dhtUrl] });
-  const timeout = setTimeout(() => {
-    postMessage({ type: 'dht_unreachable' });
-    dht.destroy();
-  }, 5000);
-  dht.on('ready', () => clearTimeout(timeout));
-  dht.listen(20000);
-  client.on('torrent', (t) => dht.announce(t.infoHash, 20000));
+if (enableDht) {
+  (async () => {
+    try {
+      const dhtModule = await import('bittorrent-dht');
+      const DHT = dhtModule.default || dhtModule;
+      const wrtcModule = await import('wrtc');
+      const wrtc = wrtcModule.default || wrtcModule;
+      dht = new DHT({ wrtc, bootstrap: [dhtUrl] });
+      const timeout = setTimeout(() => {
+        postMessage({ type: 'dht_unreachable' });
+        dht.destroy();
+      }, 5000);
+      dht.on('ready', () => clearTimeout(timeout));
+      dht.listen(20000);
+      client.on('torrent', (t) => dht.announce(t.infoHash, 20000));
+    } catch {
+      // optional deps may be absent in test environment
+    }
+  })();
 }
 
 /**
