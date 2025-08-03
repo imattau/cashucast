@@ -8,6 +8,22 @@ declare const workerSsb: { publish: (data: any) => void };
 declare function zap(post: any): void;
 declare function openComments(post: any): void;
 
+/**
+ * Vertical column of action buttons for interacting with a post.
+ *
+ * Expects a `post` object with:
+ * - `id`: unique identifier of the post.
+ * - `zaps?`: number of zap donations.
+ * - `comments?`: number of comments.
+ * - `boosters?`: array of user identifiers who boosted.
+ *
+ * Worker interactions:
+ * - `workerSsb.publish` when boosting a post.
+ * - `zap` to send a zap to the post's creator.
+ * - `openComments` to display the post's comments.
+ *
+ * Enables user actions to boost, zap, and open comments for the given post.
+ */
 export default function ActionColumn({ post }: { post: any }) {
   const { zaps, comments, boosters } = post;
   return (
