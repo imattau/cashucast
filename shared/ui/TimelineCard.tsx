@@ -9,6 +9,7 @@ import { Profile } from './Profile';
 import { MoreVertical, MessageCircle } from 'lucide-react';
 import { ZapButton } from './ZapButton';
 import { CommentsDrawer } from '../../apps/web/src/components/CommentsDrawer';
+import { motion } from 'framer-motion';
 
 export interface TimelineCardProps {
   /** URL for the author's avatar */
@@ -64,7 +65,12 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
 
   return (
     <>
-      <article className="relative h-[90vh] w-full rounded-card shadow-sm overflow-hidden">
+      <motion.article
+        className="relative h-[90vh] w-full rounded-card shadow-sm overflow-hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <VideoPlayer magnet={magnet} />
         {hidden && (
           <BlurOverlay
@@ -126,7 +132,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
           </div>
           {text && <div className="bg-black/60 p-4 pt-8">{text}</div>}
         </div>
-      </article>
+      </motion.article>
       {postId && (
         <CommentsDrawer
           postId={postId}
