@@ -7,6 +7,7 @@ describe('BottomNav', () => {
   it('renders navigation links', () => {
     const html = renderToStaticMarkup(<BottomNav />);
     expect(html).toContain('Home');
+    expect(html).toContain('href="/discover"');
     expect(html).toContain('+');
     expect(html).toContain('Profile');
   });

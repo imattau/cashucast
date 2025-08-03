@@ -4,6 +4,10 @@ import { PostSchema } from '../types';
 
 // Placeholder schemas for complex types
 const QueryOpts = z.object({ includeTags: z.array(z.string()).optional() });
+const TopTagsOpts = z.object({
+  since: z.number().optional(),
+  limit: z.number().optional(),
+});
 const FileSchema = z.any();
 const Magnet = z.any();
 
@@ -13,6 +17,7 @@ export const MethodDefinitions = {
   reportPost: z.tuple([z.string(), z.string()]),
   blockUser: z.tuple([z.string()]),
   searchPosts: z.tuple([z.string(), z.number().optional()]),
+  topTags: z.tuple([TopTagsOpts]),
   seedFile: z.tuple([FileSchema]),
   stream: z.tuple([Magnet]),
   mint: z.tuple([z.number()]),
@@ -27,6 +32,7 @@ export const MethodsSchema = z.union([
   z.object({ ns: z.literal('ssb'), fn: z.literal('reportPost'), args: MethodDefinitions.reportPost }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('blockUser'), args: MethodDefinitions.blockUser }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('searchPosts'), args: MethodDefinitions.searchPosts }),
+  z.object({ ns: z.literal('ssb'), fn: z.literal('topTags'), args: MethodDefinitions.topTags }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('initKeys'), args: MethodDefinitions.initKeys }),
   z.object({ ns: z.literal('torrent'), fn: z.literal('seedFile'), args: MethodDefinitions.seedFile }),
   z.object({ ns: z.literal('torrent'), fn: z.literal('stream'), args: MethodDefinitions.stream }),
@@ -58,6 +64,7 @@ const methodArgSchemas: Record<MethodName, z.ZodTuple<any, any>> = {
   reportPost: MethodDefinitions.reportPost,
   blockUser: MethodDefinitions.blockUser,
   searchPosts: MethodDefinitions.searchPosts,
+  topTags: MethodDefinitions.topTags,
   seedFile: MethodDefinitions.seedFile,
   stream: MethodDefinitions.stream,
   mint: MethodDefinitions.mint,

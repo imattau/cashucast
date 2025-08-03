@@ -1,5 +1,6 @@
 import React from 'react';
 import FabRecord from './FabRecord';
+import { Compass } from 'lucide-react';
 
 /** Bottom navigation bar that hides on scroll down.
  * Visible only on screens up to 600px wide.
@@ -30,6 +31,14 @@ export const BottomNav: React.FC = () => {
           className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
         >
           Home
+        </a>
+        <a
+          href="/discover"
+          aria-label="Discover"
+          className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
+        >
+          <Compass className="mx-auto" />
+          <span className="sr-only">Discover</span>
         </a>
         <a
           href="/record"
