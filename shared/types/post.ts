@@ -28,11 +28,17 @@ export const PostSchema = z.object({
 
 export interface Post {
   id: string;
+  author: {
+    name: string;
+    pubkey: string;
+    avatarUrl: string;
+  };
   magnet: string;
-  text: string;
-  thumbnail?: string;     // blob-hash in ssb-blobs
-  tags?: string[];        // ≤ 10, lower-case, no spaces
+  text?: string;
+  thumbnail?: string; // blob-hash in ssb-blobs
+  tags?: string[]; // ≤ 10, lower-case, no spaces
   nsfw?: boolean;
   ts: number;
+  reports?: { fromPk: string; reason: string; ts: number }[];
 }
 

@@ -1,18 +1,8 @@
 import React from 'react';
-import Onboarding from './routes/Onboarding';
-import Compose from './routes/Compose';
-import SettingsNetwork from './routes/SettingsNetwork';
-import SettingsStorage from './routes/SettingsStorage';
-import SettingsProfile from './routes/SettingsProfile';
+import { ROUTES } from './router';
 import { useProfile } from '../../shared/store/profile';
-
-const ROUTES: Record<string, React.FC> = {
-  '/compose': Compose,
-  '/settings/network': SettingsNetwork,
-  '/settings/storage': SettingsStorage,
-  '/settings/profile': SettingsProfile,
-  '/': Compose,
-};
+import Onboarding from './routes/Onboarding';
+import SearchBar from './components/SearchBar';
 
 export default function App() {
   const profile = useProfile((s) => s.profile);
@@ -29,5 +19,10 @@ export default function App() {
   }
 
   const RouteComponent = ROUTES[path];
-  return RouteComponent ? <RouteComponent /> : <div>Not Found</div>;
+  return (
+    <>
+      {RouteComponent ? <RouteComponent /> : <div>Not Found</div>}
+      <SearchBar />
+    </>
+  );
 }

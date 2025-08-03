@@ -2,12 +2,21 @@ import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
 import { generateKeyPairSync, randomUUID } from 'node:crypto';
 import { getSSB } from './src/instance';
+import MiniSearch from 'minisearch';
 
 let storedKeys: { sk: string; pk: string } | undefined;
 
 // Global SSB log shared across workers to simulate replication
 const ssbLog: any[] = (globalThis as any).__cashuSSBLog || [];
 (globalThis as any).__cashuSSBLog = ssbLog;
+
+// simple full-text index using MiniSearch
+const mini = new MiniSearch({ fields: ['text'], storeFields: ['id'] });
+
+// index any existing posts in the log
+for (const msg of ssbLog) {
+  if (msg.type === 'post') mini.add({ id: msg.id, text: msg.text || '' });
+}
 
 createRPCHandler(self as any, {
   initKeys: async (sk?: string, pk?: string) => {
@@ -34,6 +43,7 @@ createRPCHandler(self as any, {
       ts: post.ts ?? Date.now(),
     };
     ssbLog.push({ type: 'post', ...fullPost });
+    mini.add({ id, text: fullPost.text || '' });
     for (const r of post.reports ?? []) {
       ssbLog.push({ type: 'report', target: id, ...r });
     }
@@ -72,6 +82,13 @@ createRPCHandler(self as any, {
       const reporters = reportsMap.get(post.id) || new Set();
       return reporters.size < threshold;
     });
+  },
+  searchPosts: async (query: string, limit = 20) => {
+    const results = mini.search(query, { prefix: true }).slice(0, limit);
+    const posts = new Map(
+      ssbLog.filter((m) => m.type === 'post').map((p: any) => [p.id, p])
+    );
+    return results.map((r) => posts.get(r.id)).filter(Boolean);
   },
   reportPost: async (postId: string, reason: string) => {
     const report = { fromPk: 'local', reason, ts: Date.now() };
