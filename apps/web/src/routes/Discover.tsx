@@ -57,6 +57,7 @@ export default function Discover() {
             postId={post.id}
             authorPubKey={post.author.pubkey}
             reports={post.reports?.length ?? 0}
+            boosters={post.boosters}
           />
         ))}
       </div>
