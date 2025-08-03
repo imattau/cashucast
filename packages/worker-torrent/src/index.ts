@@ -9,6 +9,7 @@ import { useSettings } from '../../shared/store/settings';
 import { createRPCHandler } from '../../shared/rpc';
 import { cache, touch, prune } from '../../worker-ssb/src/blobCache';
 import { getSSB } from '../../worker-ssb/src/instance';
+import { getDefaultEndpoints } from '../../shared/config';
 
 const require = createRequire(import.meta.url);
 let wrtc: any;
@@ -26,10 +27,11 @@ const { trackerUrls: trackers, rtcConfig } = useSettings.getState();
 const client = new WebTorrent({ tracker: { rtcConfig } });
 
 // ── DHT bridge  ─────────────────────────────────────────────
-const { enableDht, roomUrl } = useSettings.getState();
+const { enableDht } = useSettings.getState();
+const { dht: dhtUrl } = getDefaultEndpoints();
 let dht: any;
 if (enableDht && DHT) {
-  dht = new DHT({ wrtc, bootstrap: [`wss://dht.${new URL(roomUrl).hostname}`] });
+  dht = new DHT({ wrtc, bootstrap: [dhtUrl] });
   const timeout = setTimeout(() => {
     postMessage({ type: 'dht_unreachable' });
     dht.destroy();

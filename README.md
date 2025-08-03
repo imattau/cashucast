@@ -55,6 +55,12 @@ To start the development stack manually:
 This boots supporting containers (room server, tracker and regtest mint), installs dependencies and runs the
 Vite development server for the web app.
 
+### Environment variables
+
+The development server recognises a few optional variables for overriding network endpoints:
+
+- `VITE_DHT_URL` – WebSocket URL of the DHT bootstrap node. Defaults to `ws://localhost:6881`.
+
 ## Running tests
 
 Unit tests can be run with the helper script:

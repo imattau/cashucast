@@ -3,14 +3,16 @@ import { z } from 'zod';
 const envSchema = z.object({
   VITE_ROOM_URL: z.string().optional(),
   VITE_TRACKER_URLS: z.string().optional(), // JSON array string
+  VITE_DHT_URL: z.string().optional(),
 });
 const env = envSchema.parse(import.meta.env);
 
 /**
- * Returns default Room + Tracker URLs.
+ * Returns default Room, Tracker and DHT URLs.
  * 1. If app served from https://app.cashucast.app:
  *    • room → wss://room.cashucast.app
  *    • tracker → wss://tracker.cashucast.app
+ *    • dht → wss://dht.cashucast.app
  * 2. Else fall back to VITE_* values.
  */
 export function getDefaultEndpoints() {
@@ -20,6 +22,7 @@ export function getDefaultEndpoints() {
       trackerList: env.VITE_TRACKER_URLS
         ? JSON.parse(env.VITE_TRACKER_URLS)
         : ['ws://localhost:8000'],
+      dht: env.VITE_DHT_URL || 'ws://localhost:6881',
     };
   }
 
@@ -38,6 +41,8 @@ export function getDefaultEndpoints() {
       ? JSON.parse(env.VITE_TRACKER_URLS)
       : ['ws://localhost:8000'];
 
-  return { room, trackerList };
+  const dht = base ? `wss://dht.${base}` : env.VITE_DHT_URL || 'ws://localhost:6881';
+
+  return { room, trackerList, dht };
 }
 
