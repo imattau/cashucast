@@ -1,6 +1,6 @@
 import { useSettings } from '../../../shared/store/settings';
 import { init as ssbInit } from 'ssb-browser-core/net';
-import ssbBlobs from 'ssb-blobs';
+import * as ssbBlobs from 'ssb-blobs';
 
 let ssb: any = (globalThis as any).__cashuSSB;
 
