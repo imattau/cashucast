@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   ssb-room:
     image: ssbc/ssb-room2:latest

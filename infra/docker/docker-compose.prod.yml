@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   ssb-room:
     image: ssbc/ssb-room2:latest
@@ -7,11 +5,11 @@ services:
     environment:
       ROOM_PUBLISH: "true"
       ROOM_NAME: "CashuCast Room"
-      ROOM_HOST: "room.cashucast.app"
+      ROOM_HOST: "${ROOM_HOST}"
 
   wt-tracker:
     image: nickert/webtorrent-tracker:latest
-    command: --ws --stats --whitelist "cashucast.app"
+    command: --ws --stats --whitelist ${APP_DOMAIN}
     restart: unless-stopped
 
   wt-seeder:
