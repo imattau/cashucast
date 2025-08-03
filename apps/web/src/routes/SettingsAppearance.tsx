@@ -1,6 +1,6 @@
 import { useProfile } from '../../shared/store/profile';
 
-export default function SettingsProfile() {
+export const SettingsAppearance: React.FC = () => {
   const exportProfile = useProfile((s) => s.exportProfile);
 
   const onExport = () => {
@@ -23,7 +23,7 @@ export default function SettingsProfile() {
 
   return (
     <div className="p-4 space-y-4">
-      <h2 className="text-xl font-semibold">Profile</h2>
+      <h2 className="text-xl font-semibold">Appearance</h2>
       <div className="space-x-2">
         <button
           onClick={onExport}
@@ -40,5 +40,7 @@ export default function SettingsProfile() {
       </div>
     </div>
   );
-}
+};
+
+
 

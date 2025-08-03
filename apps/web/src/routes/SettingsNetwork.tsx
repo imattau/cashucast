@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSettings } from '../../shared/store/settings';
 
-export default function SettingsNetwork() {
+export const SettingsNetwork: React.FC = () => {
   const {
     roomUrl,
     trackerUrls,
@@ -67,5 +67,5 @@ export default function SettingsNetwork() {
       </label>
     </div>
   );
-}
+};
 

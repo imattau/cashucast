@@ -1,7 +1,7 @@
 import { useSettings } from '../../shared/store/settings';
 import { setMaxCacheMB } from '../../../packages/worker-ssb/src/blobCache';
 
-export default function SettingsStorage() {
+export const SettingsStorage: React.FC = () => {
   const { maxBlobMB, setMaxBlobMB } = useSettings();
   return (
     <div className="p-4 space-y-4">
@@ -25,4 +25,5 @@ export default function SettingsStorage() {
       </label>
     </div>
   );
-}
+};
+
