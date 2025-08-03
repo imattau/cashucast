@@ -83,6 +83,23 @@ createRPCHandler(self as any, {
       return reporters.size < threshold;
     });
   },
+  topTags: async (opts) => {
+    const since = opts?.since ?? Date.now() - 48 * 60 * 60 * 1000;
+    const limit = opts?.limit ?? 20;
+    const posts = ssbLog.filter(
+      (m) => m.type === 'post' && (m.ts ?? 0) >= since
+    );
+    const counts: Record<string, number> = {};
+    for (const p of posts) {
+      for (const t of p.tags ?? []) {
+        counts[t] = (counts[t] || 0) + 1;
+      }
+    }
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([tag, count]) => ({ tag, count }));
+  },
   searchPosts: async (query: string, limit = 20) => {
     const results = mini.search(query, { prefix: true }).slice(0, limit);
     const posts = new Map(
