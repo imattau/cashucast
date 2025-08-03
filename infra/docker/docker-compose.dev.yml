@@ -9,7 +9,7 @@ services:
       ROOM_HOST: "localhost"
 
   wt-tracker:
-    image: nickert/webtorrent-tracker:latest
+    image: webtorrent/webtorrent-tracker:latest
     command:
       - webtorrent-tracker
       - --ws
