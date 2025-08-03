@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for SettingsOverlay.
+ */
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { SettingsStorage } from './SettingsStorage';

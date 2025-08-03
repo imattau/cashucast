@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Entry point for the packages/worker-cashu module.
+ */
 /**
  * Web worker that exposes Cashu minting utilities over a simple RPC interface.
  * Methods defined here are consumed by the main application thread to mint and

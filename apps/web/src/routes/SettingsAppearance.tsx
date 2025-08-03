@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for SettingsAppearance.
+ */
 import { useProfile } from '../../shared/store/profile';
 import { useSettings } from '../../shared/store/settings';
 

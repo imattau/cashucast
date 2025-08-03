@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for TagInput.
+ */
 /* wraps Tagify; lower-cases, strips leading #, max 10 tags */
 import Tags from '@yaireo/tagify/dist/react.tagify';
 

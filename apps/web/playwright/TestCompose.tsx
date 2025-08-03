@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for TestCompose.
+ */
 import React from 'react';
 import { UploadDropzone, CaptionTextarea, PublishBtn } from '../shared/ui';
 import { createRPCClient } from '../shared/rpc';

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * ssb-reserved-words-fix module.
+ */
 import type { Plugin as VitePlugin } from 'vite';
 import type { Plugin as EsbuildPlugin } from 'esbuild';
 import { readFile } from 'fs/promises';

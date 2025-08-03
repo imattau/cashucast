@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for FollowBtn.
+ */
 import React from 'react';
 import { useSocialStore } from './socialStore';
 

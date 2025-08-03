@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for Discover.
+ */
 import React, { useEffect, useRef, useState } from 'react';
 import { createRPCClient } from '../../shared/rpc';
 import type { Post } from '../../shared/types';

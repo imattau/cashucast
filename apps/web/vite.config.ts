@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Configuration for vite.
+ */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import ssbReservedWordsFix, {

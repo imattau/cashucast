@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for main.
+ */
 import React from "react";
 import "../index.css";
 import { createRoot } from "react-dom/client";

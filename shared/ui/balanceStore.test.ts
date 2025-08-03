@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for balanceStore.
+ */
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useBalanceStore, setCashuCall } from './balanceStore';
 

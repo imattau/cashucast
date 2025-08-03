@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * history-worker module.
+ */
 /**
  * Retrieve IDs of timeline items seen since the given timestamp. The data is
  * read from localStorage allowing the main thread to filter out recently seen

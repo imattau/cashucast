@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for index.
+ */
 import { createRPCClient, createRPCHandler } from './index';
 import { MessageChannel } from 'worker_threads';
 import { describe, it, expect } from 'vitest';

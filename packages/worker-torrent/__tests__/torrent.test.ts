@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for torrent.
+ */
 import { describe, it, expect, vi } from 'vitest';
 import { Readable } from 'stream';
 import { createRPCClient } from '../../../shared/rpc';

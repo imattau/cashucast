@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * blobCache module.
+ */
 import LRUK from 'quick-lru'; // small, zero-dep
 
 export type BlobMeta = { bytes: number; ts: number };

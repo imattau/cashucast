@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for BackupSeedBtn.
+ */
 import React from 'react';
 
 /** Button to export wallet seed as a text file. */

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for SettingsNetwork.
+ */
 import { useState } from 'react';
 import { useSettings } from '../../shared/store/settings';
 

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Test suite for posting.
+ */
 import React from 'react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import TestCompose from './TestCompose';

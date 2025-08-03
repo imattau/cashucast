@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Entry point for the packages/worker-torrent/src module.
+ */
 /**
  * Worker responsible for torrent seeding and playback. Files are seeded using
  * WebTorrent and mirrored into the SSB blob store to support peer-to-peer

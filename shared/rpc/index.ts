@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Entry point for the shared/rpc module.
+ */
 /**
  * Minimal type-safe RPC utilities used for communication between the main
  * thread and web workers. Each method is described by a zod schema ensuring

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for CameraView.
+ */
 import React from 'react';
 import { UploadDropzone } from './UploadDropzone';
 import { SkeletonLoader } from './SkeletonLoader';

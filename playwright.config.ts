@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Configuration for playwright.
+ */
 import { defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
 import ssbReservedWordsFix, {

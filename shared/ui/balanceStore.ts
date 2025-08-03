@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * balanceStore module.
+ */
 import { create } from 'zustand';
 import { createRPCClient } from '../rpc';
 

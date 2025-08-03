@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for App.
+ */
 import React from 'react';
 import { ROUTES } from './router';
 import { useProfile } from '../shared/store/profile';

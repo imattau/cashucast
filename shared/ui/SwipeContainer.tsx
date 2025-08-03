@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for SwipeContainer.
+ */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface SwipeContainerProps {

@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * React component for TimelineCard.
+ */
 import React from 'react';
 import { VideoPlayer } from './VideoPlayer';
 import { useSettingsStore } from './settingsStore';

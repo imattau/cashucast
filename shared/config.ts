@@ -1,3 +1,7 @@
+/*
+ * Licensed under GPL-3.0-or-later
+ * Configuration utilities.
+ */
 import { z } from 'zod';
 
 const envSchema = z.object({
