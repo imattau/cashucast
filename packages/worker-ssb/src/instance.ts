@@ -1,6 +1,9 @@
 /*
  * Licensed under GPL-3.0-or-later
- * instance module.
+ *
+ * Exposes a singleton `ssb-browser-core` instance used by worker threads.
+ * The instance is cached on `globalThis` so subsequent calls reuse the
+ * existing connection rather than creating a new one.
  */
 import { useSettings } from '../../../shared/store/settings';
 import randomAccessIdb from 'random-access-idb';
@@ -15,6 +18,17 @@ const { init: initSSB } = await import('ssb-browser-core/net.js');
 
 let ssb: any = (globalThis as any).__cashuSSB;
 
+/**
+ * Returns the shared Secure Scuttlebutt instance, initializing it on demand.
+ *
+ * A new instance is created only if one does not already exist, in which case
+ * it is cached on `globalThis.__cashuSSB` and configured to use IndexedDB
+ * storage. If a room URL is set in settings, the instance will attempt to
+ * remember and connect to that room. This may start network activity and
+ * mutates global state.
+ *
+ * @returns {any} The singleton SSB client.
+ */
 export function getSSB() {
   if (ssb) return ssb;
 
