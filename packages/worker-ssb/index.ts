@@ -73,7 +73,7 @@ createRPCHandler(self as any, {
     }
 
     const posts = ssbLog.filter((m) => m.type === 'post');
-    return posts.filter((post: any) => {
+    const filtered = posts.filter((post: any) => {
       if (blocked.has(post.author.pubkey)) return false;
       if (includeTags.length > 0) {
         const postTags = post.tags ?? [];
@@ -82,6 +82,39 @@ createRPCHandler(self as any, {
       const reporters = reportsMap.get(post.id) || new Set();
       return reporters.size < threshold;
     });
+
+    const statsWorker = (globalThis as any).statsWorker;
+    if (statsWorker && statsWorker.postMessage) {
+      try {
+        const counts: Record<string, number> = await new Promise((res) => {
+          const ch = (e: any) => {
+            statsWorker.removeEventListener('message', ch);
+            res(e.data);
+          };
+          statsWorker.addEventListener('message', ch, { once: true });
+          statsWorker.postMessage('get');
+        });
+
+        const high: any[] = [];
+        const low: any[] = [];
+        for (const p of filtered) {
+          (counts[p.magnet?.slice(20, 60)] ?? 0) >= 3 ? high.push(p) : low.push(p);
+        }
+
+        const final: any[] = [];
+        let i = 0;
+        let j = 0;
+        while (i < high.length || j < low.length) {
+          for (let k = 0; k < 9 && i < high.length; k++) final.push(high[i++]);
+          if (j < low.length) final.push(low[j++]);
+        }
+        return final;
+      } catch (_) {
+        /* ignore */
+      }
+    }
+
+    return filtered;
   },
   topTags: async (opts) => {
     const since = opts?.since ?? Date.now() - 48 * 60 * 60 * 1000;
