@@ -29,6 +29,7 @@
     "react-easy-crop": "^5.5.0",
     "ssb-blobs": "^2.0.1",
     "ssb-browser-core": "14.0.0",
+    "worker-dom": "^0.1.0",
     "wrtc": "^0.4.7",
     "zod": "^4.0.14",
     "zustand": "^5.0.7"

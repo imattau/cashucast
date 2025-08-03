@@ -59,6 +59,9 @@ importers:
       ssb-browser-core:
         specifier: 14.0.0
         version: 14.0.0
+      worker-dom:
+        specifier: ^0.1.0
+        version: 0.1.0
       wrtc:
         specifier: ^0.4.7
         version: 0.4.7
@@ -1088,6 +1091,9 @@ packages:
   domexception@1.0.1:
     resolution: {integrity: sha512-raigMkn7CJNNo6Ihro1fzG7wr3fHuYVytzquZKX5n0yizGsTcYgzdIUwj1X9pK0VvjeihV+XiclP+DjwbsSKug==}
     deprecated: Use your platform's native DOMException instead
+
+  dompurify@1.0.7:
+    resolution: {integrity: sha512-1xK0JEda/jvIm3SgqHXKvRCh3AbEKCyBbUAGpNCMVIljBD145cPvBR66JSj3O4SdscFUx5NXsDkJpz6vDT8KLg==}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -2791,6 +2797,10 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
+  worker-dom@0.1.0:
+    resolution: {integrity: sha512-+UVJk9mc6CetcFWvdW8TXUT7f5o4awNvGZaopjFDGifVCBKCt+WL/bWl76chliJGYrxZkGB8b5fDaDHlCBi2nw==}
+    engines: {node: '>=8.10.0'}
+
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
@@ -3853,6 +3863,8 @@ snapshots:
     dependencies:
       webidl-conversions: 4.0.2
     optional: true
+
+  dompurify@1.0.7: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -6215,6 +6227,10 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
+
+  worker-dom@0.1.0:
+    dependencies:
+      dompurify: 1.0.7
 
   wrappy@1.0.2: {}
 
