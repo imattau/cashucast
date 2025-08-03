@@ -48,22 +48,25 @@ fi
 # ── Compose alias ───────────────────────────────────────────────
 if [[ $CTL == "docker" ]]; then
   if $CTL compose version >/dev/null 2>&1; then
-    COMPOSE="docker compose"
+    COMPOSE=($CTL compose)
   elif command -v docker-compose >/dev/null 2>&1; then
-    COMPOSE="docker-compose"
-  else
-    echo "❌  Docker Compose not found." >&2
-    exit 1
+    COMPOSE=(docker-compose)
   fi
 else
   if $CTL compose version >/dev/null 2>&1; then
-    COMPOSE="podman compose"
+    COMPOSE=($CTL compose)
   elif command -v podman-compose >/dev/null 2>&1; then
-    COMPOSE="podman-compose"
+    COMPOSE=(podman-compose)
+  fi
+fi
+
+if [[ ${#COMPOSE[@]} -eq 0 ]]; then
+  if [[ $CTL == "docker" ]]; then
+    echo "❌  Docker Compose not found." >&2
   else
     echo "❌  Podman Compose not found." >&2
-    exit 1
   fi
+  exit 1
 fi
 
 echo "🔧  Using container runtime: $CTL"
@@ -72,7 +75,7 @@ echo "🔧  Using container runtime: $CTL"
 LAN_IP=$(ip route get 8.8.8.8 | awk '{print $7; exit}')
 
 # ── Start services ─────────────────────────────────────────────
-$COMPOSE -f infra/docker/docker-compose.dev.yml up -d
+"${COMPOSE[@]}" -f infra/docker/docker-compose.dev.yml up -d
 pnpm install --frozen-lockfile
 
 echo
