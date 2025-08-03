@@ -124,18 +124,26 @@ describe('worker-torrent', () => {
 
   it('streams from ssb blob cache when available', async () => {
     const { call, clientMock, cleanup } = await setup(true);
+    const spy = vi.spyOn(URL, 'createObjectURL');
     const url = (await call('stream', 'magnet:?xt=urn:btih:test')) as string;
     expect(clientMock.add).not.toHaveBeenCalled();
     expect(url.startsWith('blob:')).toBe(true);
+    expect(spy).toHaveBeenCalled();
+    expect((spy.mock.calls[0][0] as Blob).type).toBe('video/webm');
+    spy.mockRestore();
     cleanup();
   });
 
   it('falls back to torrent when blob cache misses', async () => {
     const { call, clientMock, ssb, cleanup } = await setup(false);
+    const spy = vi.spyOn(URL, 'createObjectURL');
     const url = (await call('stream', 'magnet:?xt=urn:btih:test')) as string;
     expect(clientMock.add).toHaveBeenCalled();
     expect(ssb.blobs.add).toHaveBeenCalled();
     expect(url.startsWith('blob:')).toBe(true);
+    expect(spy).toHaveBeenCalled();
+    expect((spy.mock.calls[0][0] as Blob).type).toBe('video/webm');
+    spy.mockRestore();
     cleanup();
   });
 });

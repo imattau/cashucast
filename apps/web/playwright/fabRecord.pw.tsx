@@ -21,10 +21,10 @@ test('long press opens file selector and navigates to /compose', async ({ mount,
   const button = page.getByRole('button', { name: 'Record' });
   await button.dispatchEvent('mousedown');
   await page.waitForTimeout(600);
-  const file = new File(['vid'], 'vid.mp4', { type: 'video/mp4' });
+  const file = new File(['vid'], 'vid.webm', { type: 'video/webm' });
   await page.setInputFiles('input[type="file"]', file);
   await button.dispatchEvent('mouseup');
   await expect(page).toHaveURL('/compose');
   const name = await page.evaluate(() => window.recordedFile?.name);
-  expect(name).toBe('vid.mp4');
+  expect(name).toBe('vid.webm');
 });
