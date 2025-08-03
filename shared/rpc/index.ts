@@ -4,7 +4,7 @@
  * that calls across the boundary are validated.
  */
 import { z } from 'zod';
-import { PostSchema } from '../types';
+import { PostSchema, ProfileSchema } from '../types';
 
 // Placeholder schemas for complex types
 const QueryOpts = z.object({ includeTags: z.array(z.string()).optional() });
@@ -29,6 +29,8 @@ export const MethodDefinitions = {
   sendZap: z.tuple([z.string(), z.number(), z.string()]),
   initKeys: z.tuple([z.string().optional(), z.string().optional()]),
   initWallet: z.tuple([z.string().optional()]),
+  // allow 0, 1, or 2 files (we’ll guard in UI)
+  importProfile: z.tuple([z.array(ProfileSchema).min(0).max(2)]),
 } as const;
 
 export const MethodsSchema = z.union([
@@ -45,6 +47,7 @@ export const MethodsSchema = z.union([
   z.object({ ns: z.literal('cashu'), fn: z.literal('mint'), args: MethodDefinitions.mint }),
   z.object({ ns: z.literal('cashu'), fn: z.literal('sendZap'), args: MethodDefinitions.sendZap }),
   z.object({ ns: z.literal('cashu'), fn: z.literal('initWallet'), args: MethodDefinitions.initWallet }),
+  z.object({ ns: z.literal('profile'), fn: z.literal('importProfile'), args: MethodDefinitions.importProfile }),
 ]);
 
 export type Methods = z.infer<typeof MethodsSchema>;
@@ -78,6 +81,7 @@ const methodArgSchemas: Record<MethodName, z.ZodTuple<any, any>> = {
   sendZap: MethodDefinitions.sendZap,
   initKeys: MethodDefinitions.initKeys,
   initWallet: MethodDefinitions.initWallet,
+  importProfile: MethodDefinitions.importProfile,
 };
 
 /**

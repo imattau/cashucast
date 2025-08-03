@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 const crypto = globalThis.crypto;
 
 const SALT = 'cashucast';
@@ -79,6 +81,14 @@ export interface Profile {
   username: string;
   avatarBlob?: string;
 }
+
+export const ProfileSchema = z.object({
+  ssbPk: z.string(),
+  ssbSk: z.string(),
+  cashuMnemonic: z.string(),
+  username: z.string(),
+  avatarBlob: z.string().optional(),
+});
 
 export const createProfile = async (data: {
   ssbPk: string;
