@@ -6,7 +6,9 @@ import { PostMenu } from './PostMenu';
 import { Avatar } from './Avatar';
 import { BottomSheet } from './BottomSheet';
 import { Profile } from './Profile';
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, MessageCircle } from 'lucide-react';
+import { ZapButton } from './ZapButton';
+import { CommentsDrawer } from '../../apps/web/src/components/CommentsDrawer';
 
 export interface TimelineCardProps {
   /** URL for the author's avatar */
@@ -50,6 +52,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   const [revealed, setRevealed] = React.useState(false);
   const hidden = !!nsfw && !showNSFW && !revealed;
   const [profileOpen, setProfileOpen] = React.useState(false);
+  const [commentsOpen, setCommentsOpen] = React.useState(false);
 
   const reveal = () => setRevealed(true);
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -92,21 +95,45 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
                 </span>
               )}
             </button>
-            {postId &&
-              authorPubKey &&
-              onReport &&
-              onBlock && (
-                <PostMenu
-                  postId={postId}
-                  authorPubKey={authorPubKey}
-                  onReport={onReport}
-                  onBlock={onBlock}
-                />
+            <div className="flex items-center gap-2">
+              {postId && (
+                <button
+                  type="button"
+                  aria-label="Open comments"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCommentsOpen(true);
+                  }}
+                >
+                  <MessageCircle className="h-5 w-5" />
+                </button>
               )}
+              {authorPubKey && postId && (
+                <ZapButton receiverPk={authorPubKey} refId={postId} />
+              )}
+              {postId &&
+                authorPubKey &&
+                onReport &&
+                onBlock && (
+                  <PostMenu
+                    postId={postId}
+                    authorPubKey={authorPubKey}
+                    onReport={onReport}
+                    onBlock={onBlock}
+                  />
+                )}
+            </div>
           </div>
           {text && <div className="bg-black/60 p-4 pt-8">{text}</div>}
         </div>
       </article>
+      {postId && (
+        <CommentsDrawer
+          postId={postId}
+          open={commentsOpen}
+          onOpenChange={setCommentsOpen}
+        />
+      )}
       {authorPubKey && (
         <BottomSheet open={profileOpen} onOpenChange={setProfileOpen}>
           <Profile
