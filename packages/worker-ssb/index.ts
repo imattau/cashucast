@@ -22,6 +22,11 @@ if (!globalThis.Buffer) {
   (globalThis as any).Buffer = Buffer;
 }
 
+if (typeof window === 'undefined') {
+  (globalThis as any).window = globalThis;
+  (globalThis as any).location = { hostname: 'localhost' } as Location;
+}
+
 // Dynamic import ensures `Buffer` is available before evaluating modules that
 // depend on it (e.g. `ssb-browser-core`).
 const { getSSB } = await import('./src/instance');
