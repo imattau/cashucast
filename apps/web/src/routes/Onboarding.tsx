@@ -12,6 +12,7 @@ import { createProfile } from '../../shared/types/profile';
 import { getSSB } from '../../../../packages/worker-ssb/src/instance';
 import { touch } from '../../../../packages/worker-ssb/src/blobCache';
 import { z } from 'zod';
+import { UserPlus, Upload } from 'lucide-react';
 
 // schema for validating imported profile backups
 const ProfileSchema = z.object({
@@ -151,23 +152,35 @@ function OnboardingContent() {
     <div className="space-y-4">
       {step === 1 && (
         <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-semibold">Choose how to get started</h2>
+          <p className="text-gray-700">
+            Create a new profile or import one you already have.
+          </p>
           <button
-            className="bg-blue-500 text-white py-2 rounded"
+            className="flex items-center gap-2 bg-blue-500 text-white py-2 px-4 rounded"
             onClick={() => {
               setMode('new');
               setStep(2);
             }}
           >
-            New Account
+            <UserPlus className="h-5 w-5" />
+            <div className="text-left">
+              <div>New Account</div>
+              <div className="text-xs text-blue-100">Start from scratch</div>
+            </div>
           </button>
           <button
-            className="bg-green-500 text-white py-2 rounded"
+            className="flex items-center gap-2 bg-green-500 text-white py-2 px-4 rounded"
             onClick={() => {
               setMode('import');
               setStep(2);
             }}
           >
-            Import Backup
+            <Upload className="h-5 w-5" />
+            <div className="text-left">
+              <div>Import Existing Profile</div>
+              <div className="text-xs text-green-100">Use a saved backup</div>
+            </div>
           </button>
         </div>
       )}
