@@ -11,7 +11,7 @@ const { seedMock, addMock } = vi.hoisted(() => ({
     cb({ magnetURI: 'magnet:?xt=urn:btih:test', files: [{ getBlob: (cb2: any) => cb2(null, file) }] })
   ),
   addMock: vi.fn((_magnet: string, _opts: any, cb: any) => {
-    const blob = new Blob(['data'], { type: 'video/mp4' });
+    const blob = new Blob(['data'], { type: 'video/webm' });
     cb({ files: [{ getBlob: (cb2: any) => cb2(null, blob) }] });
   }),
 }));
@@ -123,7 +123,7 @@ describe('integration flow', () => {
     await cashu.call('initWallet', undefined);
     await cashu.call('mint', 5);
 
-    const magnet = (await torrent.call('seedFile', new Blob(['video']))) as string;
+    const magnet = (await torrent.call('seedFile', new Blob(['video'], { type: 'video/webm' }))) as string;
     await ssb.call('publishPost', {
       id: 'v1',
       magnet,

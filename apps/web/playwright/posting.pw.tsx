@@ -29,7 +29,7 @@ test('posting flow publishes a post', async ({ mount, page }) => {
   });
 
   const component = await mount(<TestCompose />);
-  const file = new File(['vid'], 'vid.mp4', { type: 'video/mp4' });
+  const file = new File(['vid'], 'vid.webm', { type: 'video/webm' });
   await page.setInputFiles('input[type="file"]', file);
   await component.getByText('Publish').click();
   await expect(await page.evaluate(() => (window as any).__publishCalled)).toBe(true);
