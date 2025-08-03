@@ -2,7 +2,7 @@
  * Licensed under GPL-3.0-or-later
  * React component for Compose.
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   UploadDropzone,
   TranscodeModal,
@@ -26,6 +26,13 @@ export default function Compose() {
     setMagnet(null);
     setThumbHash(null);
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.recordedFile) {
+      handleFile(window.recordedFile);
+      window.recordedFile = undefined;
+    }
+  }, []);
 
   const onPublish = async () => {
     if (!magnet) return;

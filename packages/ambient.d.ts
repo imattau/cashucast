@@ -9,3 +9,7 @@ declare module 'ssb-blobs';
 declare module 'webtorrent';
 declare module 'bittorrent-dht';
 declare module 'wrtc';
+
+interface Window {
+  recordedFile?: File;
+}
