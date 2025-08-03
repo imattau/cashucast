@@ -1,10 +1,18 @@
 import { create } from 'zustand';
 
+/**
+ * State for managing active tag filters in the timeline view.
+ */
 interface FilterState {
+  /** Currently selected tags to filter by. */
   tags: string[];
+  /** Add or remove a tag from the filter set. */
   toggleTag: (t: string) => void;
 }
 
+/**
+ * Parse the hash fragment of the URL and extract the `tags` parameter.
+ */
 function readTagsFromHash(): string[] {
   if (typeof window === 'undefined') return [];
   const match = window.location.hash.match(/tags=([^&]+)/);
@@ -17,6 +25,9 @@ function readTagsFromHash(): string[] {
   return [];
 }
 
+/**
+ * Persist the current tag selection into the URL hash to allow link sharing.
+ */
 function writeTagsToHash(tags: string[]) {
   if (typeof window === 'undefined') return;
   const hash = tags.length
@@ -25,6 +36,9 @@ function writeTagsToHash(tags: string[]) {
   window.history.replaceState(null, '', hash);
 }
 
+/**
+ * Zustand store encapsulating tag filter state.
+ */
 export const useFilters = create<FilterState>((set, get) => ({
   tags: readTagsFromHash(),
   toggleTag(t) {

@@ -1,3 +1,8 @@
+/**
+ * Minimal type-safe RPC utilities used for communication between the main
+ * thread and web workers. Each method is described by a zod schema ensuring
+ * that calls across the boundary are validated.
+ */
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
 import { PostSchema } from '../types';
@@ -76,6 +81,13 @@ const methodArgSchemas: Record<MethodName, z.ZodTuple<any, any>> = {
   initWallet: MethodDefinitions.initWallet,
 };
 
+/**
+ * Create a function that sends RPC requests over the given message port.
+ * Parameters are validated against the schema for the selected method and a
+ * promise resolving with the handler's result is returned.
+ *
+ * @param port - MessagePort or worker used for sending messages.
+ */
 export function createRPCClient(port: RPCPort) {
   return function call<T extends MethodName>(method: T, ...params: MethodArgs<T>): Promise<unknown> {
     methodArgSchemas[method].parse(params);
@@ -95,6 +107,13 @@ export function createRPCClient(port: RPCPort) {
   };
 }
 
+/**
+ * Register handlers for RPC requests coming in over the given port. Incoming
+ * messages are validated and dispatched to the corresponding handler.
+ *
+ * @param port - Message port to listen on.
+ * @param handlers - Mapping of method names to handler implementations.
+ */
 export function createRPCHandler(
   port: RPCPort,
   handlers: { [K in MethodName]?: (...args: MethodArgs<K>) => unknown | Promise<unknown> }

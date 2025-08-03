@@ -1,3 +1,10 @@
+/**
+ * Retrieve IDs of timeline items seen since the given timestamp. The data is
+ * read from localStorage allowing the main thread to filter out recently seen
+ * posts while running inside a worker.
+ *
+ * @param since - Timestamp (ms) after which items are considered recent.
+ */
 export async function get(since: number): Promise<Set<string>> {
   try {
     const ls: any = (globalThis as any).localStorage;
