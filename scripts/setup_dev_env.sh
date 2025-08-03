@@ -19,15 +19,30 @@ if ! command -v pnpm >/dev/null 2>&1; then
   sudo npm install -g pnpm
 fi
 
-# ── Docker + compose plugin ───────────────────────────────────
-if ! command -v docker >/dev/null 2>&1; then
-  echo "⬇️  Installing Docker…"
-  curl -fsSL https://get.docker.com | sh
-fi
-
-if ! docker compose version >/dev/null 2>&1; then
-  echo "⬇️  Installing Docker compose plugin…"
-  sudo apt-get install -y docker-compose-plugin
+# ── Container engine ────────────────────────────────────────────
+if command -v docker >/dev/null 2>&1; then
+  if ! docker compose version >/dev/null 2>&1; then
+    echo "⬇️  Installing Docker compose plugin…"
+    sudo apt-get install -y docker-compose-plugin
+  fi
+elif command -v podman >/dev/null 2>&1; then
+  if ! command -v podman-compose >/dev/null 2>&1; then
+    echo "⬇️  Installing podman-compose…"
+    sudo apt-get install -y podman-compose
+  fi
+else
+  read -r -p "No container engine found. Install Podman or Docker? [podman/docker] (default: podman): " choice
+  choice=${choice:-podman}
+  if [[ "$choice" == "docker" ]]; then
+    echo "⬇️  Installing Docker…"
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
+    rm get-docker.sh
+    sudo apt-get install -y docker-compose-plugin
+  else
+    echo "⬇️  Installing Podman…"
+    sudo apt-get install -y podman podman-compose
+  fi
 fi
 
 # ── Install Node dependencies ─────────────────────────────────
