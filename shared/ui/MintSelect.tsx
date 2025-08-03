@@ -26,7 +26,11 @@ export const MintSelect: React.FC<MintSelectProps> = ({ onNext }) => {
   return (
     <div>
       <h2 className="mb-2 text-lg font-semibold">Select Default Mint</h2>
-      <MintPicker value={mint} onChange={(e) => setMint(e.target.value)} />
+      <MintPicker
+        value={mint}
+        onChange={(e) => setMint(e.target.value)}
+        autoFocus
+      />
       <button
         onClick={handleNext}
         className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
