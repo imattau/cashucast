@@ -1,16 +1,16 @@
-room.cashucast.app {
+{$ROOM_HOST} {
     reverse_proxy / ws://ssb-room:3000
     encode zstd gzip
     rate_limit * 20r/s
 }
 
-tracker.cashucast.app {
+{$TRACKER_HOST} {
     reverse_proxy / ws://wt-tracker:8000
     encode zstd gzip
     rate_limit * 40r/s
 }
 
-dht.cashucast.app {
+{$DHT_HOST} {
     reverse_proxy / ws://dht-bridge:6881
     encode zstd gzip
     rate_limit * 30r/s
