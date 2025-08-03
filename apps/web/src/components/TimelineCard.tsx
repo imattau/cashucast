@@ -11,7 +11,7 @@ import {
 } from '../../../shared/ui';
 import { MessageCircle } from 'lucide-react';
 import { CommentsDrawer } from './CommentsDrawer';
-import BoostBadge from './BoostBadge';
+import BoostBadge, { setBoosters } from './BoostBadge';
 import { motion } from 'framer-motion';
 import { createRPCClient } from '../../../shared/rpc';
 
@@ -62,6 +62,10 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   const [profileOpen, setProfileOpen] = React.useState(false);
   const [commentsOpen, setCommentsOpen] = React.useState(false);
   const rpcRef = React.useRef<ReturnType<typeof createRPCClient> | null>(null);
+
+  React.useEffect(() => {
+    if (postId) setBoosters(postId, boosters);
+  }, [postId, boosters]);
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -144,7 +148,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
                   ↻
                 </button>
               )}
-              <BoostBadge users={boosters} />
+              {postId && <BoostBadge id={postId} />}
               {authorPubKey && postId && (
                 <ZapButton receiverPk={authorPubKey} refId={postId} />
               )}
