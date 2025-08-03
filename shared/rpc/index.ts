@@ -19,6 +19,19 @@ const TopTagsOpts = z.object({
 const FileSchema = z.any();
 const Magnet = z.any();
 
+const InitKeysSchema = z
+  .tuple([])
+  .rest(z.string().optional())
+  .refine((args) => args.length <= 2, {
+    message: 'Expected at most 2 arguments',
+  });
+const InitWalletSchema = z
+  .tuple([])
+  .rest(z.string().optional())
+  .refine((args) => args.length <= 1, {
+    message: 'Expected at most 1 argument',
+  });
+
 export const MethodDefinitions = {
   publishPost: z.tuple([PostSchema]),
   queryFeed: z.tuple([QueryOpts]),
@@ -31,8 +44,8 @@ export const MethodDefinitions = {
   stream: z.tuple([Magnet]),
   mint: z.tuple([z.number()]),
   sendZap: z.tuple([z.string(), z.number(), z.string()]),
-  initKeys: z.tuple([z.string().optional(), z.string().optional()]),
-  initWallet: z.tuple([z.string().optional()]),
+  initKeys: InitKeysSchema,
+  initWallet: InitWalletSchema,
   // allow 0, 1, or 2 files (we’ll guard in UI)
   importProfile: z.tuple([z.array(ProfileSchema).min(0).max(2)]),
 } as const;
@@ -71,7 +84,7 @@ type RPCPort = {
   start?: () => void;
 };
 
-const methodArgSchemas: Record<MethodName, z.ZodTuple<any, any>> = {
+const methodArgSchemas: Record<MethodName, z.ZodTypeAny> = {
   publishPost: MethodDefinitions.publishPost,
   queryFeed: MethodDefinitions.queryFeed,
   reportPost: MethodDefinitions.reportPost,
