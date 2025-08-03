@@ -3,7 +3,6 @@
  * search. Exposes an RPC API used by the application to publish and query
  * posts without blocking the main thread.
  */
-import { Buffer } from 'buffer';
 import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
 import MiniSearch from 'minisearch';
@@ -14,7 +13,10 @@ import { get as getHistory } from '../../shared/store/history-worker';
 // worker is bundled for the browser the global `Buffer` does not exist yet and
 // those modules throw a `ReferenceError`. To avoid that we polyfill `Buffer`
 // before dynamically importing modules that rely on it.
-globalThis.Buffer = globalThis.Buffer || Buffer;
+if (!globalThis.Buffer) {
+  const { Buffer } = await import('buffer/');
+  (globalThis as any).Buffer = Buffer;
+}
 
 // Dynamic import ensures `Buffer` is available before evaluating modules that
 // depend on it (e.g. `ssb-browser-core`).

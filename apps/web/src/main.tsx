@@ -1,14 +1,19 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { Buffer } from "buffer";
 
-// Ensure Node-style Buffer is available before loading the rest of the app.
-globalThis.Buffer = globalThis.Buffer || Buffer;
+async function bootstrap() {
+  // Polyfill Node's `Buffer` globally when running in the browser. Vite
+  // externalizes built-in modules, so we dynamically load the `buffer`
+  // package's implementation instead.
+  if (!globalThis.Buffer) {
+    const { Buffer } = await import("buffer/");
+    (globalThis as any).Buffer = Buffer;
+  }
 
-const container = document.getElementById("root")!;
-const root = createRoot(container);
-
-// Dynamically import the application only after Buffer has been polyfilled.
-import("./App").then(({ default: App }) => {
+  const container = document.getElementById("root")!;
+  const root = createRoot(container);
+  const { default: App } = await import("./App");
   root.render(<React.StrictMode><App /></React.StrictMode>);
-});
+}
+
+bootstrap();
