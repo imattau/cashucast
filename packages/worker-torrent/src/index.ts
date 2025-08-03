@@ -86,7 +86,7 @@ async function stream(magnet: string): Promise<string> {
         const chunks: BlobPart[] = [];
         blobStream.on('data', (ch: Uint8Array) => chunks.push(new Uint8Array(ch)));
         blobStream.on('end', () => {
-          const file = new Blob(chunks, { type: 'video/mp4' });
+          const file = new Blob(chunks, { type: 'video/webm' });
           touch(infoHash, file.size);
           resolve(URL.createObjectURL(file));
         });

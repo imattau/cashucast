@@ -11,7 +11,7 @@ const { seedMock, addMock } = vi.hoisted(() => ({
     cb({ magnetURI: 'magnet:?xt=urn:btih:test', files: [{ getBlob: (cb2: any) => cb2(null, file) }] })
   ),
   addMock: vi.fn((_magnet: string, _opts: any, cb: any) => {
-    const blob = new Blob(['data'], { type: 'video/mp4' });
+    const blob = new Blob(['data'], { type: 'video/webm' });
     cb({ files: [{ getBlob: (cb2: any) => cb2(null, blob) }] });
   }),
 }));
@@ -116,7 +116,7 @@ async function setup(ssbHasBlob: boolean) {
 describe('worker-torrent', () => {
   it('seeds a file and returns a magnet URI', async () => {
     const { call, clientMock, cleanup } = await setup(false);
-    const magnet = await call('seedFile', new Blob(['hello']));
+    const magnet = await call('seedFile', new Blob(['hello'], { type: 'video/webm' }));
     expect(clientMock.seed).toHaveBeenCalled();
     expect(magnet).toMatch(/^magnet:/);
     cleanup();
