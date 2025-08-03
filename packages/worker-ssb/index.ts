@@ -125,6 +125,27 @@ createRPCHandler(self as any, {
       .map((m) => m.text);
   },
   /**
+   * Append a comment for a given post to the local log.
+   *
+   * @param opts - The post identifier and comment text.
+   * @returns The stored comment with generated id and timestamp.
+   */
+  publishComment: async (opts: { postId: string; text: string }) => {
+    const comment = {
+      type: 'comment',
+      id: crypto.randomUUID(),
+      postId: opts.postId,
+      text: opts.text,
+      ts: Date.now(),
+    };
+    ssbLog.push(comment);
+    try {
+      const ssb = getSSB();
+      ssb.db.publish(comment, () => {});
+    } catch (_) {}
+    return comment;
+  },
+  /**
    * Retrieve posts from the log applying basic moderation rules and tag
    * filters. Reported posts over a threshold or posts from blocked users are
    * excluded.
