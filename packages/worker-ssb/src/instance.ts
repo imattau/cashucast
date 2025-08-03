@@ -15,11 +15,8 @@ export function getSSB() {
   if (ssb) return ssb;
 
   const { roomUrl } = useSettings.getState();
-
-  ssb = initSSB('cashucast-ssb', {
-    // force IndexedDB storage in Web Workers
-    storage: randomAccessIdb,
-  });
+  // Force IndexedDB storage so we don’t pull in chrome-file
+  ssb = initSSB('cashucast-ssb', { storage: randomAccessIdb });
 
   if (roomUrl) {
     try {
