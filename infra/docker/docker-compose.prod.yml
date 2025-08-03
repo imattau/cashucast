@@ -9,7 +9,12 @@ services:
 
   wt-tracker:
     image: nickert/webtorrent-tracker:latest
-    command: --ws --stats --whitelist ${APP_DOMAIN}
+    command:
+      - webtorrent-tracker
+      - --ws
+      - --stats
+      - --whitelist
+      - cashucast.app
     restart: unless-stopped
 
   wt-seeder:
