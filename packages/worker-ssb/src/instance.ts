@@ -1,5 +1,5 @@
 import { useSettings } from '../../../shared/store/settings';
-import { init as ssbInit } from 'ssb-browser-core/net';
+import * as ssbNet from 'ssb-browser-core/net';
 import * as ssbBlobs from 'ssb-blobs';
 
 let ssb: any = (globalThis as any).__cashuSSB;
@@ -9,7 +9,7 @@ export function getSSB() {
 
   const { roomUrl } = useSettings.getState();
 
-  ssb = ssbInit('cashucast-ssb', {}, (stack: any) =>
+  ssb = ssbNet.init('cashucast-ssb', {}, (stack: any) =>
     stack.use(ssbBlobs)
   );
 
