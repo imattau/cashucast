@@ -14,7 +14,8 @@ import randomAccessIdb from 'random-access-idb';
 // 'default'". By loading the module dynamically we can access the `init`
 // function from the module namespace regardless of how the bundler expresses
 // its exports.
-const { init: initSSB } = await import('ssb-browser-core/net.js');
+const mod = await import('ssb-browser-core/net.js');
+const initSSB = mod.init ?? mod.default;
 
 let ssb: any = (globalThis as any).__cashuSSB;
 
