@@ -89,10 +89,14 @@ describe('Onboarding steps', () => {
       root.render(<Onboarding />);
     });
 
-      expect(container.textContent).toContain('New Account');
-      const newBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('New Account'),
-      )!;
+    expect(container.textContent).toContain('New Account');
+    expect(container.textContent).toContain('Import Existing Profile');
+    const buttons = Array.from(container.querySelectorAll('button'));
+    const newBtn = buttons.find((b) => b.textContent?.includes('New Account'))!;
+    const importBtn = buttons.find((b) =>
+      b.textContent?.includes('Import Existing Profile'),
+    );
+    expect(importBtn).toBeTruthy();
     await act(async () => {
       newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
@@ -104,9 +108,9 @@ describe('Onboarding steps', () => {
     await act(async () => {
       root.render(<Onboarding />);
     });
-      const importBtn = Array.from(container.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Import Existing Profile'),
-      )!;
+    const importBtn = Array.from(container.querySelectorAll('button')).find(
+      (b) => b.textContent?.includes('Import Existing Profile'),
+    )!;
     await act(async () => {
       importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });

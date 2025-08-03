@@ -213,6 +213,7 @@ function OnboardingContent() {
               setMode('import');
               setStep(2);
             }}
+            aria-label="Import Existing Profile"
           >
             <Upload className="h-5 w-5" />
             <div className="text-left">
