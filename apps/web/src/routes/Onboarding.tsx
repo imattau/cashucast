@@ -287,19 +287,26 @@ function OnboardingContent() {
                   <label htmlFor="avatar-upload" className="sr-only">
                     Avatar
                   </label>
-                  <input
-                    {...getInputProps({
-                      id: 'avatar-upload',
-                      name: 'avatar',
-                      accept: 'image/*',
-                      'aria-describedby': 'avatar-upload-caption',
-                    })}
-                  />
-                  <span id="avatar-upload-caption">Drop avatar image</span>
-                </div>
-              )}
-            </Dropzone>
-          )}
+                    <input
+                      {...getInputProps({
+                        id: 'avatar-upload',
+                        name: 'avatar',
+                        accept: 'image/*',
+                        'aria-describedby': 'avatar-upload-caption',
+                      })}
+                    />
+                    <Avatar
+                      name="Placeholder"
+                      size={128}
+                      className="border"
+                    />
+                    <span id="avatar-upload-caption" className="sr-only">
+                      Drop avatar image
+                    </span>
+                  </div>
+                )}
+              </Dropzone>
+            )}
           {avatarSrc && (
             <div className="flex flex-col items-center">
               <div className="relative w-full max-w-xs aspect-square bg-gray-200 mb-4">
