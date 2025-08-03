@@ -131,7 +131,6 @@ function OnboardingContent() {
         const profileData = { ...parsedProfile };
         if (parsedWallet) profileData.cashuMnemonic = parsedWallet.cashuMnemonic;
         importProfile(profileData);
-        setStep(3);
         setProfileError(null);
         setWalletError(null);
       } catch {
@@ -170,6 +169,7 @@ function OnboardingContent() {
 
   return (
     <div className="space-y-4">
+      <div className="text-sm text-gray-500">Step {step} of 3</div>
       {step === 1 && (
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold">Choose how to get started</h2>
@@ -278,6 +278,27 @@ function OnboardingContent() {
               )}
             </div>
           )}
+          <div className="flex justify-between">
+            <button
+              className="bg-gray-200 text-gray-700 py-2 px-4 rounded"
+              onClick={() => setStep(1)}
+            >
+              Back
+            </button>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded"
+              onClick={() => {
+                const err = validateUsername(username);
+                if (err) {
+                  setUsernameError(err);
+                  return;
+                }
+                setStep(3);
+              }}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
       {step === 2 && mode === 'import' && (
@@ -356,6 +377,21 @@ function OnboardingContent() {
               </div>
             )}
           </Dropzone>
+          <div className="flex justify-between">
+            <button
+              className="bg-gray-200 text-gray-700 py-2 px-4 rounded"
+              onClick={() => setStep(1)}
+            >
+              Back
+            </button>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded"
+              onClick={() => setStep(3)}
+              disabled={!profile}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
       {step === 3 && (
@@ -366,12 +402,20 @@ function OnboardingContent() {
             )}
             <span>{mode === 'new' ? username : profile?.username}</span>
           </div>
-          <button
-            className="bg-blue-500 text-white py-2 rounded"
-            onClick={confirm}
-          >
-            Confirm
-          </button>
+          <div className="flex justify-between">
+            <button
+              className="bg-gray-200 text-gray-700 py-2 px-4 rounded"
+              onClick={() => setStep(2)}
+            >
+              Back
+            </button>
+            <button
+              className="bg-blue-500 text-white py-2 px-4 rounded"
+              onClick={confirm}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
       {toast && (
