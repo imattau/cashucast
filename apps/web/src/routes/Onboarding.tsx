@@ -53,9 +53,11 @@ function OnboardingContent() {
   const [croppedArea, setCroppedArea] = useState<any>(null);
   const [avatarHash, setAvatarHash] = useState<string | undefined>();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
     if (step === 2 && mode === 'new' && !keys && !mnemonic) {
+      setGenerating(true);
       const ssbWorker = new Worker(
         new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
         { type: 'module' },
@@ -71,6 +73,7 @@ function OnboardingContent() {
         if (k) setKeys(k);
         const m: any = await cashuCall('initWallet');
         setMnemonic(m);
+        setGenerating(false);
       })();
       return () => {
         ssbWorker.terminate();
@@ -122,6 +125,8 @@ function OnboardingContent() {
   const [walletJson, setWalletJson] = useState<any>(null);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [walletError, setWalletError] = useState<string | null>(null);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [walletLoading, setWalletLoading] = useState(false);
 
   const validateUsername = (name: string): string | null => {
     if (name.length < 3 || name.length > 30)
@@ -229,6 +234,7 @@ function OnboardingContent() {
       {step === 2 && mode === 'new' && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Profile Details</h2>
+          {generating && <p className="text-sm text-gray-500">Loading...</p>}
           <label htmlFor="username" className="block text-sm font-medium">
             Username
           </label>
@@ -316,6 +322,7 @@ function OnboardingContent() {
             <button
               className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => setStep(1)}
+              disabled={generating}
             >
               Back
             </button>
@@ -329,6 +336,7 @@ function OnboardingContent() {
                 }
                 setStep(3);
               }}
+              disabled={generating}
             >
               Next
             </button>
@@ -342,12 +350,15 @@ function OnboardingContent() {
             onDrop={async (files) => {
               const f = files[0];
               if (!f) return;
+              setProfileLoading(true);
               try {
                 const txt = await f.text();
                 setProfileJson(JSON.parse(txt));
                 setProfileError(null);
               } catch {
                 setProfileError('Invalid JSON');
+              } finally {
+                setProfileLoading(false);
               }
             }}
           >
@@ -376,7 +387,9 @@ function OnboardingContent() {
                     'aria-describedby': 'profile-upload-caption',
                   })}
                 />
-                <p id="profile-upload-caption">Drop profile backup JSON</p>
+                <p id="profile-upload-caption">
+                  {profileLoading ? 'Loading...' : 'Drop profile backup JSON'}
+                </p>
                 {profileError && (
                   <p className="mt-2 text-sm text-red-500">{profileError}</p>
                 )}
@@ -387,12 +400,15 @@ function OnboardingContent() {
             onDrop={async (files) => {
               const f = files[0];
               if (!f) return;
+              setWalletLoading(true);
               try {
                 const txt = await f.text();
                 setWalletJson(JSON.parse(txt));
                 setWalletError(null);
               } catch {
                 setWalletError('Invalid JSON');
+              } finally {
+                setWalletLoading(false);
               }
             }}
           >
@@ -421,7 +437,9 @@ function OnboardingContent() {
                     'aria-describedby': 'wallet-upload-caption',
                   })}
                 />
-                <p id="wallet-upload-caption">Drop wallet backup JSON</p>
+                <p id="wallet-upload-caption">
+                  {walletLoading ? 'Loading...' : 'Drop wallet backup JSON'}
+                </p>
                 {walletError && (
                   <p className="mt-2 text-sm text-red-500">{walletError}</p>
                 )}
@@ -432,13 +450,14 @@ function OnboardingContent() {
             <button
               className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => setStep(1)}
+              disabled={profileLoading || walletLoading}
             >
               Back
             </button>
             <button
               className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
               onClick={() => setStep(3)}
-              disabled={!profile}
+              disabled={!profile || profileLoading || walletLoading}
             >
               Next
             </button>
