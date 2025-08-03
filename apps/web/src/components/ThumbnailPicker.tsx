@@ -99,7 +99,10 @@ export default function ThumbnailPicker({ file, onSelect }: ThumbnailPickerProps
               {...getRootProps()}
               className="w-24 h-24 flex items-center justify-center border-2 border-dashed cursor-pointer"
             >
-              <input {...getInputProps()} />
+              <label htmlFor="thumbnail-upload" className="sr-only">
+                Upload thumbnail
+              </label>
+              <input {...getInputProps({ id: 'thumbnail-upload', name: 'thumbnail' })} />
               <span>Upload</span>
             </div>
           )}

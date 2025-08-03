@@ -26,7 +26,15 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({ onFile }) => {
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
     >
-      <input type="file" onChange={handleChange} />
+      <label htmlFor="file-upload" className="sr-only">
+        Upload file
+      </label>
+      <input
+        id="file-upload"
+        name="file"
+        type="file"
+        onChange={handleChange}
+      />
       <p className="text-center text-sm mt-2">Drop or select a video file</p>
     </div>
   );

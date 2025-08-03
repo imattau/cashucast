@@ -47,7 +47,12 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
             )}
           </div>
           <form onSubmit={handleSubmit} className="flex gap-2 border-t p-4">
+            <label htmlFor="comment" className="sr-only">
+              Add a comment
+            </label>
             <input
+              id="comment"
+              name="comment"
               className="flex-1 rounded border px-2 py-1"
               placeholder="Add a comment..."
               value={text}

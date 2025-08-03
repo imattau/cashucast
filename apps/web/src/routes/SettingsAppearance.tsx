@@ -43,18 +43,20 @@ export const SettingsAppearance: React.FC = () => {
           Reset App
         </button>
       </div>
-      <label className="block mt-6">
-        <span className="text-sm">Low-seeder slot every {lowSeedRatio} clips</span>
-        <input
-          type="range"
-          min={5}
-          max={20}
-          step={1}
-          value={lowSeedRatio}
-          onChange={(e) => setLowSeedRatio(Number(e.target.value))}
-          className="w-full"
-        />
+      <label htmlFor="low-seed-ratio" className="block mt-6 text-sm">
+        Low-seeder slot every {lowSeedRatio} clips
       </label>
+      <input
+        id="low-seed-ratio"
+        name="lowSeedRatio"
+        type="range"
+        min={5}
+        max={20}
+        step={1}
+        value={lowSeedRatio}
+        onChange={(e) => setLowSeedRatio(Number(e.target.value))}
+        className="w-full"
+      />
     </div>
   );
 };

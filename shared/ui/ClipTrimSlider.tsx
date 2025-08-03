@@ -27,14 +27,30 @@ export const ClipTrimSlider: React.FC<ClipTrimSliderProps> = ({
 
   return (
     <div className="flex flex-col gap-2">
+      <label htmlFor="start" className="sr-only">
+        Start time
+      </label>
       <input
+        id="start"
+        name="start"
         type="range"
         min={0}
         max={duration}
         value={start}
         onChange={handleStart}
       />
-      <input type="range" min={0} max={duration} value={end} onChange={handleEnd} />
+      <label htmlFor="end" className="sr-only">
+        End time
+      </label>
+      <input
+        id="end"
+        name="end"
+        type="range"
+        min={0}
+        max={duration}
+        value={end}
+        onChange={handleEnd}
+      />
       <div className="text-sm text-center">
         {start}s - {end}s
       </div>

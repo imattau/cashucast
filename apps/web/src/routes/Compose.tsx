@@ -52,8 +52,10 @@ export default function Compose() {
           {magnet && <ThumbnailPicker file={file} onSelect={setThumbHash} />}
           <CaptionTextarea value={caption} onChange={setCaption} />
           <TagInput value={tags} setValue={setTags} />
-          <label className="flex items-center gap-2">
+          <label htmlFor="nsfw" className="flex items-center gap-2">
             <input
+              id="nsfw"
+              name="nsfw"
               type="checkbox"
               checked={nsfw}
               onChange={(e) => setNSFW(e.target.checked)}

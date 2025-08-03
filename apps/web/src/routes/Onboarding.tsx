@@ -169,9 +169,15 @@ function OnboardingContent() {
       )}
       {step === 2 && mode === 'new' && (
         <div className="space-y-4">
+          <label htmlFor="username" className="sr-only">
+            Username
+          </label>
           <input
+            id="username"
+            name="username"
             className="w-full border p-2 rounded"
             placeholder="Username"
+            autoComplete="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -187,7 +193,10 @@ function OnboardingContent() {
                   {...getRootProps()}
                   className="w-32 h-32 border-2 border-dashed flex items-center justify-center cursor-pointer"
                 >
-                  <input {...getInputProps()} />
+                  <label htmlFor="avatar-upload" className="sr-only">
+                    Avatar
+                  </label>
+                  <input {...getInputProps({ id: 'avatar-upload', name: 'avatar' })} />
                   <span>Avatar</span>
                 </div>
               )}
@@ -236,7 +245,12 @@ function OnboardingContent() {
                 {...getRootProps()}
                 className="p-4 border-2 border-dashed cursor-pointer text-center"
               >
-                <input {...getInputProps()} />
+                <label htmlFor="profile-upload" className="sr-only">
+                  Profile backup JSON
+                </label>
+                <input
+                  {...getInputProps({ id: 'profile-upload', name: 'profile' })}
+                />
                 <p>Drop profile backup JSON</p>
               </div>
             )}
@@ -256,7 +270,12 @@ function OnboardingContent() {
                 {...getRootProps()}
                 className="p-4 border-2 border-dashed cursor-pointer text-center"
               >
-                <input {...getInputProps()} />
+                <label htmlFor="wallet-upload" className="sr-only">
+                  Wallet backup JSON
+                </label>
+                <input
+                  {...getInputProps({ id: 'wallet-upload', name: 'wallet' })}
+                />
                 <p>Drop wallet backup JSON</p>
               </div>
             )}
