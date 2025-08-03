@@ -272,6 +272,10 @@ export default function Onboarding() {
     <Dialog.Root open>
       <Dialog.Overlay className="fixed inset-0 bg-black/50" />
       <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4">
+        <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
+        <Dialog.Description className="sr-only">
+          Set up your profile to start using CashuCast
+        </Dialog.Description>
         <div className="bg-white rounded p-4 w-full max-w-md">
           <OnboardingContent />
         </div>
@@ -288,6 +292,10 @@ export function OnboardingDialog() {
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Overlay className="fixed inset-0 bg-black/50" />
       <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4">
+        <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
+        <Dialog.Description className="sr-only">
+          Set up your profile to start using CashuCast
+        </Dialog.Description>
         <div className="bg-white rounded p-4 w-full max-w-md">
           <OnboardingContent />
         </div>

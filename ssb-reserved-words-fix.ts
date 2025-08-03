@@ -36,8 +36,13 @@ export default function ssbReservedWordsFix(): VitePlugin {
           .replace("const caps = require('ssb-caps')", "import caps from 'ssb-caps';")
           .replace("const ssbKeys = require('ssb-keys')", "import ssbKeys from 'ssb-keys';")
           .replace("const helpers = require('./core-helpers')", "import helpers from './core-helpers';")
-          .replace("const path = require('path')", "import path from 'path';")
-          .replace('exports.init = function', 'export function init');
+          .replace("const path = require('path')", '')
+          .replace('exports.init = function(dir, overwriteConfig, extraModules) {',
+            'export function init(dir, overwriteConfig = {}, extraModules) {')
+          .replace(
+            "var keys = ssbKeys.loadOrCreateSync(path.join(dir, 'secret'))",
+            'var keys = overwriteConfig.keys || ssbKeys.generate()'
+          );
         return { code: transformed, map: null };
       }
       if (normalized.includes('ssb-browser-core/dist/bundle-core.js')) {
@@ -100,8 +105,13 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
           .replace("const caps = require('ssb-caps')", "import caps from 'ssb-caps';")
           .replace("const ssbKeys = require('ssb-keys')", "import ssbKeys from 'ssb-keys';")
           .replace("const helpers = require('./core-helpers')", "import helpers from './core-helpers';")
-          .replace("const path = require('path')", "import path from 'path';")
-          .replace('exports.init = function', 'export function init');
+          .replace("const path = require('path')", '')
+          .replace('exports.init = function(dir, overwriteConfig, extraModules) {',
+            'export function init(dir, overwriteConfig = {}, extraModules) {')
+          .replace(
+            "var keys = ssbKeys.loadOrCreateSync(path.join(dir, 'secret'))",
+            'var keys = overwriteConfig.keys || ssbKeys.generate()'
+          );
         return { contents: code, loader: 'js' };
       });
 
