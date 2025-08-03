@@ -2,7 +2,8 @@ version: "3.9"
 
 services:
   ssb-room:
-    image: staltz/ssb-room:latest
+    image: ssbc/ssb-room2:latest
+    restart: unless-stopped
     ports: [ "4545:3000" ]
     environment:
       ROOM_PUBLISH: "false"
@@ -10,8 +11,9 @@ services:
       ROOM_HOST: "localhost"
 
   wt-tracker:
-    image: webtor/webtorrent-tracker:latest
-    command: --ws --stats
+    image: nickert/webtorrent-tracker:latest
+    command: --ws --stats --whitelist "localhost"
+    restart: unless-stopped
     ports: [ "8000:8000" ]
 
   wt-seeder:
