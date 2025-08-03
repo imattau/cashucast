@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import "../index.css";
 
 async function bootstrap() {
   // Polyfill Node's `Buffer` globally when running in the browser. Vite
