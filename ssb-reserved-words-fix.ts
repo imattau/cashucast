@@ -51,6 +51,13 @@ export default function ssbReservedWordsFix(): VitePlugin {
           );
         return { code: transformed, map: null };
       }
+      if (id.includes('ssb-blobs/index.js')) {
+        let transformed = code.replace(
+          "const path = require('path')",
+          "import path from 'path';",
+        );
+        return { code: transformed, map: null };
+      }
       return null;
     },
   };
@@ -108,6 +115,15 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
             'function requestQuota(t,e,r){if("function"==typeof e)return requestQuota(t,!0,e);persistentStorage.queryUsageAndQuota(function(i,n){if(n&&!e)return r(null,n);persistentStorage.requestQuota(t,function(t){r(null,t)},r)},r)}',
             'async function requestQuota(t,e,r){try{if("function"==typeof e)return requestQuota(t,!0,e);const n=persistentStorage.persist?await persistentStorage.persist():false;const i=await persistentStorage.estimate();r(null,i.quota);}catch(i){r(i);}}',
           );
+        return { contents: code, loader: 'js' };
+      });
+
+      build.onLoad({ filter: /ssb-blobs\/index\.js$/ }, async (args) => {
+        let code = await readFile(args.path, 'utf8');
+        code = code.replace(
+          "const path = require('path')",
+          "import path from 'path';",
+        );
         return { contents: code, loader: 'js' };
       });
     },
