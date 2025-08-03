@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createRPCClient } from '../../../shared/rpc';
 import type { Post } from '../../../shared/types';
 import { useSearch } from '../../../shared/store/search';
-import { TimelineCard } from '../../../shared/ui';
+import { TimelineCard } from '../components/TimelineCard';
 
 interface TagCount { tag: string; count: number }
 

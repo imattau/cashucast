@@ -1,5 +1,5 @@
 import React from 'react';
-import { TimelineCard } from '../../../shared/ui';
+import { TimelineCard } from '../components/TimelineCard';
 import { useSearch } from '../../../shared/store/search';
 
 export default function SearchResults() {
