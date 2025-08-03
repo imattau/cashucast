@@ -22,4 +22,15 @@ describe('RPC helpers', () => {
     const call = createRPCClient(port1 as any);
     expect(() => call('mint', 'bad' as any)).toThrow();
   });
+
+  it('allows init methods with no arguments', async () => {
+    const { port1, port2 } = new MessageChannel();
+    const call = createRPCClient(port1 as any);
+    createRPCHandler(port2 as any, {
+      initKeys: async () => ({ pk: 'pk', sk: 'sk' }),
+      initWallet: async () => 'mnemonic',
+    });
+    await expect(call('initKeys')).resolves.toEqual({ pk: 'pk', sk: 'sk' });
+    await expect(call('initWallet')).resolves.toBe('mnemonic');
+  });
 });
