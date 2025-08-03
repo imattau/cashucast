@@ -42,6 +42,7 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ onFinish }) => {
       <button
         onClick={install}
         className="rounded bg-blue-500 px-4 py-2 text-white"
+        autoFocus
       >
         {deferred ? 'Install' : 'Continue'}
       </button>
