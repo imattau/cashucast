@@ -159,4 +159,12 @@ createRPCHandler(self as any, {
     } catch (_) {}
     return msg;
   },
+  publish: async (msg: any) => {
+    ssbLog.push(msg);
+    try {
+      const ssb = getSSB();
+      ssb.db.publish(msg, () => {});
+    } catch (_) {}
+    return msg;
+  },
 });
