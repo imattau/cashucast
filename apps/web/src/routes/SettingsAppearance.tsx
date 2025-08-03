@@ -1,7 +1,12 @@
 import { useProfile } from '../../shared/store/profile';
+import { useSettings } from '../../shared/store/settings';
 
 export const SettingsAppearance: React.FC = () => {
   const exportProfile = useProfile((s) => s.exportProfile);
+  const { lowSeedRatio, setLowSeedRatio } = useSettings((s) => ({
+    lowSeedRatio: s.lowSeedRatio,
+    setLowSeedRatio: s.setLowSeedRatio,
+  }));
 
   const onExport = () => {
     const blob = exportProfile();
@@ -38,6 +43,18 @@ export const SettingsAppearance: React.FC = () => {
           Reset App
         </button>
       </div>
+      <label className="block mt-6">
+        <span className="text-sm">Low-seeder slot every {lowSeedRatio} clips</span>
+        <input
+          type="range"
+          min={5}
+          max={20}
+          step={1}
+          value={lowSeedRatio}
+          onChange={(e) => setLowSeedRatio(Number(e.target.value))}
+          className="w-full"
+        />
+      </label>
     </div>
   );
 };

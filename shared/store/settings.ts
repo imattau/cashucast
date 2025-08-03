@@ -8,12 +8,14 @@ interface SettingsState {
   enableDht: boolean;
   roomUrl: string;
   trackerUrls: string[];
+  lowSeedRatio: number;
   setShowNSFW: (v: boolean) => void;
   setMaxBlobMB: (mb: number) => void;
   toggleDht: () => void;
   setRoomUrl: (u: string) => void;
   addTracker: (u: string) => void;
   removeTracker: (u: string) => void;
+  setLowSeedRatio: (n: number) => void;
 }
 
 export const useSettings = create<SettingsState>()(
@@ -26,6 +28,7 @@ export const useSettings = create<SettingsState>()(
         enableDht: true,
         roomUrl: room,
         trackerUrls: trackerList,
+        lowSeedRatio: 10, // 1 in 10
         setShowNSFW: (v) => set({ showNSFW: v }),
         setRoomUrl: (u) => set({ roomUrl: u }),
         addTracker: (u) =>
@@ -38,6 +41,9 @@ export const useSettings = create<SettingsState>()(
         },
         toggleDht() {
           set({ enableDht: !get().enableDht });
+        },
+        setLowSeedRatio(n: number) {
+          set({ lowSeedRatio: n });
         },
       };
     },
