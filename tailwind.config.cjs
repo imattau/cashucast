@@ -30,6 +30,9 @@ module.exports = {
       transitionTimingFunction: {
         ez: 'cubic-bezier(0.25,0.1,0.25,1)',
       },
+      transitionProperty: {
+        transform: 'transform',
+      },
     },
   },
   plugins: [
