@@ -79,13 +79,21 @@ export default function SearchBar() {
   return (
     <div ref={containerRef} className="fixed top-2 right-2 z-50">
       {open ? (
-        <input
-          autoFocus
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          className="w-[240px] rounded border border-gray-300 px-2 py-1"
-          placeholder="Search"
-        />
+        <>
+          <label htmlFor="search" className="sr-only">
+            Search
+          </label>
+          <input
+            id="search"
+            name="search"
+            autoComplete="off"
+            autoFocus
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className="w-[240px] rounded border border-gray-300 px-2 py-1"
+            placeholder="Search"
+          />
+        </>
       ) : (
         <button
           aria-label="Search"

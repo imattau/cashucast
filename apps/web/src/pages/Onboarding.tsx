@@ -10,12 +10,18 @@ export default function Onboarding() {
       <p className="mb-6 text-sm text-white/80">Set up your profile to start using CashuCast</p>
 
       <div className="w-full max-w-md bg-white/5 p-6 rounded-xl flex flex-col gap-4 items-center">
+        <label htmlFor="display-name" className="sr-only">
+          Display Name
+        </label>
         <input
+          id="display-name"
+          name="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Enter your display name"
           className="w-full px-4 py-2 rounded bg-black/80 border border-white/20 text-white"
+          autoComplete="name"
         />
 
         <button

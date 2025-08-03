@@ -8,8 +8,10 @@ export const Settings: React.FC = () => {
 
   return (
     <div className="p-4">
-      <label className="flex items-center gap-2">
+      <label htmlFor="show-nsfw" className="flex items-center gap-2">
         <input
+          id="show-nsfw"
+          name="showNSFW"
           type="checkbox"
           checked={showNSFW}
           onChange={(e) => setShowNSFW(e.target.checked)}

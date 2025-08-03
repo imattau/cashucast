@@ -9,11 +9,18 @@ export interface CaptionTextareaProps {
 }
 
 export const CaptionTextarea: React.FC<CaptionTextareaProps> = ({ value, onChange }) => (
-  <textarea
-    className="w-full p-2 border rounded"
-    placeholder="Add a caption"
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-  />
+  <>
+    <label htmlFor="caption" className="sr-only">
+      Caption
+    </label>
+    <textarea
+      id="caption"
+      name="caption"
+      className="w-full p-2 border rounded"
+      placeholder="Add a caption"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  </>
 );
 

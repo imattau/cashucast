@@ -17,14 +17,16 @@ export const SettingsNetwork: React.FC = () => {
     <div className="p-4 space-y-6">
       <h2 className="text-xl font-semibold">Network</h2>
 
-      <label className="block">
-        <span className="text-sm">SSB Room URL</span>
-        <input
-          className="mt-1 w-full rounded border p-2"
-          value={roomUrl}
-          onChange={(e) => setRoomUrl(e.target.value)}
-        />
+      <label htmlFor="room-url" className="block text-sm">
+        SSB Room URL
       </label>
+      <input
+        id="room-url"
+        name="roomUrl"
+        className="mt-1 w-full rounded border p-2"
+        value={roomUrl}
+        onChange={(e) => setRoomUrl(e.target.value)}
+      />
 
       <div>
         <span className="text-sm">WebTorrent Trackers</span>
@@ -43,7 +45,12 @@ export const SettingsNetwork: React.FC = () => {
         </ul>
 
         <div className="mt-2 flex gap-2">
+          <label htmlFor="tracker" className="sr-only">
+            Tracker URL
+          </label>
           <input
+            id="tracker"
+            name="tracker"
             className="flex-1 rounded border p-2"
             placeholder="wss://tracker.example"
             value={newTracker}
@@ -61,8 +68,14 @@ export const SettingsNetwork: React.FC = () => {
         </div>
       </div>
 
-      <label className="mt-6 flex items-center gap-2">
-        <input type="checkbox" checked={enableDht} onChange={toggleDht} />
+      <label htmlFor="enable-dht" className="mt-6 flex items-center gap-2">
+        <input
+          id="enable-dht"
+          name="enableDht"
+          type="checkbox"
+          checked={enableDht}
+          onChange={toggleDht}
+        />
         <span>Enable DHT bridge (better seeding)</span>
       </label>
     </div>

@@ -37,11 +37,17 @@ export const Stepper: React.FC = () => {
         {step === 0 && (
           <div>
             <h2 className="mb-2 text-lg font-semibold">Choose a username</h2>
+            <label htmlFor="stepper-username" className="sr-only">
+              Username
+            </label>
             <input
+              id="stepper-username"
+              name="username"
               className="mb-4 w-full rounded border p-2"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Username"
+              autoComplete="username"
             />
             <button
               disabled={!username}
