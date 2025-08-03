@@ -11,7 +11,12 @@ export default defineConfig({
   plugins: [ssbReservedWordsFix(), react()],
   css: {
     postcss: {
-      plugins: [tailwindcss(), autoprefixer()],
+      plugins: [
+        tailwindcss({
+          config: path.resolve(__dirname, '../../tailwind.config.cjs'),
+        }),
+        autoprefixer(),
+      ],
     },
   },
   resolve: {
