@@ -268,31 +268,40 @@ function OnboardingContent() {
                       }
                     },
                   })}
-                  className="w-32 h-32 border-2 border-dashed flex items-center justify-center cursor-pointer"
+                  className="relative w-32 h-32 border-2 border-dashed flex items-center justify-center cursor-pointer"
                   aria-describedby="avatar-upload-caption"
                 >
                   <label htmlFor="avatar-upload" className="sr-only">
                     Avatar
                   </label>
-                    <input
-                      {...getInputProps({
-                        id: 'avatar-upload',
-                        name: 'avatar',
-                        accept: 'image/*',
-                        'aria-describedby': 'avatar-upload-caption',
-                      })}
-                    />
-                    <Avatar
-                      name="Placeholder"
-                      size={128}
-                      className="border"
-                    />
-                    <span id="avatar-upload-caption" className="sr-only">
-                      Drop avatar image
+                  <input
+                    {...getInputProps({
+                      id: 'avatar-upload',
+                      name: 'avatar',
+                      accept: 'image/*',
+                      'aria-describedby': 'avatar-upload-caption',
+                    })}
+                  />
+                  <Avatar
+                    name="Placeholder"
+                    size={128}
+                    className="border"
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center bg-white/75 text-gray-500"
+                  >
+                    <Upload className="h-6 w-6 mb-1" />
+                    <span className="text-xs text-center px-1">
+                      Click or drop image to upload
                     </span>
                   </div>
-                )}
-              </Dropzone>
+                  <span id="avatar-upload-caption" className="sr-only">
+                    Drop avatar image
+                  </span>
+                </div>
+              )}
+            </Dropzone>
             )}
           {avatarSrc && (
             <div className="flex flex-col items-center">
