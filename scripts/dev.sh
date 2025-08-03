@@ -67,14 +67,18 @@ echo "🔧  Using container runtime: $CTL"
 
 # ── Local side-car stack (room, tracker, regtest mint) ────────
 # Some compose implementations only support either the short `-f` flag or
-# the long `--file` flag when selecting the compose file. Detect support and
-# fall back to the short flag if the long form is unavailable.
-if $COMPOSE --help 2>&1 | grep -q -- "--file"; then
+# the long `--file` flag when selecting the compose file. Try the long form
+# first and fall back to the short flag if necessary.
+COMPOSE_FILE=infra/docker/docker-compose.dev.yml
+if $COMPOSE --file "$COMPOSE_FILE" config >/dev/null 2>&1; then
   COMPOSE_FILE_FLAG="--file"
-else
+elif $COMPOSE -f "$COMPOSE_FILE" config >/dev/null 2>&1; then
   COMPOSE_FILE_FLAG="-f"
+else
+  echo "❌  Unable to determine compose file flag." >&2
+  exit 1
 fi
-$COMPOSE $COMPOSE_FILE_FLAG infra/docker/docker-compose.dev.yml up -d
+$COMPOSE $COMPOSE_FILE_FLAG "$COMPOSE_FILE" up -d
 
 # ── Node dependencies ─────────────────────────────────────────
 pnpm install --frozen-lockfile
