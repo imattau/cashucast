@@ -2,7 +2,7 @@
  * Licensed under GPL-3.0-or-later
  * React component for Onboarding.
  */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Dropzone from 'react-dropzone';
 import Cropper from 'react-easy-crop';
@@ -29,6 +29,14 @@ const BackupArray = z.array(ProfileSchema).min(1).max(2);
 function OnboardingContent() {
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<'new' | 'import' | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const first = containerRef.current?.querySelector<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    first?.focus();
+  }, [step]);
 
   const setProfile = useProfile((s) => s.setProfile);
   const importProfile = useProfile((s) => s.importProfile);
@@ -142,6 +150,17 @@ function OnboardingContent() {
 
   const [toast, setToast] = useState(false);
 
+  const stepTitle =
+    step === 1
+      ? 'Choose how to get started'
+      : step === 2 && mode === 'new'
+      ? 'Create your profile'
+      : step === 2 && mode === 'import'
+      ? 'Import your profile'
+      : step === 3
+      ? 'Confirm profile details'
+      : '';
+
   const confirm = async () => {
     const err = validateUsername(username);
     if (err) {
@@ -168,7 +187,10 @@ function OnboardingContent() {
   };
 
   return (
-    <div className="space-y-4">
+    <div ref={containerRef} className="space-y-4">
+      <div aria-live="polite" className="sr-only">
+        {stepTitle}
+      </div>
       <div className="text-sm text-gray-500">Step {step} of 3</div>
       {step === 1 && (
         <div className="flex flex-col gap-4">
@@ -232,9 +254,17 @@ function OnboardingContent() {
                 if (f) setAvatarSrc(URL.createObjectURL(f));
               }}
             >
-              {({ getRootProps, getInputProps }) => (
+              {({ getRootProps, getInputProps, open }) => (
                 <div
-                  {...getRootProps()}
+                  {...getRootProps({
+                    tabIndex: 0,
+                    onKeyDown: (e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        open();
+                      }
+                    },
+                  })}
                   className="w-32 h-32 border-2 border-dashed flex items-center justify-center cursor-pointer"
                   aria-describedby="avatar-upload-caption"
                 >
@@ -316,9 +346,17 @@ function OnboardingContent() {
               }
             }}
           >
-            {({ getRootProps, getInputProps }) => (
+            {({ getRootProps, getInputProps, open }) => (
               <div
-                {...getRootProps()}
+                {...getRootProps({
+                  tabIndex: 0,
+                  onKeyDown: (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      open();
+                    }
+                  },
+                })}
                 className="p-4 border-2 border-dashed cursor-pointer text-center"
                 aria-describedby="profile-upload-caption"
               >
@@ -353,9 +391,17 @@ function OnboardingContent() {
               }
             }}
           >
-            {({ getRootProps, getInputProps }) => (
+            {({ getRootProps, getInputProps, open }) => (
               <div
-                {...getRootProps()}
+                {...getRootProps({
+                  tabIndex: 0,
+                  onKeyDown: (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      open();
+                    }
+                  },
+                })}
                 className="p-4 border-2 border-dashed cursor-pointer text-center"
                 aria-describedby="wallet-upload-caption"
               >
