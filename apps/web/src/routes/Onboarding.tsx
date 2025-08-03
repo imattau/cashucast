@@ -15,17 +15,17 @@ import { z } from 'zod';
 import { UserPlus, Upload } from 'lucide-react';
 import { Avatar } from '../../shared/ui/Avatar';
 
-// schema for validating imported profile backups
-const ProfileSchema = z.object({
+// schemas for validating imported backups
+const ProfileBackupSchema = z.object({
   ssbPk: z.string(),
   ssbSk: z.string(),
-  cashuMnemonic: z.string(),
   username: z.string(),
   avatarBlob: z.string().optional(),
 });
 
-// allow importing one or two backup files
-const BackupArray = z.array(ProfileSchema).min(1).max(2);
+const WalletBackupSchema = z.object({
+  cashuMnemonic: z.string(),
+});
 
 function OnboardingContent() {
   const [step, setStep] = useState(1);
@@ -125,8 +125,12 @@ function OnboardingContent() {
   }, [avatarFile, avatarSrc, croppedArea]);
 
   // import states
-  const [profileJson, setProfileJson] = useState<any>(null);
-  const [walletJson, setWalletJson] = useState<any>(null);
+  const [profileBackup, setProfileBackup] = useState<
+    z.infer<typeof ProfileBackupSchema> | null
+  >(null);
+  const [walletBackup, setWalletBackup] = useState<
+    z.infer<typeof WalletBackupSchema> | null
+  >(null);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [walletError, setWalletError] = useState<string | null>(null);
   const [profileLoading, setProfileLoading] = useState(false);
@@ -141,21 +145,12 @@ function OnboardingContent() {
   };
 
   useEffect(() => {
-    if (mode === 'import' && (profileJson || walletJson)) {
-      try {
-        const data = [profileJson, walletJson].filter(Boolean);
-        const [parsedProfile, parsedWallet] = BackupArray.parse(data);
-        const profileData = { ...parsedProfile };
-        if (parsedWallet) profileData.cashuMnemonic = parsedWallet.cashuMnemonic;
-        importProfile(profileData);
-        setProfileError(null);
-        setWalletError(null);
-      } catch {
-        setProfileError('Invalid backup data');
-        setWalletError('Invalid backup data');
-      }
+    if (mode === 'import' && profileBackup) {
+      const profileData: any = { ...profileBackup };
+      if (walletBackup) profileData.cashuMnemonic = walletBackup.cashuMnemonic;
+      importProfile(profileData);
     }
-  }, [mode, profileJson, walletJson, importProfile]);
+  }, [mode, profileBackup, walletBackup, importProfile]);
 
   const [toast, setToast] = useState(false);
 
@@ -383,10 +378,12 @@ function OnboardingContent() {
               setProfileLoading(true);
               try {
                 const txt = await f.text();
-                setProfileJson(JSON.parse(txt));
+                const parsed = ProfileBackupSchema.parse(JSON.parse(txt));
+                setProfileBackup(parsed);
                 setProfileError(null);
               } catch {
-                setProfileError('Invalid JSON');
+                setProfileBackup(null);
+                setProfileError('Invalid profile backup');
               } finally {
                 setProfileLoading(false);
               }
@@ -417,9 +414,13 @@ function OnboardingContent() {
                     'aria-describedby': 'profile-upload-caption',
                   })}
                 />
-                <p id="profile-upload-caption">
-                  {profileLoading ? 'Loading...' : 'Drop profile backup JSON'}
-                </p>
+                <p id="profile-upload-caption">Drop profile backup JSON</p>
+                {profileLoading && (
+                  <p className="mt-2 text-sm text-gray-500">Loading...</p>
+                )}
+                {profileBackup && !profileError && !profileLoading && (
+                  <p className="mt-2 text-sm text-green-600">Profile backup loaded</p>
+                )}
                 {profileError && (
                   <p className="mt-2 text-sm text-red-500">{profileError}</p>
                 )}
@@ -434,10 +435,12 @@ function OnboardingContent() {
               setWalletLoading(true);
               try {
                 const txt = await f.text();
-                setWalletJson(JSON.parse(txt));
+                const parsed = WalletBackupSchema.parse(JSON.parse(txt));
+                setWalletBackup(parsed);
                 setWalletError(null);
               } catch {
-                setWalletError('Invalid JSON');
+                setWalletBackup(null);
+                setWalletError('Invalid wallet backup');
               } finally {
                 setWalletLoading(false);
               }
@@ -468,9 +471,13 @@ function OnboardingContent() {
                     'aria-describedby': 'wallet-upload-caption',
                   })}
                 />
-                <p id="wallet-upload-caption">
-                  {walletLoading ? 'Loading...' : 'Drop wallet backup JSON'}
-                </p>
+                <p id="wallet-upload-caption">Drop wallet backup JSON</p>
+                {walletLoading && (
+                  <p className="mt-2 text-sm text-gray-500">Loading...</p>
+                )}
+                {walletBackup && !walletError && !walletLoading && (
+                  <p className="mt-2 text-sm text-green-600">Wallet backup loaded</p>
+                )}
                 {walletError && (
                   <p className="mt-2 text-sm text-red-500">{walletError}</p>
                 )}

@@ -138,7 +138,7 @@ describe('Onboarding steps', () => {
       Object.defineProperty(input, 'files', { value: [file] });
       input.dispatchEvent(new Event('change', { bubbles: true }));
     });
-    expect(container.textContent).toContain('Invalid JSON');
+    expect(container.textContent).toContain('Invalid profile backup');
   });
 
   it('shows step indicator and Back navigation', async () => {
