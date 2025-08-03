@@ -9,12 +9,10 @@ export default defineConfig({
   plugins: [ssbReservedWordsFix(), react()],
   resolve: {
     alias: {
-      fs: resolve(__dirname, 'fs-shim.ts'),
       path: resolve(__dirname, 'path-shim.ts'),
     },
   },
   optimizeDeps: {
-    exclude: ['ssb-blobs'],
     esbuildOptions: {
       plugins: [ssbReservedWordsFixEsbuild()],
     },
