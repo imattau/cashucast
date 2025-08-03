@@ -22,13 +22,13 @@ services:
     restart: unless-stopped
 
   dht-bridge:
-    image: anacrolix/dhttracker:latest   # UDP↔WebSocket
+    image: gus33/bittorrent-dht-node:latest   # BitTorrent DHT node with HTTP API
     restart: unless-stopped
     environment:
       ADDR: ":6881"
     networks: [internal]
     healthcheck:
-      test: curl -f http://localhost:6881/debug || exit 1
+      test: curl -f http://localhost:6881 || exit 1
       interval: 30s
       retries: 3
 
