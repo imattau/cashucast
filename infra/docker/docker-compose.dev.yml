@@ -9,13 +9,8 @@ services:
       ROOM_HOST: "localhost"
 
   wt-tracker:
-    image: webtorrent/webtorrent-tracker:latest
-    command:
-      - webtorrent-tracker
-      - --ws
-      - --stats
-      - --whitelist
-      - localhost
+    image: schaurian/webtorrent-hybrid:5.0.2
+    command: ["sh", "-c", "npm i -g webtorrent-tracker && webtorrent-tracker --ws --stats --whitelist localhost"]
     restart: unless-stopped
     ports: [ "8000:8000" ]
 
