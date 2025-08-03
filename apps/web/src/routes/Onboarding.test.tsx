@@ -29,7 +29,7 @@ vi.mock('react-dropzone', () => ({
   },
 }));
 
-import Onboarding from './Onboarding';
+import Onboarding, { resetOnboardingState } from './Onboarding';
 import { useProfile } from '../../shared/store/profile';
 
 class MockWorker {
@@ -80,6 +80,7 @@ beforeEach(() => {
   useProfile.setState({ profile: undefined });
   document.body.innerHTML = '';
   dropHandlers.length = 0;
+  resetOnboardingState();
 });
 
 describe('Onboarding steps', () => {
@@ -116,6 +117,23 @@ describe('Onboarding steps', () => {
     });
     expect(container.textContent).toContain('Profile Backup');
     expect(container.textContent).toContain('Wallet Backup');
+  });
+
+  it('stays on step 2 after selecting New Account', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('New Account'),
+    )!;
+    await act(async () => {
+      newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    // wait to ensure no unmount occurs after async effects
+    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(container.textContent).toContain('Profile Details');
   });
 
   it(
@@ -221,6 +239,7 @@ describe('Onboarding steps', () => {
     // profile file dropped into wallet zone
     {
       dropHandlers.length = 0;
+      resetOnboardingState();
       const { container, root } = setupDom();
       await act(async () => {
         root.render(<Onboarding />);
