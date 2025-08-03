@@ -64,11 +64,16 @@ createRPCHandler(self as any, {
       ssbLog.filter((m) => m.type === 'block').map((m) => m.target)
     );
     const reportsMap = new Map<string, Set<string>>();
+    const boostsMap = new Map<string, any[]>();
     for (const msg of ssbLog) {
       if (msg.type === 'report') {
         const set = reportsMap.get(msg.target) || new Set();
         set.add(msg.fromPk);
         reportsMap.set(msg.target, set);
+      } else if (msg.type === 'repost') {
+        const arr = boostsMap.get(msg.link) || [];
+        arr.push(msg.author);
+        boostsMap.set(msg.link, arr);
       }
     }
 
@@ -82,6 +87,9 @@ createRPCHandler(self as any, {
       const reporters = reportsMap.get(post.id) || new Set();
       return reporters.size < threshold;
     });
+
+    const attachBoosters = (arr: any[]) =>
+      arr.map((p) => ({ ...p, boosters: boostsMap.get(p.id) || [] }));
 
     const statsWorker = (globalThis as any).statsWorker;
     if (statsWorker && statsWorker.postMessage) {
@@ -108,13 +116,13 @@ createRPCHandler(self as any, {
           for (let k = 0; k < 9 && i < high.length; k++) final.push(high[i++]);
           if (j < low.length) final.push(low[j++]);
         }
-        return final;
+        return attachBoosters(final);
       } catch (_) {
         /* ignore */
       }
     }
 
-    return filtered;
+    return attachBoosters(filtered);
   },
   topTags: async (opts) => {
     const since = opts?.since ?? Date.now() - 48 * 60 * 60 * 1000;
