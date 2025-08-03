@@ -209,12 +209,20 @@ function OnboardingContent() {
                 <div
                   {...getRootProps()}
                   className="w-32 h-32 border-2 border-dashed flex items-center justify-center cursor-pointer"
+                  aria-describedby="avatar-upload-caption"
                 >
                   <label htmlFor="avatar-upload" className="sr-only">
                     Avatar
                   </label>
-                  <input {...getInputProps({ id: 'avatar-upload', name: 'avatar' })} />
-                  <span>Avatar</span>
+                  <input
+                    {...getInputProps({
+                      id: 'avatar-upload',
+                      name: 'avatar',
+                      accept: 'image/*',
+                      'aria-describedby': 'avatar-upload-caption',
+                    })}
+                  />
+                  <span id="avatar-upload-caption">Drop avatar image</span>
                 </div>
               )}
             </Dropzone>
@@ -261,14 +269,20 @@ function OnboardingContent() {
               <div
                 {...getRootProps()}
                 className="p-4 border-2 border-dashed cursor-pointer text-center"
+                aria-describedby="profile-upload-caption"
               >
                 <label htmlFor="profile-upload" className="sr-only">
                   Profile backup JSON
                 </label>
                 <input
-                  {...getInputProps({ id: 'profile-upload', name: 'profile' })}
+                  {...getInputProps({
+                    id: 'profile-upload',
+                    name: 'profile',
+                    accept: 'application/json',
+                    'aria-describedby': 'profile-upload-caption',
+                  })}
                 />
-                <p>Drop profile backup JSON</p>
+                <p id="profile-upload-caption">Drop profile backup JSON</p>
               </div>
             )}
           </Dropzone>
@@ -286,14 +300,20 @@ function OnboardingContent() {
               <div
                 {...getRootProps()}
                 className="p-4 border-2 border-dashed cursor-pointer text-center"
+                aria-describedby="wallet-upload-caption"
               >
                 <label htmlFor="wallet-upload" className="sr-only">
                   Wallet backup JSON
                 </label>
                 <input
-                  {...getInputProps({ id: 'wallet-upload', name: 'wallet' })}
+                  {...getInputProps({
+                    id: 'wallet-upload',
+                    name: 'wallet',
+                    accept: 'application/json',
+                    'aria-describedby': 'wallet-upload-caption',
+                  })}
                 />
-                <p>Drop wallet backup JSON</p>
+                <p id="wallet-upload-caption">Drop wallet backup JSON</p>
               </div>
             )}
           </Dropzone>
