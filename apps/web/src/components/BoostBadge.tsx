@@ -1,6 +1,11 @@
 /*
  * Licensed under GPL-3.0-or-later
- * React component for BoostBadge.
+ *
+ * Tracks which users have boosted individual posts and exposes a small
+ * subscription API so UI components can react to booster updates. Consumers can
+ * subscribe to a post ID and will be notified when `setBoosters` updates the
+ * underlying mapping of post IDs to boosting users. The default export renders
+ * a badge displaying the current boost count.
  */
 import { useSyncExternalStore } from 'react';
 
@@ -22,6 +27,16 @@ export const subs = {
   },
 };
 
+/**
+ * Update the list of boosters for a post and notify any subscribed listeners.
+ *
+ * @param id - Identifier of the post whose boosters changed.
+ * @param users - Public keys of users who have boosted the post.
+ *
+ * Side effects:
+ * - Mutates {@link boosterMap} for the given `id`.
+ * - Invokes all registered callbacks for that `id` so dependents can re-render.
+ */
 export function setBoosters(id: string, users: string[]) {
   boosterMap.set(id, users);
   const set = listeners.get(id);
@@ -39,6 +54,13 @@ if (typeof window !== 'undefined') {
   });
 }
 
+/**
+ * Displays a boost count badge for a post.
+ *
+ * The component subscribes to booster updates for the provided `id` using
+ * `useSyncExternalStore`. It renders only when at least one user has boosted
+ * the post and shows the number of boosters derived from {@link boosterMap}.
+ */
 export default function BoostBadge({ id }: { id: string }) {
   const boosters = useSyncExternalStore(
     (cb) => subs.add(id, cb),
