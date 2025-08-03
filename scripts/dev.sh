@@ -2,13 +2,20 @@
 set -e
 
 # ── Prerequisite checks ───────────────────────────────────────
-for cmd in pnpm docker; do
-  command -v "$cmd" >/dev/null || {
-    echo "❌  $cmd not found. Install it first."; exit 1; }
-done
+command -v pnpm >/dev/null || {
+  echo "❌  pnpm not found. Install it first."; exit 1; }
+
+if command -v podman >/dev/null; then
+  RUNTIME=podman
+elif command -v docker >/dev/null; then
+  RUNTIME=docker
+else
+  echo "❌  Neither podman nor docker found. Install one first."
+  exit 1
+fi
 
 # ── Local side-car stack (room, tracker, regtest mint) ────────
-docker compose -f infra/docker/docker-compose.dev.yml up -d
+${RUNTIME} compose -f infra/docker/docker-compose.dev.yml up -d
 
 # ── Node dependencies ─────────────────────────────────────────
 pnpm install --frozen-lockfile
