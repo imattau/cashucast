@@ -63,7 +63,7 @@ export const Stepper: React.FC = () => {
               <input
                 id="stepper-username"
                 name="username"
-                className="mb-4 w-full rounded border p-2"
+                className="mb-4 w-full rounded border px-4 py-3 min-h-[44px]"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Username"
@@ -79,7 +79,7 @@ export const Stepper: React.FC = () => {
                   }
                   setStep(1);
                 }}
-                className="rounded bg-blue-600 hover:bg-blue-700 px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded bg-blue-700 hover:bg-blue-800 px-4 py-3 text-white min-w-[44px] min-h-[44px] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Next
               </button>

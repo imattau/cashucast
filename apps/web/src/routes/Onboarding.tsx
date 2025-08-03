@@ -211,7 +211,7 @@ function OnboardingContent() {
             Create a new profile or import one you already have.
           </p>
           <button
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded"
+            className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 rounded min-w-[44px] min-h-[44px]"
             onClick={() => {
               setMode('new');
               setStep(2);
@@ -224,7 +224,7 @@ function OnboardingContent() {
             </div>
           </button>
           <button
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded"
+            className="flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white px-4 py-3 rounded min-w-[44px] min-h-[44px]"
             onClick={() => {
               setMode('import');
               setStep(2);
@@ -248,7 +248,7 @@ function OnboardingContent() {
           <input
             id="username"
             name="username"
-            className="w-full border p-2 rounded"
+            className="w-full rounded border px-4 py-3 min-h-[44px]"
             placeholder="Username"
             autoComplete="username"
             value={username}
@@ -312,7 +312,7 @@ function OnboardingContent() {
                 />
               </div>
               <button
-                className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
+                className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
                 onClick={saveAvatar}
               >
                 Use Avatar
@@ -327,14 +327,14 @@ function OnboardingContent() {
           )}
           <div className="flex justify-between">
             <button
-              className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
+              className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => setStep(1)}
               disabled={generating}
             >
               Back
             </button>
             <button
-              className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
+              className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => {
                 const err = validateUsername(username);
                 if (err) {
@@ -380,7 +380,7 @@ function OnboardingContent() {
                     }
                   },
                 })}
-                className="p-4 border-2 border-dashed cursor-pointer text-center"
+                className="border-2 border-dashed cursor-pointer text-center px-4 py-3 min-w-[44px] min-h-[44px]"
                 aria-describedby="profile-upload-caption"
               >
                 <label htmlFor="profile-upload" className="sr-only">
@@ -430,7 +430,7 @@ function OnboardingContent() {
                     }
                   },
                 })}
-                className="p-4 border-2 border-dashed cursor-pointer text-center"
+                className="border-2 border-dashed cursor-pointer text-center px-4 py-3 min-w-[44px] min-h-[44px]"
                 aria-describedby="wallet-upload-caption"
               >
                 <label htmlFor="wallet-upload" className="sr-only">
@@ -455,14 +455,14 @@ function OnboardingContent() {
           </Dropzone>
           <div className="flex justify-between">
             <button
-              className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
+              className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => setStep(1)}
               disabled={profileLoading || walletLoading}
             >
               Back
             </button>
             <button
-              className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
+              className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => setStep(3)}
               disabled={!profile || profileLoading || walletLoading}
             >
@@ -481,13 +481,13 @@ function OnboardingContent() {
           </div>
           <div className="flex justify-between">
             <button
-              className="rounded bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
+              className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => setStep(2)}
             >
               Back
             </button>
             <button
-              className="rounded bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4"
+              className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={confirm}
             >
               Confirm
