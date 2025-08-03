@@ -7,6 +7,19 @@ import { useProfile } from '../../shared/store/profile';
 import { createProfile } from '../../shared/types/profile';
 import { getSSB } from '../../../../packages/worker-ssb/src/instance';
 import { touch } from '../../../../packages/worker-ssb/src/blobCache';
+import { z } from 'zod';
+
+// schema for validating imported profile backups
+const ProfileSchema = z.object({
+  ssbPk: z.string(),
+  ssbSk: z.string(),
+  cashuMnemonic: z.string(),
+  username: z.string(),
+  avatarBlob: z.string().optional(),
+});
+
+// allow importing one or two backup files
+const BackupArray = z.array(ProfileSchema).min(1).max(2);
 
 function OnboardingContent() {
   const [step, setStep] = useState(1);
@@ -95,9 +108,17 @@ function OnboardingContent() {
   const [walletJson, setWalletJson] = useState<any>(null);
 
   useEffect(() => {
-    if (mode === 'import' && profileJson && walletJson) {
-      importProfile({ ...profileJson, cashuMnemonic: walletJson.cashuMnemonic });
-      setStep(3);
+    if (mode === 'import' && (profileJson || walletJson)) {
+      try {
+        const data = [profileJson, walletJson].filter(Boolean);
+        const [parsedProfile, parsedWallet] = BackupArray.parse(data);
+        const profileData = { ...parsedProfile };
+        if (parsedWallet) profileData.cashuMnemonic = parsedWallet.cashuMnemonic;
+        importProfile(profileData);
+        setStep(3);
+      } catch {
+        /* ignore invalid backups */
+      }
     }
   }, [mode, profileJson, walletJson, importProfile]);
 
