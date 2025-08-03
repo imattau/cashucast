@@ -83,7 +83,7 @@ describe('worker-ssb boosts', () => {
         avatarUrl: 'https://example.com/b.png',
       },
     });
-    const feed: any[] = await call('queryFeed', {});
+    const feed = (await call('queryFeed', {})) as any[];
     const post = feed.find((p) => p.id === 'a');
     expect(post.boosters).toEqual([
       { name: 'B', pubkey: 'b', avatarUrl: 'https://example.com/b.png' },

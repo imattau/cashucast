@@ -36,5 +36,6 @@ export * from './QuotaBar';
 export * from './BackupSeedBtn';
 export * from './Settings';
 export * from './PostMenu';
+export * from './CommentsDrawer';
 export { default as FabRecord } from './FabRecord';
 export { default as VideoRecorder } from './VideoRecorder';

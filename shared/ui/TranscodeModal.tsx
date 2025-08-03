@@ -56,8 +56,12 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
           'webm',
           'out.webm',
         ]);
-        const data = await ffmpeg.readFile('out.webm');
-        const webmFile = new File([data], 'out.webm', { type: 'video/webm' });
+        const data = (await ffmpeg.readFile('out.webm')) as Uint8Array;
+        // ffmpeg's FileData may use ArrayBufferLike; clone into a fresh
+        // Uint8Array to ensure compatibility with Blob/File constructors.
+        const webmFile = new File([new Uint8Array(data)], 'out.webm', {
+          type: 'video/webm',
+        });
         const magnet = (await call('seedFile', webmFile as any)) as string;
         if (!cancelled) {
           setProgress(100);

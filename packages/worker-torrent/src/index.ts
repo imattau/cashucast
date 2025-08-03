@@ -10,8 +10,8 @@ import { cache, touch, prune } from '../../worker-ssb/src/blobCache';
 import { getSSB } from '../../worker-ssb/src/instance';
 import { getDefaultEndpoints } from '../../shared/config';
 
-const { trackerUrls: trackers, rtcConfig } = useSettings.getState();
-const client = new WebTorrent({ tracker: { rtcConfig } });
+const { trackerUrls: trackers } = useSettings.getState();
+const client = new WebTorrent();
 
 // ── DHT bridge  ─────────────────────────────────────────────
 const { enableDht } = useSettings.getState();
@@ -31,7 +31,7 @@ if (enableDht) {
       }, 5000);
       dht.on('ready', () => clearTimeout(timeout));
       dht.listen(20000);
-      client.on('torrent', (t) => dht.announce(t.infoHash, 20000));
+      client.on('torrent', (t: any) => dht.announce(t.infoHash, 20000));
     } catch {
       // optional deps may be absent in test environment
     }
@@ -79,8 +79,8 @@ async function stream(magnet: string): Promise<string> {
   return new Promise((resolve) => {
     ssb.blobs.get(infoHash, (err: any, blobStream: any) => {
       if (!err && blobStream) {
-        const chunks: Uint8Array[] = [];
-        blobStream.on('data', (ch: Uint8Array) => chunks.push(ch));
+        const chunks: BlobPart[] = [];
+        blobStream.on('data', (ch: Uint8Array) => chunks.push(new Uint8Array(ch)));
         blobStream.on('end', () => {
           const file = new Blob(chunks, { type: 'video/mp4' });
           touch(infoHash, file.size);
