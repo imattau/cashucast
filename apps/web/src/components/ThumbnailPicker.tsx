@@ -25,11 +25,11 @@ export default function ThumbnailPicker({ file, onSelect }: ThumbnailPickerProps
     const run = async () => {
       const ffmpeg = new FFmpeg();
       await ffmpeg.load();
-      await ffmpeg.writeFile('input.mp4', new Uint8Array(await file.arrayBuffer()));
+      await ffmpeg.writeFile('input.webm', new Uint8Array(await file.arrayBuffer()));
       const times = ['00:00:01', '00:00:02', '00:00:03'];
       const imgs: { src: string; blob: Blob }[] = [];
       for (let i = 0; i < times.length; i++) {
-        await ffmpeg.exec(['-ss', times[i], '-i', 'input.mp4', '-frames:v', '1', `out${i}.jpg`]);
+        await ffmpeg.exec(['-ss', times[i], '-i', 'input.webm', '-frames:v', '1', `out${i}.jpg`]);
         const data = await ffmpeg.readFile(`out${i}.jpg`);
         const blob = new Blob([data], { type: 'image/jpeg' });
         imgs.push({ src: URL.createObjectURL(blob), blob });
