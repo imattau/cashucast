@@ -7,6 +7,7 @@ import { MintSelect } from './MintSelect';
 import { InstallBanner } from './InstallBanner';
 
 const ONBOARD_KEY = 'onboardingCompleted';
+const TOTAL_STEPS = 3;
 
 /** Overlay-based onboarding stepper for first-time users. */
 export const Stepper: React.FC = () => {
@@ -21,11 +22,11 @@ export const Stepper: React.FC = () => {
   });
 
   const complete = () => {
-    setStep(3);
+    setStep(TOTAL_STEPS);
   };
 
   React.useEffect(() => {
-    if (step === 3) {
+    if (step === TOTAL_STEPS) {
       setOpen(false);
       if (typeof window !== 'undefined') {
         localStorage.setItem(ONBOARD_KEY, 'true');
@@ -33,11 +34,20 @@ export const Stepper: React.FC = () => {
     }
   }, [step]);
 
-  if (!open) return null;
+  if (!open || step >= TOTAL_STEPS) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
       <div className="w-80 rounded bg-white p-4">
+        <div
+          role="progressbar"
+          aria-valuenow={step + 1}
+          aria-valuemin={1}
+          aria-valuemax={TOTAL_STEPS}
+          className="mb-4 text-sm text-gray-500"
+        >
+          Step {step + 1} of {TOTAL_STEPS}
+        </div>
         {step === 0 && (
           <div>
             <h2 className="mb-2 text-lg font-semibold">Choose a username</h2>
