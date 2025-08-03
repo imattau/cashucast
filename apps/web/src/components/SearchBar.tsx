@@ -1,6 +1,8 @@
 /*
  * Licensed under GPL-3.0-or-later
- * React component for SearchBar.
+ * SearchBar renders a toggleable search input that communicates with a
+ * Web Worker via RPC to execute queries, keeping heavy search logic off the
+ * main thread.
  */
 import React, { useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
@@ -8,6 +10,16 @@ import { createRPCClient } from '../../shared/rpc';
 import { useSearch } from '../../shared/store/search';
 import type { Post } from '../../shared/types';
 
+/**
+ * Renders the search bar and coordinates search-related state.
+ *
+ * Reads and mutates values from the `useSearch` store:
+ * - `open`: controls whether the input is visible.
+ * - `q`: the current search query.
+ * - `setOpen`, `setQ`, `setResults`: update helpers for the store.
+ *
+ * @returns Fixed-position JSX that shows an input when open or a button when collapsed.
+ */
 export default function SearchBar() {
   const { open, q, setOpen, setQ, setResults } = useSearch();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -43,6 +55,10 @@ export default function SearchBar() {
     };
   }, [open]);
 
+  /**
+   * Closes the search interface, clears query and results, and if currently on
+   * the search page redirects back to the home page.
+   */
   function collapse() {
     setOpen(false);
     setQ('');
