@@ -27,10 +27,24 @@ const WalletBackupSchema = z.object({
   cashuMnemonic: z.string(),
 });
 
+// persist step and mode across unmounts triggered by parent rerenders
+const stepRef = { current: 1 };
+const modeRef = { current: null as 'new' | 'import' | null };
+
 function OnboardingContent() {
-  const [step, setStep] = useState(1);
-  const [mode, setMode] = useState<'new' | 'import' | null>(null);
+  const [step, setStepState] = useState(stepRef.current);
+  const [mode, setModeState] = useState<'new' | 'import' | null>(modeRef.current);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // wrappers to keep refs updated alongside state
+  const setStep = (n: number) => {
+    stepRef.current = n;
+    setStepState(n);
+  };
+  const setMode = (m: 'new' | 'import' | null) => {
+    modeRef.current = m;
+    setModeState(m);
+  };
 
   useEffect(() => {
     const first = containerRef.current?.querySelector<HTMLElement>(
@@ -597,4 +611,10 @@ export function OnboardingDialog() {
       </Dialog.Content>
     </Dialog.Root>
   );
+}
+
+// helper for tests to reset persistent onboarding progress
+export function resetOnboardingState() {
+  stepRef.current = 1;
+  modeRef.current = null;
 }

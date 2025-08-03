@@ -5,7 +5,7 @@
 import React from 'react';
 import { ROUTES } from './router';
 import { useProfile } from '../shared/store/profile';
-import Onboarding from './routes/Onboarding';
+import { OnboardingDialog } from './routes/Onboarding';
 import SearchBar from './components/SearchBar';
 
 export default function App() {
@@ -18,15 +18,12 @@ export default function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  if (!profile?.ssbPk) {
-    return <Onboarding />;
-  }
-
   const RouteComponent = ROUTES[path];
   return (
     <>
       {RouteComponent ? <RouteComponent /> : <div>Not Found</div>}
-      <SearchBar />
+      {profile?.ssbPk && <SearchBar />}
+      <OnboardingDialog />
     </>
   );
 }
