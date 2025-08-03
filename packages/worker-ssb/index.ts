@@ -113,6 +113,18 @@ createRPCHandler(self as any, {
     return fullPost;
   },
   /**
+   * Retrieve comment texts for a particular post from the local log.
+   *
+   * @param postId - Identifier of the post whose comments are requested.
+   * @returns Array of comment strings sorted by timestamp.
+   */
+  queryComments: async (postId: string) => {
+    return ssbLog
+      .filter((m) => m.type === 'comment' && m.postId === postId)
+      .sort((a, b) => (a.ts ?? 0) - (b.ts ?? 0))
+      .map((m) => m.text);
+  },
+  /**
    * Retrieve posts from the log applying basic moderation rules and tag
    * filters. Reported posts over a threshold or posts from blocked users are
    * excluded.

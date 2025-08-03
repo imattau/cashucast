@@ -35,6 +35,7 @@ const InitWalletSchema = z
 export const MethodDefinitions = {
   publishPost: z.tuple([PostSchema]),
   queryFeed: z.tuple([QueryOpts]),
+  queryComments: z.tuple([z.string()]),
   reportPost: z.tuple([z.string(), z.string()]),
   blockUser: z.tuple([z.string()]),
   publish: z.tuple([z.any()]),
@@ -53,6 +54,7 @@ export const MethodDefinitions = {
 export const MethodsSchema = z.union([
   z.object({ ns: z.literal('ssb'), fn: z.literal('publishPost'), args: MethodDefinitions.publishPost }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('queryFeed'), args: MethodDefinitions.queryFeed }),
+  z.object({ ns: z.literal('ssb'), fn: z.literal('queryComments'), args: MethodDefinitions.queryComments }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('reportPost'), args: MethodDefinitions.reportPost }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('blockUser'), args: MethodDefinitions.blockUser }),
   z.object({ ns: z.literal('ssb'), fn: z.literal('publish'), args: MethodDefinitions.publish }),
@@ -87,6 +89,7 @@ type RPCPort = {
 const methodArgSchemas: Record<MethodName, z.ZodTypeAny> = {
   publishPost: MethodDefinitions.publishPost,
   queryFeed: MethodDefinitions.queryFeed,
+  queryComments: MethodDefinitions.queryComments,
   reportPost: MethodDefinitions.reportPost,
   blockUser: MethodDefinitions.blockUser,
   publish: MethodDefinitions.publish,
