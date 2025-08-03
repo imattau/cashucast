@@ -5,6 +5,18 @@ set -e
 command -v pnpm >/dev/null || {
   echo "❌  pnpm not found. Install it first."; exit 1; }
 
+# ── Permission checks for container engines ───────────────────
+for bin in docker podman; do
+  if command -v "$bin" >/dev/null 2>&1; then
+    if ! out=$($bin info 2>&1); then
+      if echo "$out" | grep -qi 'permission denied'; then
+        echo "❌  Cannot access $bin daemon. Run this script with sudo or add your user to the $bin group." >&2
+        exit 1
+      fi
+    fi
+  fi
+done
+
 # ── Detect runtimes & health ──────────────────────────────────
 check_runtime() {
   local bin=$1
