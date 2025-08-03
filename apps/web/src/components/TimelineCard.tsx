@@ -7,11 +7,11 @@ import {
   Avatar,
   BottomSheet,
   Profile,
-} from '../../../shared/ui';
+} from '../../shared/ui';
 import { CommentsDrawer } from './CommentsDrawer';
 import ActionColumn from './ActionColumn';
 import { motion } from 'framer-motion';
-import { createRPCClient } from '../../../shared/rpc';
+import { createRPCClient } from '../../shared/rpc';
 
 export interface TimelineCardProps {
   /** URL for the author's avatar */

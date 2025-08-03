@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TagInput from './TagInput';
-import { useFilters } from '../../../shared/store/filters';
+import { useFilters } from '../../shared/store/filters';
 
 export default function FilterBar() {
   const tags = useFilters((s) => s.tags);

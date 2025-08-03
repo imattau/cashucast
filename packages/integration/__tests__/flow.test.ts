@@ -39,7 +39,7 @@ vi.mock('../../worker-ssb/src/blobCache', () => ({
   touch: vi.fn(),
   prune: vi.fn(),
 }));
-vi.mock('../../shared/store/settings', () => ({
+vi.mock('../../../shared/store/settings', () => ({
   useSettings: { getState: () => ({ trackerUrls: [] }) },
 }));
 

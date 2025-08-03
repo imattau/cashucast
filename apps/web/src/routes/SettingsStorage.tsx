@@ -1,5 +1,5 @@
 import { useSettings } from '../../shared/store/settings';
-import { setMaxCacheMB } from '../../../packages/worker-ssb/src/blobCache';
+import { setMaxCacheMB } from '../../../../packages/worker-ssb/src/blobCache';
 
 export const SettingsStorage: React.FC = () => {
   const { maxBlobMB, setMaxBlobMB } = useSettings();
