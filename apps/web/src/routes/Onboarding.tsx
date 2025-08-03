@@ -144,14 +144,6 @@ function OnboardingContent() {
     return null;
   };
 
-  useEffect(() => {
-    if (mode === 'import' && profileBackup) {
-      const profileData: any = { ...profileBackup };
-      if (walletBackup) profileData.cashuMnemonic = walletBackup.cashuMnemonic;
-      importProfile(profileData);
-    }
-  }, [mode, profileBackup, walletBackup, importProfile]);
-
   const [toast, setToast] = useState(false);
 
   const stepTitle =
@@ -485,22 +477,32 @@ function OnboardingContent() {
             )}
           </Dropzone>
           <div className="flex justify-between">
-            <button
-              className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
-              onClick={() => setStep(1)}
-              disabled={profileLoading || walletLoading}
-            >
-              Back
-            </button>
-            <button
-              className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
-              onClick={() => setStep(3)}
-              disabled={!profile || profileLoading || walletLoading}
-            >
-              Next
-            </button>
-          </div>
+          <button
+            className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+            onClick={() => setStep(1)}
+            disabled={profileLoading || walletLoading}
+          >
+            Back
+          </button>
+          <button
+            className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+            onClick={() => {
+              if (!profileBackup || !walletBackup) return;
+              const profileData: any = { ...profileBackup };
+              profileData.cashuMnemonic = walletBackup.cashuMnemonic;
+              importProfile(profileData);
+              setStep(3);
+            }}
+            disabled={
+              !(profileBackup && walletBackup && !profileError && !walletError) ||
+              profileLoading ||
+              walletLoading
+            }
+          >
+            Next
+          </button>
         </div>
+      </div>
       )}
       {step === 3 && (
         <div className="space-y-4">
