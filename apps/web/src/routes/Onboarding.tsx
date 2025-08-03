@@ -48,6 +48,7 @@ function OnboardingContent() {
   const [keys, setKeys] = useState<{ pk: string; sk: string } | null>(null);
   const [mnemonic, setMnemonic] = useState<string | null>(null);
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedArea, setCroppedArea] = useState<any>(null);
@@ -86,8 +87,8 @@ function OnboardingContent() {
     setCroppedArea(areaPixels);
   }, []);
 
-  const saveAvatar = useCallback(async () => {
-    if (!avatarSrc || !croppedArea) return;
+  const saveAvatar = useCallback(async (): Promise<string | null> => {
+    if (!avatarFile || !avatarSrc || !croppedArea) return null;
     const img = document.createElement('img');
     img.src = avatarSrc;
     await new Promise((res) => (img.onload = res));
@@ -106,26 +107,21 @@ function OnboardingContent() {
       256,
       256,
     );
-    canvas.toBlob(async (blob) => {
-      if (!blob) return;
-      const ssb = getSSB();
-      const writer = ssb.blobs.add();
-      const data = new Uint8Array(await blob.arrayBuffer());
-      writer.write(data);
-      writer.end((_: any, hash: string) => {
-        touch(hash, data.byteLength);
-        setAvatarHash(hash);
-        setAvatarPreview(URL.createObjectURL(blob));
-        const err = validateUsername(username);
-        if (err) {
-          setUsernameError(err);
-          setStep(2);
-        } else {
-          setStep(3);
-        }
-      });
-    }, 'image/jpeg');
-  }, [avatarSrc, croppedArea, username]);
+    return await new Promise((resolve) => {
+      canvas.toBlob(async (blob) => {
+        if (!blob) return resolve(null);
+        const ssb = getSSB();
+        const writer = ssb.blobs.add();
+        const data = new Uint8Array(await blob.arrayBuffer());
+        writer.write(data);
+        writer.end((_: any, hash: string) => {
+          touch(hash, data.byteLength);
+          setAvatarHash(hash);
+          resolve(URL.createObjectURL(blob));
+        });
+      }, 'image/jpeg');
+    });
+  }, [avatarFile, avatarSrc, croppedArea]);
 
   // import states
   const [profileJson, setProfileJson] = useState<any>(null);
@@ -265,7 +261,12 @@ function OnboardingContent() {
             <Dropzone
               onDrop={(files) => {
                 const f = files[0];
-                if (f) setAvatarSrc(URL.createObjectURL(f));
+                if (f) {
+                  setAvatarFile(f);
+                  const url = URL.createObjectURL(f);
+                  setAvatarSrc(url);
+                  setAvatarPreview(url);
+                }
               }}
             >
               {({ getRootProps, getInputProps, open }) => (
@@ -313,7 +314,18 @@ function OnboardingContent() {
               </div>
               <button
                 className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
-                onClick={saveAvatar}
+                onClick={async () => {
+                  const preview = await saveAvatar();
+                  if (!preview) return;
+                  setAvatarPreview(preview);
+                  const err = validateUsername(username);
+                  if (err) {
+                    setUsernameError(err);
+                    setStep(2);
+                  } else {
+                    setStep(3);
+                  }
+                }}
               >
                 Use Avatar
               </button>
