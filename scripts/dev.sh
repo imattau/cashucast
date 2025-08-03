@@ -66,11 +66,15 @@ fi
 echo "🔧  Using container runtime: $CTL"
 
 # ── Local side-car stack (room, tracker, regtest mint) ────────
-# Some runtimes (notably certain podman compose builds) do not
-# support the short `-f` flag when specifying compose files. Using the
-# long form keeps the command compatible with both Docker and Podman
-# implementations of compose.
-$COMPOSE --file infra/docker/docker-compose.dev.yml up -d
+# Some compose implementations only support either the short `-f` flag or
+# the long `--file` flag when selecting the compose file. Detect support and
+# fall back to the short flag if the long form is unavailable.
+if $COMPOSE --help 2>&1 | grep -q -- "--file"; then
+  COMPOSE_FILE_FLAG="--file"
+else
+  COMPOSE_FILE_FLAG="-f"
+fi
+$COMPOSE $COMPOSE_FILE_FLAG infra/docker/docker-compose.dev.yml up -d
 
 # ── Node dependencies ─────────────────────────────────────────
 pnpm install --frozen-lockfile
