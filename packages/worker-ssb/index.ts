@@ -3,6 +3,7 @@ import type { Post } from '../../shared/types';
 import { generateKeyPairSync, randomUUID } from 'node:crypto';
 import { getSSB } from './src/instance';
 import MiniSearch from 'minisearch';
+import { get as getHistory } from '../../shared/store/history-worker';
 
 let storedKeys: { sk: string; pk: string } | undefined;
 
@@ -88,6 +89,10 @@ createRPCHandler(self as any, {
       return reporters.size < threshold;
     });
 
+    const recentCutoff = Date.now() - 1000 * 60 * 60 * 48; // 48 h
+    const recentlySeen = await getHistory(recentCutoff); // returns Set<msgId>
+    const unseen = filtered.filter((p: any) => !recentlySeen.has(p.id));
+
     const attachBoosters = (arr: any[]) =>
       arr.map((p) => ({ ...p, boosters: boostsMap.get(p.id) || [] }));
 
@@ -105,7 +110,7 @@ createRPCHandler(self as any, {
 
         const high: any[] = [];
         const low: any[] = [];
-        for (const p of filtered) {
+        for (const p of unseen) {
           (counts[p.magnet?.slice(20, 60)] ?? 0) >= 3 ? high.push(p) : low.push(p);
         }
 
@@ -122,7 +127,7 @@ createRPCHandler(self as any, {
       }
     }
 
-    return attachBoosters(filtered);
+    return attachBoosters(unseen);
   },
   topTags: async (opts) => {
     const since = opts?.since ?? Date.now() - 48 * 60 * 60 * 1000;
