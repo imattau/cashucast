@@ -19,6 +19,7 @@
     "bip39": "^3.1.0",
     "bittorrent-dht": "^11.0.10",
     "canvas-confetti": "^1.9.3",
+    "framer-motion": "^12.23.12",
     "lucide-react": "^0.536.0",
     "minisearch": "^7.1.2",
     "quick-lru": "^7.0.1",
