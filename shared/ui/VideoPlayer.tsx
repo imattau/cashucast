@@ -1,10 +1,13 @@
 import React from 'react';
 import { createRPCClient } from '../rpc';
 import { SkeletonLoader } from './SkeletonLoader';
+import { useHistory } from '../store/history';
 
 export interface VideoPlayerProps {
   /** Magnet link for the video stream */
   magnet: string;
+  /** Post identifier for history tracking */
+  postId?: string;
 }
 
 /**
@@ -13,7 +16,7 @@ export interface VideoPlayerProps {
  * displayed to avoid layout shifts. The resulting video autoplays muted so it
  * can start without user interaction.
  */
-export const VideoPlayer: React.FC<VideoPlayerProps> = ({ magnet }) => {
+export const VideoPlayer: React.FC<VideoPlayerProps> = ({ magnet, postId }) => {
   const [src, setSrc] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -58,6 +61,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ magnet }) => {
       muted
       loop
       autoPlay
+      onPlay={() => {
+        if (postId) useHistory.getState().add(postId);
+      }}
     />
   );
 };

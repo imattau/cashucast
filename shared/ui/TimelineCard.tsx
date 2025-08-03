@@ -71,7 +71,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <VideoPlayer magnet={magnet} />
+        <VideoPlayer magnet={magnet} postId={postId} />
         {hidden && (
           <BlurOverlay
             aria-label="NSFW content hidden"
