@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { createRPCClient } from '../rpc';
 
 /**
@@ -28,8 +28,8 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
     let cancelled = false;
     setProgress(0);
 
-    const ffmpeg = createFFmpeg({ log: false });
-    ffmpeg.setProgress(({ ratio }) => {
+    const ffmpeg = new FFmpeg();
+    ffmpeg.on('progress', ({ progress: ratio }) => {
       if (!cancelled) setProgress(Math.min(100, Math.round(ratio * 100)));
     });
 
@@ -42,10 +42,10 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
     const run = async () => {
       try {
         await ffmpeg.load();
-        ffmpeg.FS('writeFile', 'input', await fetchFile(file));
-        await ffmpeg.run('-i', 'input', '-c:v', 'libx264', '-f', 'mp4', 'out.mp4');
-        const data = ffmpeg.FS('readFile', 'out.mp4');
-        const blob = new Blob([data.buffer], { type: 'video/mp4' });
+        await ffmpeg.writeFile('input', new Uint8Array(await file.arrayBuffer()));
+        await ffmpeg.exec(['-i', 'input', '-c:v', 'libx264', '-f', 'mp4', 'out.mp4']);
+        const data = await ffmpeg.readFile('out.mp4');
+        const blob = new Blob([data], { type: 'video/mp4' });
         const magnet = (await call('seedFile', blob as any)) as string;
         if (!cancelled) {
           setProgress(100);
