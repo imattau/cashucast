@@ -13,15 +13,27 @@ export interface UploadDropzoneProps {
 }
 
 export const UploadDropzone: React.FC<UploadDropzoneProps> = ({ onFile }) => {
+  const [error, setError] = React.useState('');
+
+  const validate = (file?: File) => {
+    if (!file) return;
+    if (file.type.startsWith('video/')) {
+      setError('');
+      onFile(file);
+    } else {
+      setError('Please select a video file.');
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) onFile(file);
+    validate(file);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
-    if (file) onFile(file);
+    validate(file);
   };
 
   return (
@@ -37,9 +49,13 @@ export const UploadDropzone: React.FC<UploadDropzoneProps> = ({ onFile }) => {
         id="file-upload"
         name="file"
         type="file"
+        accept="video/*"
         onChange={handleChange}
       />
       <p className="text-center text-sm mt-2">Drop or select a video file</p>
+      {error && (
+        <p className="text-center text-sm mt-2 text-red-600">{error}</p>
+      )}
     </div>
   );
 };
