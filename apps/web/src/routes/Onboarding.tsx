@@ -368,6 +368,7 @@ function OnboardingContent() {
       {step === 2 && mode === 'import' && (
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Import Backups</h2>
+          <h3 className="text-lg font-medium">Profile Backup</h3>
           <Dropzone
             onDrop={async (files) => {
               const f = files[0];
@@ -418,6 +419,7 @@ function OnboardingContent() {
               </div>
             )}
           </Dropzone>
+          <h3 className="text-lg font-medium">Wallet Backup</h3>
           <Dropzone
             onDrop={async (files) => {
               const f = files[0];
