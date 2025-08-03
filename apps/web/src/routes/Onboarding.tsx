@@ -186,7 +186,7 @@ function OnboardingContent() {
       )}
       {step === 2 && mode === 'new' && (
         <div className="space-y-4">
-          <label htmlFor="username" className="sr-only">
+          <label htmlFor="username" className="block text-sm font-medium">
             Username
           </label>
           <input
