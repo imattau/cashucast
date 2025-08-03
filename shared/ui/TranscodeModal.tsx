@@ -43,10 +43,22 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
       try {
         await ffmpeg.load();
         await ffmpeg.writeFile('input', new Uint8Array(await file.arrayBuffer()));
-        await ffmpeg.exec(['-i', 'input', '-c:v', 'libx264', '-f', 'mp4', 'out.mp4']);
-        const data = await ffmpeg.readFile('out.mp4');
-        const blob = new Blob([data], { type: 'video/mp4' });
-        const magnet = (await call('seedFile', blob as any)) as string;
+        await ffmpeg.exec([
+          '-i',
+          'input',
+          '-t',
+          '300',
+          '-c:v',
+          'libvpx',
+          '-c:a',
+          'libopus',
+          '-f',
+          'webm',
+          'out.webm',
+        ]);
+        const data = await ffmpeg.readFile('out.webm');
+        const webmFile = new File([data], 'out.webm', { type: 'video/webm' });
+        const magnet = (await call('seedFile', webmFile as any)) as string;
         if (!cancelled) {
           setProgress(100);
           onComplete(magnet);
