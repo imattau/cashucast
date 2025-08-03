@@ -5,12 +5,21 @@
  */
 import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
-import { generateKeyPairSync, randomUUID } from 'node:crypto';
 import { getSSB } from './src/instance';
 import MiniSearch from 'minisearch';
 import { get as getHistory } from '../../shared/store/history-worker';
 
 let storedKeys: { sk: string; pk: string } | undefined;
+
+const toBase64 = (buf: ArrayBuffer): string => {
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(buf).toString('base64');
+  }
+  let binary = '';
+  const bytes = new Uint8Array(buf);
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+};
 
 // Global SSB log shared across workers to simulate replication
 const ssbLog: any[] = (globalThis as any).__cashuSSBLog || [];
@@ -37,13 +46,22 @@ createRPCHandler(self as any, {
       storedKeys = { sk, pk };
       return;
     }
-    const { publicKey, privateKey } = generateKeyPairSync('ed25519');
-    const skStr = privateKey
-      .export({ type: 'pkcs8', format: 'der' })
-      .toString('base64');
-    const pkStr = publicKey
-      .export({ type: 'spki', format: 'der' })
-      .toString('base64');
+    let keyPair: CryptoKeyPair;
+    try {
+      keyPair = (await crypto.subtle.generateKey(
+        { name: 'Ed25519' } as any,
+        true,
+        ['sign', 'verify']
+      )) as CryptoKeyPair;
+    } catch {
+      keyPair = (await crypto.subtle.generateKey(
+        { name: 'NODE-ED25519', namedCurve: 'NODE-ED25519' } as any,
+        true,
+        ['sign', 'verify']
+      )) as CryptoKeyPair;
+    }
+    const skStr = toBase64(await crypto.subtle.exportKey('pkcs8', keyPair.privateKey));
+    const pkStr = toBase64(await crypto.subtle.exportKey('spki', keyPair.publicKey));
     storedKeys = { sk: skStr, pk: pkStr };
     return { sk: skStr, pk: pkStr };
   },
@@ -54,7 +72,7 @@ createRPCHandler(self as any, {
    * @returns The stored post with generated id and defaults.
    */
   publishPost: async (post: Post) => {
-    const id = post.id ?? randomUUID();
+    const id = post.id ?? crypto.randomUUID();
     const fullPost = {
       ...post,
       id,
