@@ -65,19 +65,31 @@ fi
 
 echo "🔧  Using container runtime: $CTL"
 
-# ── Local side-car stack (room, tracker, regtest mint) ────────
-# Some compose implementations only support either the short `-f` flag or
-# the long `--file` flag when selecting the compose file. Try the long form
-# first and fall back to the short flag if necessary.
-COMPOSE_FILE=infra/docker/docker-compose.dev.yml
-if $COMPOSE --file "$COMPOSE_FILE" config >/dev/null 2>&1; then
-  COMPOSE_FILE_FLAG="--file"
-elif $COMPOSE -f "$COMPOSE_FILE" config >/dev/null 2>&1; then
-  COMPOSE_FILE_FLAG="-f"
-else
-  echo "❌  Unable to determine compose file flag." >&2
+# ── Pre-flight daemon check ───────────────────────────────────
+if ! $CTL info >/dev/null 2>&1 && ! $COMPOSE version >/dev/null 2>&1; then
+  echo "❌  $CTL daemon is unavailable. Is it running?" >&2
   exit 1
 fi
+
+# ── Local side-car stack (room, tracker, regtest mint) ────────
+# Some compose implementations only support either the short `-f` flag or
+# the long `--file` flag when selecting the compose file. Inspect the help
+# output of `config` to determine which one is available without contacting
+# the daemon.
+COMPOSE_FILE=infra/docker/docker-compose.dev.yml
+help_output=$($COMPOSE config --help 2>&1) || {
+  echo "$help_output" >&2
+  echo "❌  Unable to run '$COMPOSE config --help'." >&2
+  exit 1
+}
+if echo "$help_output" | grep -q -- '--file'; then
+  COMPOSE_FILE_FLAG="--file"
+elif echo "$help_output" | grep -qE '[[:space:]]-f[ ,]'; then
+  COMPOSE_FILE_FLAG="-f"
+else
+  COMPOSE_FILE_FLAG="-f"
+fi
+
 $COMPOSE $COMPOSE_FILE_FLAG "$COMPOSE_FILE" up -d
 
 # ── Node dependencies ─────────────────────────────────────────
