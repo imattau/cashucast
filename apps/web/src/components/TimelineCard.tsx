@@ -7,11 +7,9 @@ import {
   Avatar,
   BottomSheet,
   Profile,
-  ZapButton,
 } from '../../../shared/ui';
-import { MessageCircle } from 'lucide-react';
 import { CommentsDrawer } from './CommentsDrawer';
-import BoostBadge, { setBoosters } from './BoostBadge';
+import ActionColumn from './ActionColumn';
 import { motion } from 'framer-motion';
 import { createRPCClient } from '../../../shared/rpc';
 
@@ -64,10 +62,6 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   const rpcRef = React.useRef<ReturnType<typeof createRPCClient> | null>(null);
 
   React.useEffect(() => {
-    if (postId) setBoosters(postId, boosters);
-  }, [postId, boosters]);
-
-  React.useEffect(() => {
     if (typeof window === 'undefined') return;
     const worker = new Worker(
       new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
@@ -94,6 +88,9 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
         transition={{ duration: 0.4 }}
       >
         <VideoPlayer magnet={magnet} postId={postId} />
+        {postId && (
+          <ActionColumn post={{ id: postId, zaps: 0, comments: 0, boosters }} />
+        )}
         {hidden && (
           <BlurOverlay
             aria-label="NSFW content hidden"
@@ -124,34 +121,6 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
               )}
             </button>
             <div className="flex items-center gap-2">
-              {postId && (
-                <button
-                  type="button"
-                  aria-label="Open comments"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCommentsOpen(true);
-                  }}
-                >
-                  <MessageCircle className="h-5 w-5" />
-                </button>
-              )}
-              {postId && (
-                <button
-                  type="button"
-                  aria-label="Repost"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    rpcRef.current?.('publish', { type: 'repost', link: postId });
-                  }}
-                >
-                  ↻
-                </button>
-              )}
-              {postId && <BoostBadge id={postId} />}
-              {authorPubKey && postId && (
-                <ZapButton receiverPk={authorPubKey} refId={postId} />
-              )}
               {postId &&
                 authorPubKey &&
                 onReport &&
