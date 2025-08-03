@@ -1,6 +1,6 @@
 import React from 'react';
 import { ROUTES } from './router';
-import { useProfile } from '../../shared/store/profile';
+import { useProfile } from '../shared/store/profile';
 import Onboarding from './routes/Onboarding';
 import SearchBar from './components/SearchBar';
 

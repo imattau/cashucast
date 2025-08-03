@@ -10,7 +10,7 @@ vi.mock('../../shared/rpc', () => ({
 }));
 
 import Onboarding from './Onboarding';
-import { useProfile } from '../../../../shared/store/profile';
+import { useProfile } from '../../shared/store/profile';
 
 class MockWorker {
   onmessage: ((e: any) => void) | null = null;

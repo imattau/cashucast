@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
-import { createRPCClient } from '../../../shared/rpc';
-import { useSearch } from '../../../shared/store/search';
-import type { Post } from '../../../shared/types';
+import { createRPCClient } from '../../shared/rpc';
+import { useSearch } from '../../shared/store/search';
+import type { Post } from '../../shared/types';
 
 export default function SearchBar() {
   const { open, q, setOpen, setQ, setResults } = useSearch();

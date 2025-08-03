@@ -1,6 +1,6 @@
 import React from 'react';
 import { TimelineCard } from '../components/TimelineCard';
-import { useSearch } from '../../../shared/store/search';
+import { useSearch } from '../../shared/store/search';
 
 export default function SearchResults() {
   const results = useSearch((s) => s.results);
