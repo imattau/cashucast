@@ -58,15 +58,6 @@ export const BottomNav: React.FC = () => {
           <span className="sr-only">Discover</span>
         </motion.a>
         <motion.a
-          href="/record"
-          aria-label="Record"
-          className="text-2xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
-          animate={{ scale: path === '/record' ? 1.2 : 1 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-        >
-          +
-        </motion.a>
-        <motion.a
           href="/profile"
           aria-label="Profile"
           className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"

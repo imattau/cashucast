@@ -12,6 +12,7 @@ describe('BottomNav', () => {
     const html = renderToStaticMarkup(<BottomNav />);
     expect(html).toContain('Home');
     expect(html).toContain('href="/discover"');
+    expect(html).not.toContain('href="/record"');
     expect(html).toContain('+');
     expect(html).toContain('Profile');
   });
