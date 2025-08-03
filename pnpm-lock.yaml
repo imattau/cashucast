@@ -26,6 +26,9 @@ importers:
       bittorrent-dht:
         specifier: ^11.0.10
         version: 11.0.10
+      buffer:
+        specifier: ^6.0.3
+        version: 6.0.3
       canvas-confetti:
         specifier: ^1.9.3
         version: 1.9.3
