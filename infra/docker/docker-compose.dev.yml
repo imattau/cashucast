@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   ssb-room:
-    image: ssbc/ssb-room2:latest
+    image: staltz/ssb-room:latest
     ports: [ "4545:3000" ]
     environment:
       ROOM_PUBLISH: "false"
@@ -10,12 +10,12 @@ services:
       ROOM_HOST: "localhost"
 
   wt-tracker:
-    image: nickert/webtorrent-tracker:latest
+    image: webtor/webtorrent-tracker:latest
     command: --ws --stats
     ports: [ "8000:8000" ]
 
   cashu-mint:
-    image: cashubtc/cashu-mint:latest
+    image: cashubtc/mintd:latest
     ports: [ "3333:3333" ]
     environment:
       MINT_HOST: "0.0.0.0"
