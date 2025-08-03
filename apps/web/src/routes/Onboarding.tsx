@@ -228,6 +228,7 @@ function OnboardingContent() {
       )}
       {step === 2 && mode === 'new' && (
         <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Profile Details</h2>
           <label htmlFor="username" className="block text-sm font-medium">
             Username
           </label>
@@ -285,8 +286,8 @@ function OnboardingContent() {
             </Dropzone>
           )}
           {avatarSrc && (
-            <div className="space-y-2">
-              <div className="relative w-64 h-64 bg-gray-200">
+            <div className="flex flex-col items-center">
+              <div className="relative w-full max-w-xs aspect-square bg-gray-200 mb-4">
                 <Cropper
                   image={avatarSrc}
                   crop={crop}
@@ -304,7 +305,10 @@ function OnboardingContent() {
                 Use Avatar
               </button>
               {avatarPreview && (
-                <img src={avatarPreview} className="w-16 h-16 rounded-full" />
+                <img
+                  src={avatarPreview}
+                  className="w-16 h-16 rounded-full mt-2"
+                />
               )}
             </div>
           )}
@@ -333,6 +337,7 @@ function OnboardingContent() {
       )}
       {step === 2 && mode === 'import' && (
         <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Import Backups</h2>
           <Dropzone
             onDrop={async (files) => {
               const f = files[0];
