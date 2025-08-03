@@ -57,6 +57,9 @@ To start the development stack manually:
 This boots supporting containers (room server, tracker and regtest mint), installs dependencies and runs the
 Vite development server for the web app.
 
+The web app's development script removes any existing Vite cache (`node_modules/.vite`) before
+starting so changes are always picked up on launch.
+
 ### Environment variables
 
 The development server recognises a few optional variables for overriding network endpoints:

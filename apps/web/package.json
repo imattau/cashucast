@@ -2,7 +2,7 @@
   "name": "web",
   "private": true,
   "scripts": {
-    "dev": "vite"
+    "dev": "node -e \"fs.rmSync('node_modules/.vite',{recursive:true,force:true});\" && vite"
   },
   "dependencies": {
     "react": "^19.1.1",
