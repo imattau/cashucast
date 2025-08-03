@@ -8,14 +8,15 @@ import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { createRPCClient } from '../rpc';
 
 /**
- * TranscodeModal uses ffmpeg.wasm to transcode a selected file and seeds
- * the result via the torrent worker. Progress is reported by ffmpeg and once
- * seeding completes the resulting magnet URI is returned and a snackbar is
- * shown to the user.
+ * TranscodeModal uses ffmpeg.wasm to transcode a selected file into a
+ * WebM clip (limited to 300 seconds) and seeds the result via the torrent
+ * worker. Progress is reported by ffmpeg and once seeding completes the
+ * resulting magnet URI is returned and a snackbar is shown to the user.
  */
 export interface TranscodeModalProps {
   open: boolean;
   file?: File | Blob;
+  /** Called with the magnet URI of the transcoded WebM clip. */
   onComplete: (magnet: string) => void;
 }
 
