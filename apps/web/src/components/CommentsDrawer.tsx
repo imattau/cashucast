@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
+import { createRPCClient } from '../../shared/rpc';
 
 // Radix Dialog; 70 vh on phones, 100 vh desktop.
 // Shows existing comments via worker-ssb query.
@@ -22,8 +23,25 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
 }) => {
   const [comments, setComments] = React.useState<string[]>([]);
   const [text, setText] = React.useState('');
+  const rpcRef = React.useRef<ReturnType<typeof createRPCClient> | null>(null);
 
-  // TODO: load comments from worker-ssb for the given postId
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const worker = new Worker(
+      new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
+      { type: 'module' }
+    );
+    rpcRef.current = createRPCClient(worker);
+    return () => worker.terminate();
+  }, []);
+
+  React.useEffect(() => {
+    const rpc = rpcRef.current;
+    if (!rpc || !open) return;
+    rpc('queryComments', postId)
+      .then((c) => setComments((c as string[]) || []))
+      .catch(() => setComments([]));
+  }, [postId, open]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
