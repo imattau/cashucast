@@ -7,8 +7,10 @@
  */
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { act } from 'react-dom/test-utils';
+import { act } from 'react';
 import { createRoot } from 'react-dom/client';
+// silence act(...) warnings in React 19
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 vi.mock('../../shared/rpc', () => ({
   createRPCClient: () => () => Promise.resolve(undefined),
 }));
@@ -95,5 +97,47 @@ describe('Onboarding steps', () => {
     });
     expect(container.textContent).toContain('Drop profile backup JSON');
     expect(container.textContent).toContain('Drop wallet backup JSON');
+  });
+
+  it('shows an error for invalid username', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('New Account'),
+    )!;
+    await act(async () => {
+      newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const input = container.querySelector('input[name="username"]') as HTMLInputElement;
+    await act(async () => {
+      input.focus();
+      input.value = 'ab';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.blur();
+    });
+    expect(container.textContent).toContain('Username must be between 3 and 30 characters.');
+  });
+
+  it('shows an error when invalid JSON is dropped', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const importBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('Import Existing Profile'),
+    )!;
+    await act(async () => {
+      importBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const input = container.querySelector('input[name="profile"]') as HTMLInputElement;
+    const file = new File(['{invalid'], 'bad.json', { type: 'application/json' });
+    await act(async () => {
+      Object.defineProperty(input, 'files', { value: [file] });
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    expect(container.textContent).toContain('Invalid JSON');
   });
 });

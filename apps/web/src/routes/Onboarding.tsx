@@ -36,6 +36,7 @@ function OnboardingContent() {
 
   // new account states
   const [username, setUsername] = useState('');
+  const [usernameError, setUsernameError] = useState<string | null>(null);
   const [keys, setKeys] = useState<{ pk: string; sk: string } | null>(null);
   const [mnemonic, setMnemonic] = useState<string | null>(null);
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
@@ -111,6 +112,16 @@ function OnboardingContent() {
   // import states
   const [profileJson, setProfileJson] = useState<any>(null);
   const [walletJson, setWalletJson] = useState<any>(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const [walletError, setWalletError] = useState<string | null>(null);
+
+  const validateUsername = (name: string): string | null => {
+    if (name.length < 3 || name.length > 30)
+      return 'Username must be between 3 and 30 characters.';
+    if (!/^[A-Za-z0-9_]+$/.test(name))
+      return 'Username can only contain letters, numbers, and underscores.';
+    return null;
+  };
 
   useEffect(() => {
     if (mode === 'import' && (profileJson || walletJson)) {
@@ -121,8 +132,11 @@ function OnboardingContent() {
         if (parsedWallet) profileData.cashuMnemonic = parsedWallet.cashuMnemonic;
         importProfile(profileData);
         setStep(3);
+        setProfileError(null);
+        setWalletError(null);
       } catch {
-        /* ignore invalid backups */
+        setProfileError('Invalid backup data');
+        setWalletError('Invalid backup data');
       }
     }
   }, [mode, profileJson, walletJson, importProfile]);
@@ -130,6 +144,12 @@ function OnboardingContent() {
   const [toast, setToast] = useState(false);
 
   const confirm = async () => {
+    const err = validateUsername(username);
+    if (err) {
+      setUsernameError(err);
+      setStep(2);
+      return;
+    }
     if (mode === 'new' && keys && mnemonic) {
       const p = await createProfile({
         ssbPk: keys.pk,
@@ -196,8 +216,15 @@ function OnboardingContent() {
             placeholder="Username"
             autoComplete="username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              if (usernameError) setUsernameError(validateUsername(e.target.value));
+            }}
+            onBlur={(e) => setUsernameError(validateUsername(e.target.value))}
           />
+          {usernameError && (
+            <p className="text-sm text-red-500">{usernameError}</p>
+          )}
           {!avatarSrc && (
             <Dropzone
               onDrop={(files) => {
@@ -262,7 +289,10 @@ function OnboardingContent() {
               try {
                 const txt = await f.text();
                 setProfileJson(JSON.parse(txt));
-              } catch {}
+                setProfileError(null);
+              } catch {
+                setProfileError('Invalid JSON');
+              }
             }}
           >
             {({ getRootProps, getInputProps }) => (
@@ -283,6 +313,9 @@ function OnboardingContent() {
                   })}
                 />
                 <p id="profile-upload-caption">Drop profile backup JSON</p>
+                {profileError && (
+                  <p className="mt-2 text-sm text-red-500">{profileError}</p>
+                )}
               </div>
             )}
           </Dropzone>
@@ -293,7 +326,10 @@ function OnboardingContent() {
               try {
                 const txt = await f.text();
                 setWalletJson(JSON.parse(txt));
-              } catch {}
+                setWalletError(null);
+              } catch {
+                setWalletError('Invalid JSON');
+              }
             }}
           >
             {({ getRootProps, getInputProps }) => (
@@ -314,6 +350,9 @@ function OnboardingContent() {
                   })}
                 />
                 <p id="wallet-upload-caption">Drop wallet backup JSON</p>
+                {walletError && (
+                  <p className="mt-2 text-sm text-red-500">{walletError}</p>
+                )}
               </div>
             )}
           </Dropzone>
