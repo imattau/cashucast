@@ -47,13 +47,22 @@ fi
 
 # ── Compose alias ───────────────────────────────────────────────
 if [[ $CTL == "docker" ]]; then
-  COMPOSE="docker compose"
+  if $CTL compose version >/dev/null 2>&1; then
+    COMPOSE="docker compose"
+  elif command -v docker-compose >/dev/null 2>&1; then
+    COMPOSE="docker-compose"
+  else
+    echo "❌  Docker Compose not found." >&2
+    exit 1
+  fi
 else
-  # prefer 'podman compose' else fallback to podman-compose binary
   if $CTL compose version >/dev/null 2>&1; then
     COMPOSE="podman compose"
-  else
+  elif command -v podman-compose >/dev/null 2>&1; then
     COMPOSE="podman-compose"
+  else
+    echo "❌  Podman Compose not found." >&2
+    exit 1
   fi
 fi
 
