@@ -1,10 +1,11 @@
 import React from 'react';
 
-declare const navigate: (path: string) => void;
-
 const FabRecord: React.FC = () => {
   const handleClick = () => {
-    navigate('/record');
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', '/record');
+      window.dispatchEvent(new PopStateEvent('popstate'));
+    }
   };
 
   return (

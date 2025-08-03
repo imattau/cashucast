@@ -37,3 +37,4 @@ export * from './BackupSeedBtn';
 export * from './Settings';
 export * from './PostMenu';
 export { default as FabRecord } from './FabRecord';
+export { default as VideoRecorder } from './VideoRecorder';
