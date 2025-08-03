@@ -140,4 +140,32 @@ describe('Onboarding steps', () => {
     });
     expect(container.textContent).toContain('Invalid JSON');
   });
+
+  it('shows step indicator and Back navigation', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('New Account'),
+    )!;
+    await act(async () => {
+      newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.textContent).toContain('Step 2 of 3');
+    const backBtn = Array.from(container.querySelectorAll('button')).find(
+      (b) => b.textContent === 'Back',
+    )!;
+    await act(async () => {
+      backBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.textContent).toContain('Step 1 of 3');
+    const newBtn2 = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('New Account'),
+    )!;
+    await act(async () => {
+      newBtn2.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.textContent).toContain('Step 2 of 3');
+  });
 });
