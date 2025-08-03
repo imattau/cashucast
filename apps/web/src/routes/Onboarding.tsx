@@ -312,27 +312,29 @@ function OnboardingContent() {
                   onCropComplete={onCropComplete}
                 />
               </div>
-              <button
-                className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
-                onClick={async () => {
-                  const preview = await saveAvatar();
-                  if (!preview) return;
-                  setAvatarPreview(preview);
-                  const err = validateUsername(username);
-                  if (err) {
-                    setUsernameError(err);
-                    setStep(2);
-                  } else {
-                    setStep(3);
-                  }
-                }}
-              >
-                Use Avatar
-              </button>
+              {!avatarPreview && (
+                <button
+                  className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+                  onClick={async () => {
+                    const preview = await saveAvatar();
+                    if (!preview) return;
+                    setAvatarPreview(preview);
+                    const err = validateUsername(username);
+                    if (err) {
+                      setUsernameError(err);
+                      setStep(2);
+                    } else {
+                      setStep(3);
+                    }
+                  }}
+                >
+                  Use Avatar
+                </button>
+              )}
               {avatarPreview && (
                 <img
                   src={avatarPreview}
-                  className="w-16 h-16 rounded-full mt-2"
+                  className="w-32 h-32 rounded-full border object-cover mt-2"
                 />
               )}
             </div>
