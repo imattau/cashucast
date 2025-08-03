@@ -2,6 +2,10 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { getDefaultEndpoints } from '../config';
 
+/**
+ * Global application settings persisted in localStorage. These control how the
+ * application interacts with the network and its moderation behaviour.
+ */
 interface SettingsState {
   showNSFW: boolean;
   maxBlobMB: number;
@@ -18,6 +22,9 @@ interface SettingsState {
   setLowSeedRatio: (n: number) => void;
 }
 
+/**
+ * Zustand store providing read/write access to user settings.
+ */
 export const useSettings = create<SettingsState>()(
   persist(
     (set, get) => {

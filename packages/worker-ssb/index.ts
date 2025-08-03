@@ -1,3 +1,8 @@
+/**
+ * Worker handling Secure Scuttlebutt (SSB) style feed operations and full-text
+ * search. Exposes an RPC API used by the application to publish and query
+ * posts without blocking the main thread.
+ */
 import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
 import { generateKeyPairSync, randomUUID } from 'node:crypto';
@@ -20,6 +25,13 @@ for (const msg of ssbLog) {
 }
 
 createRPCHandler(self as any, {
+  /**
+   * Generate or set the key pair used for signing SSB messages.
+   *
+   * @param sk - Optional secret key in base64 format to load.
+   * @param pk - Optional public key in base64 format to load.
+   * @returns The generated key pair when new keys are created.
+   */
   initKeys: async (sk?: string, pk?: string) => {
     if (sk && pk) {
       storedKeys = { sk, pk };
@@ -35,6 +47,12 @@ createRPCHandler(self as any, {
     storedKeys = { sk: skStr, pk: pkStr };
     return { sk: skStr, pk: pkStr };
   },
+  /**
+   * Append a post to the local log and broadcast it to connected peers.
+   *
+   * @param post - Post content to publish.
+   * @returns The stored post with generated id and defaults.
+   */
   publishPost: async (post: Post) => {
     const id = post.id ?? randomUUID();
     const fullPost = {
@@ -54,6 +72,14 @@ createRPCHandler(self as any, {
     } catch (_) {}
     return fullPost;
   },
+  /**
+   * Retrieve posts from the log applying basic moderation rules and tag
+   * filters. Reported posts over a threshold or posts from blocked users are
+   * excluded.
+   *
+   * @param opts - Optional tag filters to include.
+   * @returns Array of posts sorted roughly by relevance.
+   */
   queryFeed: async (opts) => {
     const includeTags = opts?.includeTags ?? [];
     const thresholdEnv =
@@ -129,6 +155,13 @@ createRPCHandler(self as any, {
 
     return attachBoosters(unseen);
   },
+  /**
+   * Compute the most frequently used tags within a recent time window.
+   *
+   * @param opts - Optional parameters controlling date range and number of
+   * results.
+   * @returns A list of tags with their occurrence counts.
+   */
   topTags: async (opts) => {
     const since = opts?.since ?? Date.now() - 48 * 60 * 60 * 1000;
     const limit = opts?.limit ?? 20;
@@ -146,6 +179,13 @@ createRPCHandler(self as any, {
       .slice(0, limit)
       .map(([tag, count]) => ({ tag, count }));
   },
+  /**
+   * Perform a full-text search over the indexed posts.
+   *
+   * @param query - Search term to match against post text.
+   * @param limit - Maximum number of results to return.
+   * @returns Array of posts matching the query.
+   */
   searchPosts: async (query: string, limit = 20) => {
     const results = mini.search(query, { prefix: true }).slice(0, limit);
     const posts = new Map(
@@ -153,6 +193,13 @@ createRPCHandler(self as any, {
     );
     return results.map((r) => posts.get(r.id)).filter(Boolean);
   },
+  /**
+   * Record a report for a post which will influence moderation filtering.
+   *
+   * @param postId - Identifier of the post being reported.
+   * @param reason - Free-form reason describing the issue.
+   * @returns The report message stored in the log.
+   */
   reportPost: async (postId: string, reason: string) => {
     const report = { fromPk: 'local', reason, ts: Date.now() };
     const msg = { type: 'report', target: postId, ...report };
@@ -163,6 +210,12 @@ createRPCHandler(self as any, {
     } catch (_) {}
     return msg;
   },
+  /**
+   * Block posts from a particular user by their public key.
+   *
+   * @param pubKey - Public key identifying the user to block.
+   * @returns The block message stored in the log.
+   */
   blockUser: async (pubKey: string) => {
     const msg = { type: 'block', target: pubKey, ts: Date.now() };
     ssbLog.push(msg);
@@ -172,6 +225,12 @@ createRPCHandler(self as any, {
     } catch (_) {}
     return msg;
   },
+  /**
+   * Append an arbitrary message to the log, primarily for testing purposes.
+   *
+   * @param msg - SSB message object to store.
+   * @returns The stored message.
+   */
   publish: async (msg: any) => {
     ssbLog.push(msg);
     try {

@@ -2,6 +2,9 @@
 set -e
 
 # ── Detect runtimes & health ───────────────────────────────────
+# check_runtime <binary>
+# Prints "ok", "broken" or "absent" depending on the availability
+# and health of the container runtime.
 check_runtime() {
   local bin=$1
   if ! command -v $bin >/dev/null 2>&1; then
@@ -18,6 +21,9 @@ check_runtime() {
 docker_state=$(check_runtime docker)   # ok / broken / absent
 podman_state=$(check_runtime podman)   # ok / broken / absent
 
+# choose_runtime
+# Prompt the user to pick a container runtime when both Docker
+# and Podman are healthy on the system.
 choose_runtime() {
   # Both ok → prompt
   read -n1 -r -p "Both Docker and Podman detected. Use (d)ocker or (p)odman? [d]: " choice

@@ -1,3 +1,8 @@
+/**
+ * Worker responsible for torrent seeding and playback. Files are seeded using
+ * WebTorrent and mirrored into the SSB blob store to support peer-to-peer
+ * retrieval across sessions.
+ */
 import WebTorrent from 'webtorrent';
 import { createRequire } from 'module';
 import { useSettings } from '../../shared/store/settings';
@@ -34,6 +39,13 @@ if (enableDht && DHT) {
   client.on('torrent', (t) => dht.announce(t.infoHash, 20000));
 }
 
+/**
+ * Seed a file via WebTorrent and cache it in the SSB blob store for future
+ * retrieval.
+ *
+ * @param file - Browser File object to seed.
+ * @returns Magnet URI representing the seeded torrent.
+ */
 function seedFile(file: File): Promise<string> {
   return new Promise((resolve) => {
     client.seed(file as any, { announce: trackers }, (torrent: any) => {
@@ -52,6 +64,13 @@ function seedFile(file: File): Promise<string> {
   });
 }
 
+/**
+ * Stream a torrent identified by a magnet URI or info hash. Attempts to read
+ * from the SSB blob cache first and falls back to fetching via WebTorrent.
+ *
+ * @param magnet - Magnet URI or raw info hash of the torrent to fetch.
+ * @returns A browser object URL for the media or an empty string on failure.
+ */
 async function stream(magnet: string): Promise<string> {
   const infoHashMatch = magnet.match(/btih:([a-zA-Z0-9]+)/);
   const infoHash = infoHashMatch ? infoHashMatch[1] : magnet;
