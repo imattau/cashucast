@@ -2,12 +2,22 @@ import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
 import { generateKeyPairSync, randomUUID } from 'node:crypto';
 import { getSSB } from './src/instance';
+import { createRequire } from 'module';
 
 let storedKeys: { sk: string; pk: string } | undefined;
 
 // Global SSB log shared across workers to simulate replication
 const ssbLog: any[] = (globalThis as any).__cashuSSBLog || [];
 (globalThis as any).__cashuSSBLog = ssbLog;
+
+// attempt to initialise fulltext search plugin
+try {
+  const require = createRequire(import.meta.url);
+  const fulltext = require('jitdb-plugin-fulltext');
+  const ssb = getSSB();
+  ssb.db.use(fulltext);
+  ssb.db.fulltext?.init([{ field: 'text' }]);
+} catch (_) {}
 
 createRPCHandler(self as any, {
   initKeys: async (sk?: string, pk?: string) => {
@@ -72,6 +82,24 @@ createRPCHandler(self as any, {
       const reporters = reportsMap.get(post.id) || new Set();
       return reporters.size < threshold;
     });
+  },
+  searchPosts: async (query: string, limit = 20) => {
+    try {
+      const ssb = getSSB();
+      const fulltext = ssb.db.fulltext;
+      if (fulltext?.search) {
+        return await new Promise((resolve) => {
+          fulltext.search({ query, limit }, (err: any, res: any) => {
+            resolve(err ? [] : res);
+          });
+        });
+      }
+    } catch (_) {}
+    const posts = ssbLog.filter((m) => m.type === 'post');
+    const q = query.toLowerCase();
+    return posts
+      .filter((p: any) => (p.text || '').toLowerCase().includes(q))
+      .slice(0, limit);
   },
   reportPost: async (postId: string, reason: string) => {
     const report = { fromPk: 'local', reason, ts: Date.now() };
