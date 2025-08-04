@@ -61,5 +61,12 @@ describe('TimelineCard', () => {
     expect(html).toContain('aria-label="Open post menu"');
     expect(html).toContain('bg-black/60');
   });
+
+  it('uses dynamic viewport height for full visibility on mobile', () => {
+    const html = renderToStaticMarkup(
+      <TimelineCard name="a" avatarUrl="" magnet={magnet} />,
+    );
+    expect(html).toContain('min-h-[100dvh]');
+  });
 });
 

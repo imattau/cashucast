@@ -70,7 +70,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   return (
     <>
       <motion.article
-        className="relative h-[90vh] w-full rounded-card shadow-sm overflow-hidden"
+        className="relative min-h-[100dvh] w-full rounded-card shadow-sm overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
