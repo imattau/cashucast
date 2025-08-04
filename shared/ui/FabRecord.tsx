@@ -4,7 +4,12 @@
  */
 import React, { useRef } from 'react';
 
-const FabRecord: React.FC = () => {
+export interface FabRecordProps {
+  /** Optional positioning classes for the button */
+  className?: string;
+}
+
+const FabRecord: React.FC<FabRecordProps> = ({ className }) => {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const longPressRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,6 +43,9 @@ const FabRecord: React.FC = () => {
     }
   };
 
+  const positionClass =
+    className ?? 'fixed bottom-16 left-1/2 -translate-x-1/2';
+
   return (
     <>
       <button
@@ -47,7 +55,7 @@ const FabRecord: React.FC = () => {
         onTouchEnd={endPress}
         onMouseLeave={endPress}
         aria-label="Record"
-        className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-[#FF0759] to-[#FF8A90] text-white drop-shadow-lg motion-safe:hover:scale-105 sm:hidden"
+        className={`${positionClass} z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-[#FF0759] to-[#FF8A90] text-white drop-shadow-lg motion-safe:hover:scale-105 sm:hidden`}
       >
         +
       </button>

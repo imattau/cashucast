@@ -40,7 +40,9 @@ vi.mock('../../shared/ui', async () => {
     ),
     BottomSheet: ({ open, children }: any) => (open ? <div role="dialog">{children}</div> : null),
     Profile: ({ name }: { name: string }) => <div>Profile-{name}</div>,
-    FabRecord: () => <button aria-label="Record" />,
+    FabRecord: ({ className }: { className?: string }) => (
+      <button aria-label="Record" className={className} />
+    ),
   };
 });
 
