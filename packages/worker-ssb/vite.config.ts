@@ -7,9 +7,16 @@ import path from 'path';
 import ssbReservedWordsFix, {
   ssbReservedWordsFixEsbuild,
 } from '../../ssb-reserved-words-fix';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
 
 export default defineConfig({
-  plugins: [ssbReservedWordsFix()],
+  plugins: [
+    ssbReservedWordsFix(),
+    NodeGlobalsPolyfillPlugin({ buffer: true, process: true }),
+    NodeModulesPolyfillPlugin(),
+  ],
+  define: { global: 'globalThis' },
   resolve: {
     dedupe: ['libsodium-wrappers', 'libsodium-wrappers-sumo'],
     alias: {
@@ -19,7 +26,11 @@ export default defineConfig({
   },
   optimizeDeps: {
     esbuildOptions: {
-      plugins: [ssbReservedWordsFixEsbuild()],
+      plugins: [
+        ssbReservedWordsFixEsbuild(),
+        NodeGlobalsPolyfillPlugin({ buffer: true, process: true }),
+        NodeModulesPolyfillPlugin(),
+      ],
     },
   },
 });
