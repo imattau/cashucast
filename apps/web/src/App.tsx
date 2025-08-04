@@ -10,8 +10,20 @@ import SearchBar from './components/SearchBar';
 
 export default function App() {
   const { profile } = useProfile();
-  const hasProfile = Boolean(profile?.ssbPk);
+  const [hydrated, setHydrated] = React.useState(() =>
+    useProfile.persist.hasHydrated(),
+  );
 
+  React.useEffect(() => {
+    const unsub = useProfile.persist.onFinish(() => setHydrated(true));
+    return unsub;
+  }, []);
+
+  if (!hydrated) {
+    return null;
+  }
+
+  const hasProfile = Boolean(profile?.ssbPk);
   if (!hasProfile) {
     return <Onboarding />;
   }
