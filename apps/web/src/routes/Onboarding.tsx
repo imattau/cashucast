@@ -196,33 +196,25 @@ function OnboardingContent() {
       ref={containerRef}
       className="relative space-y-4 sm:space-y-6 md:space-y-8"
     >
-      {step > 1 && (
-        <button
-          className="absolute top-4 left-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
-          onClick={() => setStep(step - 1)}
-        >
-          ← Back
-        </button>
-      )}
+      <button
+        type="button"
+        className="absolute top-4 right-4 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+        onClick={() => {
+          if (step === 1) {
+            window.history.pushState(null, '', '/');
+            window.dispatchEvent(new PopStateEvent('popstate'));
+          }
+          setStep(1);
+          setMode(null);
+        }}
+      >
+        Cancel
+      </button>
       <div aria-live="polite" className="sr-only">
         {stepTitle}
       </div>
-      <div className="flex justify-between items-center text-sm text-gray-500">
-        <span className="text-gray-500 dark:text-gray-400">
-          Step {step} of 3
-        </span>
-        {step > 1 && (
-          <button
-            type="button"
-            onClick={() => {
-              setStep(1);
-              setMode(null);
-            }}
-            className="hover:underline"
-          >
-            Cancel
-          </button>
-        )}
+      <div className="text-sm text-gray-500 dark:text-gray-400">
+        Step {step} of 3
       </div>
       {step === 1 && (
         <div className="flex flex-col gap-4">
@@ -403,13 +395,7 @@ function OnboardingContent() {
               />
             </div>
           )}
-          <div className="flex justify-between">
-            <button
-              className="rounded bg-subtleBg hover:bg-surface px-4 py-3 min-tap"
-              onClick={() => setStep(1)}
-            >
-              Back
-            </button>
+          <div className="flex justify-end">
             <button
               className="rounded bg-primary hover:bg-primary px-4 py-3 min-tap"
               onClick={async () => {
@@ -549,14 +535,7 @@ function OnboardingContent() {
               </div>
             )}
           </Dropzone>
-          <div className="flex justify-between">
-          <button
-            className="rounded bg-subtleBg hover:bg-surface px-4 py-3 min-tap"
-            onClick={() => setStep(1)}
-            disabled={profileLoading || walletLoading}
-          >
-            Back
-          </button>
+            <div className="flex justify-end">
           <button
             className="rounded bg-primary hover:bg-primary px-4 py-3 min-tap"
             onClick={() => {
@@ -596,13 +575,7 @@ function OnboardingContent() {
             )}
             <span>{mode === 'new' ? username : profile?.username}</span>
           </div>
-          <div className="flex justify-between">
-            <button
-            className="rounded bg-subtleBg hover:bg-surface px-4 py-3 min-tap"
-            onClick={() => setStep(2)}
-          >
-            Back
-          </button>
+            <div className="flex justify-end">
           <button
             className="rounded bg-primary hover:bg-primary px-4 py-3 min-tap"
             onClick={confirm}

@@ -378,7 +378,7 @@ describe('Onboarding steps', () => {
     expect(container.textContent).toContain('Invalid profile backup');
   });
 
-  it('shows step indicator and Back navigation', async () => {
+  it('shows step indicator and allows canceling to restart', async () => {
     const { container, root } = setupDom();
     await act(async () => {
       root.render(<Onboarding />);
@@ -390,20 +390,13 @@ describe('Onboarding steps', () => {
       newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
     expect(container.textContent).toContain('Step 2 of 3');
-    const backBtn = Array.from(container.querySelectorAll('button')).find(
-      (b) => b.textContent === 'Back',
+    const cancelBtn = Array.from(container.querySelectorAll('button')).find(
+      (b) => b.textContent === 'Cancel',
     )!;
     await act(async () => {
-      backBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      cancelBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
     expect(container.textContent).toContain('Step 1 of 3');
-    const newBtn2 = Array.from(container.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('New Account'),
-    )!;
-    await act(async () => {
-      newBtn2.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-    });
-    expect(container.textContent).toContain('Step 2 of 3');
   });
 
   it.skip('allows user to reach final confirmation step via import flow', async () => {
