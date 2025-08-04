@@ -15,7 +15,7 @@ import { z } from 'zod';
 import { UserPlus, Upload, DownloadCloud } from 'lucide-react';
 import { Avatar } from '../../shared/ui/Avatar';
 import { Toast } from '../../shared/ui/Toast';
-import 'react-easy-crop/react-easy-crop.css';
+import 'react-easy-crop/dist/react-easy-crop.css';
 
 // schemas for validating imported backups
 const ProfileBackupSchema = z.object({

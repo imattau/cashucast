@@ -8,4 +8,9 @@ export default defineConfig({
   test: {
     environment: 'node',
   },
+  resolve: {
+    alias: {
+      'react-easy-crop/dist': 'react-easy-crop',
+    },
+  },
 });
