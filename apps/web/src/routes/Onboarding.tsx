@@ -287,7 +287,7 @@ function OnboardingContent() {
               id="username"
               name="username"
               autoComplete="username"
-              className="mt-1 block w-full rounded border px-4 py-3 min-h-[44px] font-normal text-black placeholder:text-black"
+              className="mt-1 block w-full rounded border px-4 py-3 min-h-[44px] font-normal bg-white dark:bg-gray-700 text-black dark:text-white placeholder:text-black dark:placeholder:text-gray-300"
               placeholder="Username"
               value={username}
               onChange={(e) => {
@@ -349,7 +349,7 @@ function OnboardingContent() {
                 />
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/60 text-gray-500"
+                    className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/60 text-gray-500 dark:bg-gray-800/60 dark:text-gray-300"
                   >
                     <Upload className="h-6 w-6 mb-1" />
                     <span className="text-xs text-center px-1">
@@ -628,13 +628,13 @@ export default function Onboarding() {
   return (
     <Dialog.Root open>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 z-40" />
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 dark:bg-white/20 z-40" />
         <Dialog.Content className="fixed inset-0 flex items-center justify-center z-50">
           <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
           <Dialog.Description className="sr-only">
             Set up your profile to start using CashuCast
           </Dialog.Description>
-          <div className="w-full max-w-md max-h-[90vh] overflow-auto bg-white rounded-xl p-6">
+          <div className="w-full max-w-md max-h-[90vh] overflow-auto bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl p-6">
             <OnboardingContent />
           </div>
         </Dialog.Content>
