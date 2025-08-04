@@ -4,12 +4,12 @@
 */
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
 import randomAccessIdb from 'random-access-idb';
+import * as sodium from 'libsodium-wrappers-sumo';
 
 let ssb: any;
 
 export async function initSsb() {
   if (ssb) return ssb;
-  const sodium = await import('libsodium-wrappers-sumo').then(m => m);
   await sodium.ready;
   try {
     ssb = createBrowserSsb('cashucast-ssb', {
