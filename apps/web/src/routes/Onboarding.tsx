@@ -378,7 +378,7 @@ function OnboardingContent() {
                 />
               </div>
               <button
-                className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+                className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-tap"
                 onClick={async () => {
                   const preview = await saveAvatar();
                   if (!preview) return;
@@ -406,13 +406,13 @@ function OnboardingContent() {
           )}
           <div className="flex justify-between">
             <button
-              className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-tap"
               onClick={() => setStep(1)}
             >
               Back
             </button>
             <button
-              className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-tap"
               onClick={async () => {
                 const err = validateUsername(username);
                 if (err) {
@@ -462,7 +462,7 @@ function OnboardingContent() {
                     }
                   },
                 })}
-                className="border-2 border-dashed cursor-pointer text-center px-4 py-3 min-w-[44px] min-h-[44px]"
+                className="border-2 border-dashed cursor-pointer text-center px-4 py-3 min-tap"
                 aria-describedby="profile-upload-caption"
               >
                 <label htmlFor="profile-upload" className="sr-only">
@@ -521,7 +521,7 @@ function OnboardingContent() {
                     }
                   },
                 })}
-                className="border-2 border-dashed cursor-pointer text-center px-4 py-3 min-w-[44px] min-h-[44px]"
+                className="border-2 border-dashed cursor-pointer text-center px-4 py-3 min-tap"
                 aria-describedby="wallet-upload-caption"
               >
                 <label htmlFor="wallet-upload" className="sr-only">
@@ -552,14 +552,14 @@ function OnboardingContent() {
           </Dropzone>
           <div className="flex justify-between">
           <button
-            className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+            className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-tap"
             onClick={() => setStep(1)}
             disabled={profileLoading || walletLoading}
           >
             Back
           </button>
           <button
-            className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+            className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-tap"
             onClick={() => {
               if (mode !== 'import' || (!profileBackup && !walletBackup)) return;
               const profileData: any = { ...profileBackup };
@@ -599,13 +599,13 @@ function OnboardingContent() {
           </div>
           <div className="flex justify-between">
             <button
-              className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-tap"
               onClick={() => setStep(2)}
             >
               Back
             </button>
             <button
-              className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-tap"
               onClick={confirm}
             >
               Confirm

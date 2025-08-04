@@ -79,7 +79,7 @@ export const Stepper: React.FC = () => {
                   }
                   setStep(1);
                 }}
-                className="rounded bg-primary hover:bg-primary px-4 py-3 text-white min-w-[44px] min-h-[44px] disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded bg-primary hover:bg-primary px-4 py-3 text-white min-tap disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Next
               </button>
