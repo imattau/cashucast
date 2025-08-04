@@ -2,6 +2,7 @@ import * as sodium from 'libsodium-wrappers-sumo';
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
 import randomAccessIdb from 'random-access-idb';
 import ssbBlobStore from 'ssb-blob-store';
+import { cache as blobCache, prune } from './blobCache';
 
 let ssb: any;
 
@@ -42,6 +43,19 @@ export async function initSsb() {
         rm: () => {},
       },
     };
+  }
+
+  if (ssb?.on && ssb.ebt?.request) {
+    ssb.on('rpc:connect', (peer: any) => {
+      ssb.ebt.request(peer.id, true);
+    });
+  }
+
+  if (ssb?.blobs?.on) {
+    ssb.blobs.on('download', (hash: string, bytes: number) => {
+      blobCache.set(hash, { bytes, ts: Date.now() });
+      prune(ssb);
+    });
   }
   return ssb;
 }
