@@ -42,7 +42,7 @@ if (typeof window === 'undefined') {
 
 // Dynamic import ensures `Buffer` is available before evaluating modules that
 // depend on it (e.g. `ssb-browser-core`).
-const { getSSB } = await import('./src/instance');
+const { initSsb } = await import('./src/instance');
 
 let storedKeys: { sk: string; pk: string } | undefined;
 
@@ -120,7 +120,7 @@ createRPCHandler(self as any, {
       ssbLog.push({ type: 'report', target: id, ...r });
     }
     try {
-      const ssb = getSSB();
+      const ssb = await initSsb();
       ssb.db.publish({ type: 'post', ...fullPost }, () => {});
     } catch (_) {}
     return fullPost;
@@ -153,7 +153,7 @@ createRPCHandler(self as any, {
     };
     ssbLog.push(comment);
     try {
-      const ssb = getSSB();
+      const ssb = await initSsb();
       ssb.db.publish(comment, () => {});
     } catch (_) {}
     return comment;
@@ -291,7 +291,7 @@ createRPCHandler(self as any, {
     const msg = { type: 'report', target: postId, ...report };
     ssbLog.push(msg);
     try {
-      const ssb = getSSB();
+      const ssb = await initSsb();
       ssb.db.publish(msg, () => {});
     } catch (_) {}
     return msg;
@@ -306,7 +306,7 @@ createRPCHandler(self as any, {
     const msg = { type: 'block', target: pubKey, ts: Date.now() };
     ssbLog.push(msg);
     try {
-      const ssb = getSSB();
+      const ssb = await initSsb();
       ssb.db.publish(msg, () => {});
     } catch (_) {}
     return msg;
@@ -320,7 +320,7 @@ createRPCHandler(self as any, {
   publish: async (msg: any) => {
     ssbLog.push(msg);
     try {
-      const ssb = getSSB();
+      const ssb = await initSsb();
       ssb.db.publish(msg, () => {});
     } catch (_) {}
     return msg;
