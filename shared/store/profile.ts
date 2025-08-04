@@ -34,7 +34,11 @@ export const useProfile = create<ProfileState>()(
         set({ profile: json });
       },
       exportProfile() {
-        return new Blob([JSON.stringify(get().profile)], {
+        const profile = get().profile;
+        if (!profile) {
+          return new Blob(['{}'], { type: 'application/json' });
+        }
+        return new Blob([JSON.stringify(profile)], {
           type: 'application/json',
         });
       },
