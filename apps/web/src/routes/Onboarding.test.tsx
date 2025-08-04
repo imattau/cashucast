@@ -29,6 +29,31 @@ vi.mock('react-dropzone', () => ({
   },
 }));
 
+vi.mock('react-easy-crop', () => ({
+  __esModule: true,
+  default: ({ onCropComplete }: any) => {
+    React.useEffect(() => {
+      onCropComplete({}, { x: 0, y: 0, width: 10, height: 10 });
+    }, [onCropComplete]);
+    return <div className="reactEasyCrop_Container" data-testid="container" />;
+  },
+}));
+
+vi.mock('../../../../packages/worker-ssb/src/instance', () => ({
+  getSSB: () => ({
+    blobs: {
+      add: () => ({
+        write: () => {},
+        end: (cb: any) => cb(null, 'hash'),
+      }),
+    },
+  }),
+}));
+
+vi.mock('../../../../packages/worker-ssb/src/blobCache', () => ({
+  touch: () => {},
+}));
+
 import Onboarding, { resetOnboardingState } from './Onboarding';
 import { useProfile } from '../../shared/store/profile';
 
@@ -394,5 +419,55 @@ describe('Onboarding steps', () => {
     });
     expect(container.textContent).toContain('Step 3 of 3');
     expect(container.textContent).toContain('Confirm');
+  });
+
+  it('shows avatar cropper and preview when selecting an image', async () => {
+    const { container, root } = setupDom();
+    const createObjectURL = vi
+      .fn()
+      .mockReturnValueOnce('blob:avatar')
+      .mockReturnValueOnce('blob:preview');
+    (global as any).URL.createObjectURL = createObjectURL;
+    Object.defineProperty(globalThis.HTMLImageElement.prototype, 'src', {
+      set(value) {
+        // @ts-ignore
+        this._src = value;
+        setTimeout(() => this.onload && this.onload(new Event('load')));
+      },
+      get() {
+        // @ts-ignore
+        return this._src;
+      },
+      configurable: true,
+    });
+    HTMLCanvasElement.prototype.getContext = vi.fn(() => ({ drawImage: vi.fn() }));
+    HTMLCanvasElement.prototype.toBlob = function (cb) {
+      cb({ arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)) } as any);
+    };
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('New Account'),
+    )!;
+    await act(async () => {
+      newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const file = new File(['avatar'], 'avatar.png', { type: 'image/png' });
+    await act(async () => {
+      dropHandlers[0]([file]);
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(container.textContent).toContain('Use Avatar');
+    expect(container.querySelector('.reactEasyCrop_Container')).toBeTruthy();
+    const useBtn = Array.from(container.querySelectorAll('button')).find(
+      (b) => b.textContent === 'Use Avatar',
+    )!;
+    await act(async () => {
+      useBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await new Promise((r) => setTimeout(r, 0));
+    });
+    expect(container.querySelector('.reactEasyCrop_Container')).toBeFalsy();
+    expect(container.querySelector('img[src="blob:preview"]')).toBeTruthy();
   });
 });
