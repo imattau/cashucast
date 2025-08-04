@@ -24,7 +24,11 @@ if (!globalThis.Buffer) {
 
 if (typeof window === 'undefined') {
   (globalThis as any).window = globalThis;
-  (globalThis as any).location = { hostname: 'localhost' } as Location;
+  const fakeLocation = { hostname: 'localhost' } as Location;
+  Object.defineProperty(globalThis, 'location', {
+    value: fakeLocation,
+    configurable: false,
+  });
 }
 
 // Dynamic import ensures `Buffer` is available before evaluating modules that
