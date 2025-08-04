@@ -25,6 +25,17 @@ async function bootstrap() {
     (globalThis as any).Buffer = Buffer;
   }
 
+  // Some third-party libraries expect `document.currentScript` to be
+  // defined. In modern bundlers like Vite this property can be `null`,
+  // which causes those libraries to throw when they try to access
+  // `currentScript.src`. Provide an empty placeholder to keep them
+  // happy.
+  if (!(document as any).currentScript) {
+    const script = document.createElement("script");
+    script.src = "";
+    Object.defineProperty(document, "currentScript", { value: script });
+  }
+
   const container = document.getElementById("root")!;
   const root = createRoot(container);
   const { default: App } = await import("./App");
