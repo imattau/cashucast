@@ -244,20 +244,20 @@ function OnboardingContent() {
           {generating && <p className="text-sm text-gray-500">Loading...</p>}
           <label htmlFor="username" className="block text-sm font-medium">
             Username
+            <input
+              id="username"
+              name="username"
+              autoComplete="username"
+              className="mt-1 block w-full rounded border px-4 py-3 min-h-[44px] font-normal text-black placeholder:text-black"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                if (usernameError) setUsernameError(validateUsername(e.target.value));
+              }}
+              onBlur={(e) => setUsernameError(validateUsername(e.target.value))}
+            />
           </label>
-          <input
-            id="username"
-            name="username"
-            className="w-full rounded border px-4 py-3 min-h-[44px]"
-            placeholder="Username"
-            autoComplete="username"
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-              if (usernameError) setUsernameError(validateUsername(e.target.value));
-            }}
-            onBlur={(e) => setUsernameError(validateUsername(e.target.value))}
-          />
           {usernameError && (
             <p className="text-sm text-red-500">{usernameError}</p>
           )}
@@ -290,22 +290,24 @@ function OnboardingContent() {
                   className="relative w-32 h-32 border-2 border-dashed flex items-center justify-center cursor-pointer"
                   aria-describedby="avatar-upload-caption"
                 >
-                  <label htmlFor="avatar-upload" className="sr-only">
-                    Avatar
-                  </label>
+                <label htmlFor="avatar-upload" className="sr-only">
+                  Avatar
                   <input
                     {...getInputProps({
                       id: 'avatar-upload',
                       name: 'avatar',
                       accept: 'image/*',
+                      autoComplete: 'off',
                       'aria-describedby': 'avatar-upload-caption',
                     })}
+                    className="text-black placeholder:text-black"
                   />
-                  <Avatar
-                    name="Placeholder"
-                    size={128}
-                    className="border"
-                  />
+                </label>
+                <Avatar
+                  name="Placeholder"
+                  size={128}
+                  className="border"
+                />
                   <div
                     aria-hidden="true"
                     className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center bg-white/75 text-gray-500"
@@ -425,15 +427,17 @@ function OnboardingContent() {
               >
                 <label htmlFor="profile-upload" className="sr-only">
                   Profile backup JSON
+                  <input
+                    {...getInputProps({
+                      id: 'profile-upload',
+                      name: 'profile',
+                      accept: 'application/json',
+                      autoComplete: 'off',
+                      'aria-describedby': 'profile-upload-caption',
+                    })}
+                    className="text-black placeholder:text-black"
+                  />
                 </label>
-                <input
-                  {...getInputProps({
-                    id: 'profile-upload',
-                    name: 'profile',
-                    accept: 'application/json',
-                    'aria-describedby': 'profile-upload-caption',
-                  })}
-                />
                 <p id="profile-upload-caption">Drop profile backup JSON</p>
                 {profileLoading && (
                   <p className="mt-2 text-sm text-gray-500">Loading...</p>
@@ -482,15 +486,17 @@ function OnboardingContent() {
               >
                 <label htmlFor="wallet-upload" className="sr-only">
                   Wallet backup JSON
+                  <input
+                    {...getInputProps({
+                      id: 'wallet-upload',
+                      name: 'wallet',
+                      accept: 'application/json',
+                      autoComplete: 'off',
+                      'aria-describedby': 'wallet-upload-caption',
+                    })}
+                    className="text-black placeholder:text-black"
+                  />
                 </label>
-                <input
-                  {...getInputProps({
-                    id: 'wallet-upload',
-                    name: 'wallet',
-                    accept: 'application/json',
-                    'aria-describedby': 'wallet-upload-caption',
-                  })}
-                />
                 <p id="wallet-upload-caption">Drop wallet backup JSON</p>
                 {walletLoading && (
                   <p className="mt-2 text-sm text-gray-500">Loading...</p>
