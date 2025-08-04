@@ -25,6 +25,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
+    exclude: ['libsodium-wrappers-sumo'],
     esbuildOptions: {
       plugins: [
         ssbReservedWordsFixEsbuild(),
