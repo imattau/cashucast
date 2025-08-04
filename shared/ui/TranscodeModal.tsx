@@ -96,8 +96,8 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
           <Dialog.Overlay className="fixed inset-0 bg-black/50" />
           <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 rounded shadow">
             <Dialog.Title>Transcoding</Dialog.Title>
-            <div className="w-64 bg-gray-200 h-2 mt-2">
-              <div className="bg-blue-500 h-2" style={{ width: `${progress}%` }} />
+            <div className="w-64 bg-subtleBg h-2 mt-2">
+              <div className="bg-primary h-2" style={{ width: `${progress}%` }} />
             </div>
             <p className="mt-2 text-center">{progress}%</p>
           </Dialog.Content>

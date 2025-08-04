@@ -33,7 +33,7 @@ export const MintSelect: React.FC<MintSelectProps> = ({ onNext }) => {
       />
       <button
         onClick={handleNext}
-        className="mt-4 rounded bg-blue-500 px-4 py-2 text-white"
+        className="mt-4 rounded bg-primary px-4 py-2 text-white"
       >
         Next
       </button>
