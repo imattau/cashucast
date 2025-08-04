@@ -39,7 +39,7 @@ export const PwaPrompt: React.FC = () => {
       <div
         role="status"
         aria-live="polite"
-        className={`fixed bottom-0 left-0 right-0 bg-red-600 dark:bg-red-700 p-2 text-center text-white transition-opacity duration-300 motion-reduce:transition-none ${visible ? 'opacity-100' : 'opacity-0'}`}
+        className={`fixed bottom-0 left-0 right-0 bg-red-600 dark:bg-red-700 p-2 text-center transition-opacity duration-300 motion-reduce:transition-none ${visible ? 'opacity-100' : 'opacity-0'}`}
       >
         You are offline
       </div>

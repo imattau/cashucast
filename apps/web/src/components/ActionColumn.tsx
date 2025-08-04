@@ -29,7 +29,7 @@ interface ActionColumnProps {
 export default function ActionColumn({ post, rpc, onOpenComments }: ActionColumnProps) {
   const { zaps, comments, boosters, authorPubKey, id } = post;
   return (
-    <div className="absolute bottom-20 right-4 z-20 flex flex-col items-center gap-4 text-white">
+    <div className="absolute bottom-20 right-4 z-20 flex flex-col items-center gap-4">
       <button
         aria-label="Boost"
         onClick={() => rpc?.('publish', { type: 'repost', link: id })}

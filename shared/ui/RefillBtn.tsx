@@ -27,7 +27,7 @@ export const RefillBtn: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> 
       <button
         {...props}
         onClick={handleClick}
-        className={`px-3 py-1 bg-primary text-white rounded ${props.className ?? ''}`}
+        className={`px-3 py-1 bg-primary rounded ${props.className ?? ''}`}
       >
         Refill
       </button>

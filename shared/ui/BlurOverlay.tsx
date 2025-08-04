@@ -19,7 +19,7 @@ export const BlurOverlay: React.FC<BlurOverlayProps> = ({
 }) => (
   <div
     {...props}
-    className={`absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm text-white ${className}`}
+    className={`absolute inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm ${className}`}
   >
     {children}
   </div>

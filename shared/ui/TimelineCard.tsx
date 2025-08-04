@@ -87,7 +87,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
             NSFW – Tap to view
           </BlurOverlay>
         )}
-        <div className="absolute bottom-0 left-0 right-0 text-white">
+        <div className="absolute bottom-0 left-0 right-0">
           <div className={`flex items-center justify-between p-4 ${text ? 'mb-[-8px]' : ''}`}>
             <button
               type="button"

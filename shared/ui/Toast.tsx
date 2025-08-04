@@ -38,7 +38,7 @@ export const Toast: React.FC<ToastProps> = ({
     <div
       role="status"
       aria-live="assertive"
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-surface text-white px-4 py-2 rounded"
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded"
     >
       {message}
     </div>

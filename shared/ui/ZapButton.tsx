@@ -64,7 +64,7 @@ const ZapOption: React.FC<{
 
   return (
     <button
-      className="px-2 py-1 bg-purple-600 text-white rounded disabled:opacity-50"
+      className="px-2 py-1 bg-purple-600 rounded disabled:opacity-50"
       disabled={disabled || balance < amount}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}

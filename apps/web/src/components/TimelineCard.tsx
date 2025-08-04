@@ -97,7 +97,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
             NSFW – Tap to view
           </BlurOverlay>
         )}
-        <div className="absolute inset-0 flex flex-col justify-between text-white pointer-events-none">
+        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
           <div className="p-4 pointer-events-auto">
             <button
               type="button"
