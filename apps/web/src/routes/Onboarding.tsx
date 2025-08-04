@@ -223,7 +223,15 @@ function OnboardingContent() {
               setMode('new');
               setStep(2);
             }}
-            className="w-full flex items-center gap-3 bg-primary text-white px-5 py-4 rounded-lg shadow hover:bg-primary/90 transition-colors"
+            className="
+            w-full flex items-center gap-3
+            bg-primary text-white
+            dark:bg-primary
+            px-5 py-4
+            rounded-lg
+            transition-colors
+            hover:bg-primary/90
+          "
           >
             <UserPlus size={24} />
             <div className="text-left">
@@ -237,7 +245,15 @@ function OnboardingContent() {
               setMode('import');
               setStep(2);
             }}
-            className="w-full flex items-center gap-3 bg-primary text-white px-5 py-4 rounded-lg shadow hover:bg-primary/90 transition-colors"
+            className="
+            w-full flex items-center gap-3
+            bg-primary text-white
+            dark:bg-primary
+            px-5 py-4
+            rounded-lg
+            transition-colors
+            hover:bg-primary/90
+          "
           >
             <DownloadCloud size={24} />
             <div className="text-left">
