@@ -162,6 +162,23 @@ describe('Onboarding steps', () => {
     expect(container.textContent).toContain('Profile Details');
   });
 
+  it('displays avatar placeholder before selecting an image', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('New Account'),
+    )!;
+    await act(async () => {
+      newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const avatarSpan = container.querySelector(
+      '[aria-describedby="avatar-upload-caption"] .rounded-full span',
+    );
+    expect(avatarSpan?.textContent).toBe('P');
+  });
+
   it(
     'shows profile success message and enables Next with profile or wallet backup',
     async () => {
