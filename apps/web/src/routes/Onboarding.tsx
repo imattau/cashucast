@@ -327,7 +327,8 @@ function OnboardingContent() {
             )}
           {avatarSrc && !avatarPreview && (
             <div className="flex flex-col items-center">
-              <div className="relative w-full max-w-xs aspect-square bg-gray-200 mb-4">
+              {/* Explicit sizing ensures Cropper renders correctly */}
+              <div className="relative w-64 h-64 bg-gray-200 mb-4">
                 <Cropper
                   image={avatarSrc}
                   crop={crop}
