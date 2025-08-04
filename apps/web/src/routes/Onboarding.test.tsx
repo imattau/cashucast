@@ -44,10 +44,11 @@ class MockWorker {
 }
 
 const setupDom = () => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-  const root = createRoot(container);
-  return { container, root };
+  document.body.innerHTML = '';
+  const rootContainer = document.createElement('div');
+  document.body.appendChild(rootContainer);
+  const root = createRoot(rootContainer);
+  return { container: document.body, root };
 };
 
 const mockStorage = () => {
