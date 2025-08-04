@@ -5,10 +5,11 @@
  * avatar uploads which rely on the blobs API.
  */
 import { describe, expect, it } from 'vitest';
-import { getSSB } from '../src/instance';
+import { getSSB, initSsb } from '../src/instance';
 
 describe('getSSB', () => {
-  it('exposes a blobs.add function for avatar uploads', () => {
+  it('exposes a blobs.add function for avatar uploads', async () => {
+    await initSsb();
     const ssb = getSSB();
     expect(ssb).toBeTruthy();
     expect(ssb.blobs).toBeDefined();

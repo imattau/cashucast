@@ -6,7 +6,14 @@ import { describe, it, expect, vi } from 'vitest';
 import { createRPCClient } from '../../../shared/rpc';
 
 vi.mock('../src/instance', () => ({
-  getSSB: () => ({ db: { publish: () => {} }, blobs: { add: () => ({ write() {}, end(cb:any){cb(null,'hash')} }), get: vi.fn(), rm: vi.fn() } })
+  initSsb: () => ({
+    db: { publish: () => {} },
+    blobs: {
+      add: () => ({ write() {}, end(cb: any) { cb(null, 'hash'); } }),
+      get: vi.fn(),
+      rm: vi.fn(),
+    },
+  }),
 }));
 
 function createPortPair() {

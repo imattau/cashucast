@@ -6,7 +6,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { createRPCClient } from '../../../shared/rpc';
 
 vi.mock('../src/instance', () => ({
-  getSSB: () => ({
+  initSsb: () => ({
     db: { publish: () => {} },
     blobs: {
       add: () => ({ write() {}, end(cb: any) { cb(null, 'hash'); } }),
