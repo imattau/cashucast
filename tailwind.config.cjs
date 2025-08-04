@@ -23,6 +23,14 @@ module.exports = {
       transitionProperty: {
         transform: 'transform',
       },
+      keyframes: {
+        'skeleton-shimmer': {
+          '100%': { transform: 'translateX(100%)' },
+        },
+      },
+      animation: {
+        'skeleton-shimmer': 'skeleton-shimmer 1.5s infinite',
+      },
     },
   },
   plugins: [
