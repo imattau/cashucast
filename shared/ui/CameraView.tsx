@@ -66,7 +66,7 @@ export const CameraView: React.FC<CameraViewProps> = ({ onCapture }) => {
           className={`w-full ${ready ? 'block' : 'hidden'}`}
         />
       </div>
-      <button className="mt-2" onClick={handleCapture}>
+      <button className="mt-2 min-tap" onClick={handleCapture}>
         Capture
       </button>
     </div>

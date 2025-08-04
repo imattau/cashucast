@@ -63,7 +63,11 @@ export const Timeline: React.FC = () => {
   return (
     <div className="relative flex h-screen flex-col">
       <header className="flex justify-end p-2">
-        <button onClick={() => setWalletOpen(true)}>
+        <button
+          onClick={() => setWalletOpen(true)}
+          aria-label="Open wallet"
+          className="min-tap"
+        >
           <BalanceChip />
         </button>
       </header>

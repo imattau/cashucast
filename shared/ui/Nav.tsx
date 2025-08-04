@@ -22,7 +22,7 @@ export const Nav: React.FC = () => {
         <ToggleDarkMode />
         <button
           onClick={() => setOpen(true)}
-          className="rounded bg-subtleBg dark:bg-surface-800 px-2 py-1 text-gray-900 dark:text-gray-100"
+          className="rounded bg-subtleBg dark:bg-surface-800 px-2 py-1 text-gray-900 dark:text-gray-100 min-tap"
         >
           Wallet
         </button>

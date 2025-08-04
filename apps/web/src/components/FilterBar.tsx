@@ -27,7 +27,8 @@ export default function FilterBar() {
         >
           #{t}
           <button
-            className="ml-1 text-gray-600 hover:text-gray-900"
+            aria-label={`Remove ${t}`}
+            className="ml-1 text-gray-600 hover:text-gray-900 flex items-center justify-center min-tap"
             onClick={() => toggleTag(t)}
           >
             ×

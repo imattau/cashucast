@@ -33,7 +33,7 @@ export default function ActionColumn({ post, rpc, onOpenComments }: ActionColumn
       <button
         aria-label="Boost"
         onClick={() => rpc?.('publish', { type: 'repost', link: id })}
-        className="flex flex-col items-center transition hover:scale-110"
+        className="flex flex-col items-center transition hover:scale-110 min-tap"
       >
         <Repeat size={28} />
         <span className="text-xs">{boosters?.length || 0}</span>
@@ -44,7 +44,7 @@ export default function ActionColumn({ post, rpc, onOpenComments }: ActionColumn
         onClick={() => {
           if (authorPubKey) rpc?.('sendZap', authorPubKey, 1, id);
         }}
-        className="flex flex-col items-center transition hover:scale-110"
+        className="flex flex-col items-center transition hover:scale-110 min-tap"
       >
         <Zap size={28} />
         <span className="text-xs">{zaps || 0}</span>
@@ -53,7 +53,7 @@ export default function ActionColumn({ post, rpc, onOpenComments }: ActionColumn
       <button
         aria-label="Comment"
         onClick={() => onOpenComments(post)}
-        className="flex flex-col items-center transition hover:scale-110"
+        className="flex flex-col items-center transition hover:scale-110 min-tap"
       >
         <MessageCircle size={28} />
         <span className="text-xs">{comments || 0}</span>
