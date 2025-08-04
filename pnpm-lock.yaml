@@ -81,6 +81,12 @@ importers:
       ssb-browser-core:
         specifier: 14.0.0
         version: 14.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
+      ssb-friends:
+        specifier: ^4.4.10
+        version: 4.4.10
+      ssb-search2:
+        specifier: ^3.0.0
+        version: 3.0.0(jitdb@7.0.7(async-append-only-log@4.3.10))(ssb-db2@6.3.3)
       webtorrent:
         specifier: ^2.8.0
         version: 2.8.0
@@ -167,6 +173,8 @@ importers:
       vite:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@24.1.0)
+
+  packages/ssb-blob-store: {}
 
 packages:
 
@@ -3566,6 +3574,9 @@ packages:
     resolution: {integrity: sha512-nNR26/3da8e+39fARLFDhrNdbkycxvmXqoK7QxrHGJaY/opBGtZ7GaHjNKkaXcF4Fl04ee+NhkYaiq18pGI0RQ==}
     engines: {node: '>=10'}
 
+  ssb-friends@4.4.10:
+    resolution: {integrity: sha512-APTTt47PRVv5nzo+8VLWymAxSZPiAA3p5wPu9VlCqr4qQVaDkCF7Xn5Lk9j8VkjEnclNt7aeE/YgnXCld/BPNA==}
+
   ssb-friends@5.1.7:
     resolution: {integrity: sha512-oBoMmcw5URa16CXM7LV1YG+YAGdwsQHkHevkh1VVKqhxxi8UAQ1qseb0iQ9Xdzwgadh9lRaW/aGz+175xrcxig==}
     engines: {node: '>=10'}
@@ -3607,6 +3618,13 @@ packages:
 
   ssb-room-client@2.0.2:
     resolution: {integrity: sha512-ThQau7iz+TVvbdhBDo5PWCaKPTHYQNEfvlfFXOlT9yKIUK/x11whPsF2o82qzmJXWW19okQOX/U7Lju9oM2pdw==}
+
+  ssb-search2@3.0.0:
+    resolution: {integrity: sha512-v6fjspmZ3jywhIze4b1sIWcrUj4dMrNLx0zZBnyRWbSktTvA/jdQBL7boVRd6jOpjwp8iH4sGuHFKrA2Ygb6QQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      jitdb: '>=3.3.0'
+      ssb-db2: '>=2.3.0'
 
   ssb-sort@1.1.3:
     resolution: {integrity: sha512-oPsF8lGgcHcIb4F1GddV3CbZTJZ0OzxI9fHXH0Zc7ZjqjFlYdqMDxFSuvqJnmtDydJcswyGANiziP1ghd69jOw==}
@@ -3893,6 +3911,10 @@ packages:
 
   undici-types@7.8.0:
     resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
+
+  unicode-word-regex@1.1.0:
+    resolution: {integrity: sha512-2HlIXyag8yi0+AsB1Rx88gSuzw4hS/PgrcTbzkqIW/RBdi2VSp1rRr55RS+HszErwlSRAoA9jhM6L/x+xtu41w==}
+    engines: {node: '>=12'}
 
   unordered-array-remove@1.0.2:
     resolution: {integrity: sha512-45YsfD6svkgaCBNyvD+dFHm4qFX9g3wRSIVgWVPtm2OCnphvPxzJoe20ATsiNpNJrmzHifnxm+BN5F7gFT/4gw==}
@@ -8152,6 +8174,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  ssb-friends@4.4.10:
+    dependencies:
+      bipf: 1.9.0
+      flumecodec: 0.0.1
+      flumeview-reduce: 1.4.0
+      layered-graph: 1.2.0
+      pull-flatmap: 0.0.1
+      pull-level: 2.0.4
+      pull-notify: 0.1.2
+      pull-stream: 3.7.0
+      ssb-ref: 2.16.0
+
   ssb-friends@5.1.7:
     dependencies:
       bipf: 1.9.0
@@ -8291,6 +8325,16 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+
+  ssb-search2@3.0.0(jitdb@7.0.7(async-append-only-log@4.3.10))(ssb-db2@6.3.3):
+    dependencies:
+      bipf: 1.9.0
+      jitdb: 7.0.7(async-append-only-log@4.3.10)
+      pull-level: 2.0.4
+      pull-stream: 3.7.0
+      ssb-db2: 6.3.3
+      ssb-ref: 2.16.0
+      unicode-word-regex: 1.1.0
 
   ssb-sort@1.1.3:
     dependencies:
@@ -8664,6 +8708,8 @@ snapshots:
       which-boxed-primitive: 1.1.1
 
   undici-types@7.8.0: {}
+
+  unicode-word-regex@1.1.0: {}
 
   unordered-array-remove@1.0.2: {}
 
