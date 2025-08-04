@@ -27,7 +27,7 @@ declare function openComments(post: any): void;
 export default function ActionColumn({ post }: { post: any }) {
   const { zaps, comments, boosters } = post;
   return (
-    <div className="absolute bottom-28 right-3 z-20 flex flex-col items-center gap-4 text-white">
+    <div className="absolute bottom-20 right-4 z-20 flex flex-col items-center gap-4 text-white">
       <button
         aria-label="Boost"
         onClick={() => workerSsb.publish({ type: 'repost', link: post.id })}

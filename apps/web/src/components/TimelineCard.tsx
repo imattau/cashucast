@@ -18,40 +18,31 @@ import { motion } from 'framer-motion';
 import { createRPCClient } from '../../shared/rpc';
 
 export interface TimelineCardProps {
-  /** URL for the author's avatar */
-  avatarUrl: string;
-  /** Author or channel name */
-  name: string;
-  /** Caption text for the post */
-  text?: string;
-  /** Magnet link for the clip to play */
-  magnet: string;
-  /** Whether the post is marked as not safe for work */
-  nsfw?: boolean;
-  /** Post id for actions */
-  postId?: string;
-  /** Author pubkey for actions */
-  authorPubKey?: string;
-  /** Called when user reports */
-  onReport?: (postId: string, reason: string) => void;
-  /** Called when user blocks */
-  onBlock?: (pubKey: string) => void;
-  /** Users who reposted this post */
-  boosters?: string[];
+  /** Post data for rendering and interactions */
+  post: {
+    id: string;
+    authorAvatar: string;
+    authorName: string;
+    description?: string;
+    magnet: string;
+    nsfw?: boolean;
+    authorPubKey?: string;
+    zaps?: number;
+    comments?: number;
+    boosters?: string[];
+  };
 }
 
-export const TimelineCard: React.FC<TimelineCardProps> = ({
-  avatarUrl,
-  name,
-  text,
-  magnet,
-  nsfw,
-  postId,
-  authorPubKey,
-  onReport,
-  onBlock,
-  boosters = [],
-}) => {
+export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
+  const {
+    authorAvatar: avatarUrl,
+    authorName: name,
+    description: text,
+    magnet,
+    nsfw,
+    id: postId,
+    authorPubKey,
+  } = post;
   const showNSFW = useSettingsStore((s) => s.showNSFW);
   const [revealed, setRevealed] = React.useState(false);
   const hidden = !!nsfw && !showNSFW && !revealed;
@@ -71,13 +62,13 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
     globals.workerSsb = {
       publish: (data: any) => rpcRef.current?.('publish', data),
     };
-    globals.zap = (post: any) => {
+    globals.zap = (p: any) => {
       if (authorPubKey) {
-        rpcRef.current?.('sendZap', authorPubKey, 1, post.id);
+        rpcRef.current?.('sendZap', authorPubKey, 1, p.id);
       }
     };
-    globals.openComments = (post: any) => {
-      if (post.id === postId) setCommentsOpen(true);
+    globals.openComments = (p: any) => {
+      if (p.id === postId) setCommentsOpen(true);
     };
 
     return () => {
@@ -105,9 +96,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
         transition={{ duration: 0.4 }}
       >
         <VideoPlayer magnet={magnet} postId={postId} />
-        {postId && (
-          <ActionColumn post={{ id: postId, zaps: 0, comments: 0, boosters }} />
-        )}
+        {postId && <ActionColumn post={post} />}
         {hidden && (
           <BlurOverlay
             aria-label="NSFW content hidden"
