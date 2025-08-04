@@ -7,10 +7,10 @@ import {
   VideoPlayer,
   useSettingsStore,
   BlurOverlay,
-  PostMenu,
   Avatar,
   BottomSheet,
   Profile,
+  FabRecord,
 } from '../../shared/ui';
 import { CommentsDrawer } from './CommentsDrawer';
 import ActionColumn from './ActionColumn';
@@ -36,12 +36,8 @@ export interface TimelineCardProps {
   onReport?: (postId: string, reason: string) => void;
   /** Called when user blocks */
   onBlock?: (pubKey: string) => void;
-  /** Number of reports on the post */
-  reports?: number;
   /** Users who reposted this post */
   boosters?: string[];
-  /** Whether the current viewer is a moderator */
-  isModerator?: boolean;
 }
 
 export const TimelineCard: React.FC<TimelineCardProps> = ({
@@ -54,9 +50,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   authorPubKey,
   onReport,
   onBlock,
-  reports = 0,
   boosters = [],
-  isModerator,
 }) => {
   const showNSFW = useSettingsStore((s) => s.showNSFW);
   const [revealed, setRevealed] = React.useState(false);
@@ -72,8 +66,27 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
       { type: 'module' }
     );
     rpcRef.current = createRPCClient(worker);
-    return () => worker.terminate();
-  }, []);
+
+    const globals = globalThis as any;
+    globals.workerSsb = {
+      publish: (data: any) => rpcRef.current?.('publish', data),
+    };
+    globals.zap = (post: any) => {
+      if (authorPubKey) {
+        rpcRef.current?.('sendZap', authorPubKey, 1, post.id);
+      }
+    };
+    globals.openComments = (post: any) => {
+      if (post.id === postId) setCommentsOpen(true);
+    };
+
+    return () => {
+      worker.terminate();
+      delete globals.workerSsb;
+      delete globals.zap;
+      delete globals.openComments;
+    };
+  }, [postId, authorPubKey]);
 
   const reveal = () => setRevealed(true);
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -106,8 +119,8 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
             NSFW – Tap to view
           </BlurOverlay>
         )}
-        <div className="absolute bottom-0 left-0 right-0 text-white">
-          <div className={`flex items-center justify-between p-4 ${text ? '-mb-2' : ''}`}>
+        <div className="absolute inset-0 flex flex-col justify-between text-white pointer-events-none">
+          <div className="p-4 pointer-events-auto">
             <button
               type="button"
               className="flex items-center gap-2"
@@ -118,28 +131,13 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
             >
               <Avatar name={name} url={avatarUrl} size={32} />
               <span className="font-semibold">{name}</span>
-              {isModerator && reports > 0 && (
-                <span className="rounded-full bg-gray-200/80 px-2 py-1 text-xs text-black">
-                  ⚑ {reports}
-                </span>
-              )}
             </button>
-            <div className="flex items-center gap-2">
-              {postId &&
-                authorPubKey &&
-                onReport &&
-                onBlock && (
-                  <PostMenu
-                    postId={postId}
-                    authorPubKey={authorPubKey}
-                    onReport={onReport}
-                    onBlock={onBlock}
-                  />
-                )}
-            </div>
           </div>
-          {text && <div className="bg-black/60 p-4 pt-8">{text}</div>}
+          {text && (
+            <div className="bg-gradient-to-t from-black/70 p-4 pointer-events-auto">{text}</div>
+          )}
         </div>
+        <FabRecord />
       </motion.article>
       {postId && (
         <CommentsDrawer
