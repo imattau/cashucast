@@ -122,15 +122,28 @@ function OnboardingContent() {
     return await new Promise((resolve) => {
       canvas.toBlob(async (blob) => {
         if (!blob) return resolve(null);
-        const ssb = getSSB();
-        const writer = ssb.blobs.add();
-        const data = new Uint8Array(await blob.arrayBuffer());
-        writer.write(data);
-        writer.end((_: any, hash: string) => {
-          touch(hash, data.byteLength);
-          setAvatarHash(hash);
+        try {
+          const ssb = getSSB();
+          const writer = ssb.blobs.add();
+          const data = new Uint8Array(await blob.arrayBuffer());
+          writer.write(data);
+          writer.end((err: any, hash: string) => {
+            if (err) {
+              console.warn('Failed to save avatar blob', err);
+              if (typeof window !== 'undefined' && window.alert)
+                alert('Unable to save avatar for offline use.');
+              return resolve(URL.createObjectURL(blob));
+            }
+            touch(hash, data.byteLength);
+            setAvatarHash(hash);
+            resolve(URL.createObjectURL(blob));
+          });
+        } catch (err) {
+          console.warn('Failed to save avatar blob', err);
+          if (typeof window !== 'undefined' && window.alert)
+            alert('Unable to save avatar for offline use.');
           resolve(URL.createObjectURL(blob));
-        });
+        }
       }, 'image/jpeg');
     });
   }, [avatarFile, avatarSrc, croppedArea]);
