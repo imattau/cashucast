@@ -13,7 +13,7 @@ describe('SkeletonLoader', () => {
     vi.resetModules();
     const { SkeletonLoader } = await import('./SkeletonLoader');
     const html = renderToStaticMarkup(<SkeletonLoader />);
-    expect(html).toContain('bg-gray-200');
+    expect(html).toContain('bg-subtleBg');
     expect(html).toContain('bg-gradient-to-r');
     expect(html).toContain('animate-skeleton-shimmer');
   });

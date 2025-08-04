@@ -93,8 +93,8 @@ export const Timeline: React.FC = () => {
             </SwipeContainer>
           )}
         </div>
-        <div className="pointer-events-none fixed inset-y-0 left-0 hidden w-1/4 bg-gray-100/40 backdrop-blur lg:block" />
-        <div className="pointer-events-none fixed inset-y-0 right-0 hidden w-1/4 bg-gray-100/40 backdrop-blur lg:block" />
+        <div className="pointer-events-none fixed inset-y-0 left-0 hidden w-1/4 bg-subtleBg/40 backdrop-blur lg:block" />
+        <div className="pointer-events-none fixed inset-y-0 right-0 hidden w-1/4 bg-subtleBg/40 backdrop-blur lg:block" />
       </div>
       <BottomNav />
     </div>

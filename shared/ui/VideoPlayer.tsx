@@ -51,7 +51,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ magnet, postId }) => {
 
   if (src === '') {
     return (
-      <div className="flex h-full w-full items-center justify-center bg-gray-200 text-sm">
+      <div className="flex h-full w-full items-center justify-center bg-subtleBg text-sm">
         Failed to load video
       </div>
     );

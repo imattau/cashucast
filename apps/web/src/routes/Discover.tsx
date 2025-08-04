@@ -43,7 +43,7 @@ export default function Discover() {
           <button
             key={t.tag}
             onClick={() => onTag(t.tag)}
-            className="shrink-0 rounded-full bg-gray-200 px-3 py-1"
+            className="shrink-0 rounded-full bg-subtleBg px-3 py-1"
           >
             #{t.tag}
           </button>

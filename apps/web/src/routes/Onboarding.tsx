@@ -366,7 +366,7 @@ function OnboardingContent() {
           {avatarSrc && !avatarPreview && (
             <div className="flex flex-col items-center">
               {/* Explicit sizing ensures Cropper renders correctly */}
-              <div className="relative w-64 h-64 bg-gray-200 mb-4">
+              <div className="relative w-64 h-64 bg-subtleBg mb-4">
                 <Cropper
                   image={avatarSrc}
                   crop={crop}
@@ -378,7 +378,7 @@ function OnboardingContent() {
                 />
               </div>
               <button
-                className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+                className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
                 onClick={async () => {
                   const preview = await saveAvatar();
                   if (!preview) return;
@@ -406,13 +406,13 @@ function OnboardingContent() {
           )}
           <div className="flex justify-between">
             <button
-              className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => setStep(1)}
             >
               Back
             </button>
             <button
-              className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={async () => {
                 const err = validateUsername(username);
                 if (err) {
@@ -552,14 +552,14 @@ function OnboardingContent() {
           </Dropzone>
           <div className="flex justify-between">
           <button
-            className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+            className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-w-[44px] min-h-[44px]"
             onClick={() => setStep(1)}
             disabled={profileLoading || walletLoading}
           >
             Back
           </button>
           <button
-            className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+            className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
             onClick={() => {
               if (mode !== 'import' || (!profileBackup && !walletBackup)) return;
               const profileData: any = { ...profileBackup };
@@ -599,13 +599,13 @@ function OnboardingContent() {
           </div>
           <div className="flex justify-between">
             <button
-              className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-subtleBg hover:bg-surface text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => setStep(2)}
             >
               Back
             </button>
             <button
-              className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+              className="rounded bg-primary hover:bg-primary text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={confirm}
             >
               Confirm

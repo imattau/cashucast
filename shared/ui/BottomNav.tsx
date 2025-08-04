@@ -36,7 +36,7 @@ export const BottomNav: React.FC = () => {
   return (
     <>
       <nav
-        className={`fixed bottom-0 left-0 right-0 flex justify-around bg-gray-100 dark:bg-gray-800 p-2 transition-transform duration-300 motion-reduce:transition-none sm:hidden ${hidden ? 'translate-y-full' : ''}`}
+        className={`fixed bottom-0 left-0 right-0 flex justify-around bg-subtleBg dark:bg-surface p-2 transition-transform duration-300 motion-reduce:transition-none sm:hidden ${hidden ? 'translate-y-full' : ''}`}
       >
         <motion.a
           href="/"

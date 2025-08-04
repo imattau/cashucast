@@ -25,7 +25,7 @@ describe('VideoPlayer', () => {
     const html = renderToStaticMarkup(
       <VideoPlayer magnet="magnet:?xt=urn:btih:test" />
     );
-    expect(html).toContain('bg-gray-200');
+    expect(html).toContain('bg-subtleBg');
   });
 
   it('renders a video element once the blob URL resolves', async () => {
