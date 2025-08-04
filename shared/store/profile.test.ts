@@ -47,3 +47,15 @@ describe('importProfile', () => {
     expect(useProfile.getState().profile).toEqual(profile);
   });
 });
+
+describe('exportProfile', () => {
+  beforeEach(() => {
+    mockStorage();
+    useProfile.setState({ profile: undefined });
+  });
+
+  it('returns empty json when no profile is present', async () => {
+    const blob = useProfile.getState().exportProfile();
+    expect(await blob.text()).toBe('{}');
+  });
+});
