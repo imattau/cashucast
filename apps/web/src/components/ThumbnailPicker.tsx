@@ -4,6 +4,7 @@
  */
 import { useState, useEffect, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
+import 'react-easy-crop/react-easy-crop.css';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import Dropzone from 'react-dropzone';
 import { getSSB } from '../../../../packages/worker-ssb/src/instance';
