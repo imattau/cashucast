@@ -8,7 +8,10 @@
     "strict": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "types": ["vitest/globals", "node"]
+    "types": ["vitest/globals", "node"],
+    "paths": {
+      "ssb-blob-store": ["./packages/ssb-blob-store/index.ts"]
+    }
   },
   "include": [
     "shared/**/*",

@@ -75,6 +75,9 @@ importers:
       react-easy-crop:
         specifier: ^5.5.0
         version: 5.5.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      ssb-blob-store:
+        specifier: workspace:*
+        version: link:packages/ssb-blob-store
       ssb-browser-core:
         specifier: 14.0.0
         version: 14.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
