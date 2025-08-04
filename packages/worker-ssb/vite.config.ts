@@ -11,6 +11,7 @@ import ssbReservedWordsFix, {
 export default defineConfig({
   plugins: [ssbReservedWordsFix()],
   resolve: {
+    dedupe: ['libsodium-wrappers', 'libsodium-wrappers-sumo'],
     alias: {
       // Stub fs to prevent node filesystem access in the worker bundle
       fs: path.resolve(__dirname, 'empty-fs.js'),
