@@ -3,6 +3,7 @@
  * socialStore module.
  */
 import { create } from 'zustand';
+import { createRPCClient } from '../rpc';
 
 interface CreatorStats {
   followers: number;
@@ -19,6 +20,21 @@ interface SocialState {
   addZap: (id: string, amount: number) => void;
 }
 
+type SsbCall = ReturnType<typeof createRPCClient>;
+let ssbCall: SsbCall | null = null;
+
+if (typeof window !== 'undefined' && typeof Worker !== 'undefined') {
+  const worker = new Worker(
+    new URL('../../packages/worker-ssb/index.ts', import.meta.url),
+    { type: 'module' }
+  );
+  ssbCall = createRPCClient(worker);
+}
+
+export const setSsbCall = (fn: SsbCall) => {
+  ssbCall = fn;
+};
+
 export const useSocialStore = create<SocialState>((set) => ({
   creators: {},
   isModerator: false,
@@ -31,6 +47,7 @@ export const useSocialStore = create<SocialState>((set) => ({
         zaps: 0,
       };
       const nextFollowing = !current.isFollowing;
+      ssbCall?.(nextFollowing ? 'follow' : 'unfollow', id);
       return {
         creators: {
           ...state.creators,
