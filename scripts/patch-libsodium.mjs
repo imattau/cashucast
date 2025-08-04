@@ -14,7 +14,7 @@ try {
 
 let content = readFileSync(libsodiumPath, 'utf8');
 const target = 'document.currentScript&&(c=document.currentScript.src),c=c.startsWith("blob:")?"":c.substr(0,c.replace(/[?#].*/,"").lastIndexOf("/")+1)';
-const replacement = 'document.currentScript&&(c=document.currentScript.src),c="string"==typeof c?c.startsWith("blob:")?"":c.substr(0,c.replace(/[?#].*/,"").lastIndexOf("/")+1):""';
+const replacement = 'typeof document!="undefined"&&document.currentScript&&(c=document.currentScript.src),c="string"==typeof c?c.startsWith("blob:")?"":c.substr(0,c.replace(/[?#].*/,"").lastIndexOf("/")+1):""';
 if (content.includes(replacement)) {
   console.log('libsodium already patched');
   process.exit(0);
