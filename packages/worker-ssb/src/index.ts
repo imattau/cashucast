@@ -1,6 +1,6 @@
 import * as sodium from 'libsodium-wrappers-sumo';
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
-import randomAccessIdb from 'random-access-idb';
+import randomAccessIDB from 'random-access-idb';
 
 let ssb: any;
 
@@ -9,7 +9,7 @@ export async function initSsb() {
   await sodium.ready;
   try {
     ssb = createBrowserSsb('cashucast-ssb', {
-      storage: randomAccessIdb,
+      storage: randomAccessIDB,
       crypto: {
         sign: sodium.crypto_sign_detached,
         verify: sodium.crypto_sign_open_detached,
@@ -17,6 +17,7 @@ export async function initSsb() {
         openSecretbox: sodium.crypto_secretbox_open_easy,
       },
     });
+    ssb.blobs.use(randomAccessIDB);
   } catch (err) {
     // Fallback stub for environments without IndexedDB
     ssb = {
