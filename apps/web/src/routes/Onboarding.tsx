@@ -268,8 +268,11 @@ function OnboardingContent() {
                 if (f) {
                   setAvatarFile(f);
                   const url = URL.createObjectURL(f);
+                  setAvatarPreview(null);
+                  setCrop({ x: 0, y: 0 });
+                  setZoom(1);
+                  setCroppedArea(null);
                   setAvatarSrc(url);
-                  setAvatarPreview(url);
                 }
               }}
             >
@@ -319,7 +322,7 @@ function OnboardingContent() {
               )}
             </Dropzone>
             )}
-          {avatarSrc && (
+          {avatarSrc && !avatarPreview && (
             <div className="flex flex-col items-center">
               <div className="relative w-full max-w-xs aspect-square bg-gray-200 mb-4">
                 <Cropper
@@ -332,31 +335,31 @@ function OnboardingContent() {
                   onCropComplete={onCropComplete}
                 />
               </div>
-              {!avatarPreview && (
-                <button
-                  className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
-                  onClick={async () => {
-                    const preview = await saveAvatar();
-                    if (!preview) return;
-                    setAvatarPreview(preview);
-                    const err = validateUsername(username);
-                    if (err) {
-                      setUsernameError(err);
-                      setStep(2);
-                    } else {
-                      setStep(3);
-                    }
-                  }}
-                >
-                  Use Avatar
-                </button>
-              )}
-              {avatarPreview && (
-                <img
-                  src={avatarPreview}
-                  className="w-32 h-32 rounded-full border object-cover mt-2"
-                />
-              )}
+              <button
+                className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
+                onClick={async () => {
+                  const preview = await saveAvatar();
+                  if (!preview) return;
+                  setAvatarPreview(preview);
+                  const err = validateUsername(username);
+                  if (err) {
+                    setUsernameError(err);
+                    setStep(2);
+                  } else {
+                    setStep(3);
+                  }
+                }}
+              >
+                Use Avatar
+              </button>
+            </div>
+          )}
+          {avatarPreview && (
+            <div className="flex flex-col items-center">
+              <img
+                src={avatarPreview}
+                className="w-32 h-32 rounded-full border object-cover mt-2"
+              />
             </div>
           )}
           <div className="flex justify-between">
