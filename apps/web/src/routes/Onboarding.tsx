@@ -192,12 +192,25 @@ function OnboardingContent() {
   };
 
   return (
-    <div ref={containerRef} className="space-y-4 sm:space-y-6 md:space-y-8">
+    <div
+      ref={containerRef}
+      className="relative space-y-4 sm:space-y-6 md:space-y-8"
+    >
+      {step > 1 && (
+        <button
+          className="absolute top-4 left-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white"
+          onClick={() => setStep(step - 1)}
+        >
+          ← Back
+        </button>
+      )}
       <div aria-live="polite" className="sr-only">
         {stepTitle}
       </div>
       <div className="flex justify-between items-center text-sm text-gray-500">
-        <span>Step {step} of 3</span>
+        <span className="text-gray-500 dark:text-gray-400">
+          Step {step} of 3
+        </span>
         {step > 1 && (
           <button
             type="button"
