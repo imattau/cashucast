@@ -42,5 +42,6 @@ export * from './Settings';
 export * from './PostMenu';
 export * from './CommentsDrawer';
 export * from './Toast';
+export * from './Button';
 export { default as FabRecord } from './FabRecord';
 export { default as VideoRecorder } from './VideoRecorder';
