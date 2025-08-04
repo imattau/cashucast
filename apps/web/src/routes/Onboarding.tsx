@@ -588,10 +588,10 @@ function OnboardingContent() {
 
 export default function Onboarding() {
   return (
-    <Dialog.Root open defaultOpen>
+    <Dialog.Root open>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 z-[99]" />
-        <Dialog.Content className="fixed inset-0 flex items-center justify-center z-50 p-4">
+        <Dialog.Overlay className="fixed inset-0 bg-black/50 z-40" />
+        <Dialog.Content className="fixed inset-0 flex items-center justify-center z-50">
           <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
           <Dialog.Description className="sr-only">
             Set up your profile to start using CashuCast
