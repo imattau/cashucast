@@ -3,10 +3,7 @@
  * React component for ActionColumn.
  */
 import { Zap, MessageCircle, Repeat } from 'lucide-react';
-
-declare const workerSsb: { publish: (data: any) => void };
-declare function zap(post: any): void;
-declare function openComments(post: any): void;
+import type { createRPCClient } from '../../shared/rpc';
 
 /**
  * Vertical column of action buttons for interacting with a post.
@@ -17,20 +14,25 @@ declare function openComments(post: any): void;
  * - `comments?`: number of comments.
  * - `boosters?`: array of user identifiers who boosted.
  *
- * Worker interactions:
- * - `workerSsb.publish` when boosting a post.
- * - `zap` to send a zap to the post's creator.
- * - `openComments` to display the post's comments.
+ * Worker interactions are performed via the provided RPC client:
+ * - `rpc('publish', { type: 'repost', link: post.id })` when boosting a post.
+ * - `rpc('sendZap', post.authorPubKey, 1, post.id)` to zap the post's creator.
  *
  * Enables user actions to boost, zap, and open comments for the given post.
  */
-export default function ActionColumn({ post }: { post: any }) {
-  const { zaps, comments, boosters } = post;
+interface ActionColumnProps {
+  post: any;
+  rpc: ReturnType<typeof createRPCClient> | null;
+  onOpenComments: (post: any) => void;
+}
+
+export default function ActionColumn({ post, rpc, onOpenComments }: ActionColumnProps) {
+  const { zaps, comments, boosters, authorPubKey, id } = post;
   return (
     <div className="absolute bottom-20 right-4 z-20 flex flex-col items-center gap-4 text-white">
       <button
         aria-label="Boost"
-        onClick={() => workerSsb.publish({ type: 'repost', link: post.id })}
+        onClick={() => rpc?.('publish', { type: 'repost', link: id })}
         className="flex flex-col items-center transition hover:scale-110"
       >
         <Repeat size={28} />
@@ -39,7 +41,9 @@ export default function ActionColumn({ post }: { post: any }) {
 
       <button
         aria-label="Zap"
-        onClick={() => zap(post)}
+        onClick={() => {
+          if (authorPubKey) rpc?.('sendZap', authorPubKey, 1, id);
+        }}
         className="flex flex-col items-center transition hover:scale-110"
       >
         <Zap size={28} />
@@ -48,7 +52,7 @@ export default function ActionColumn({ post }: { post: any }) {
 
       <button
         aria-label="Comment"
-        onClick={() => openComments(post)}
+        onClick={() => onOpenComments(post)}
         className="flex flex-col items-center transition hover:scale-110"
       >
         <MessageCircle size={28} />

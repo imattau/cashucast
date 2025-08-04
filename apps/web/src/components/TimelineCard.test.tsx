@@ -21,7 +21,7 @@ vi.mock('../../shared/rpc', () => ({
 }));
 
 vi.mock('./CommentsDrawer', () => ({
-  CommentsDrawer: ({ open }: { open: boolean }) =>
+  CommentsDrawer: ({ open }: { open: boolean; rpc?: any }) =>
     open ? <div role="dialog">Comments</div> : null,
 }));
 

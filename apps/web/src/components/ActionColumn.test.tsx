@@ -10,7 +10,10 @@ import ActionColumn from './ActionColumn';
 describe('ActionColumn', () => {
   it('renders three action buttons with counts', () => {
     const post = { id: 'p1', zaps: 5, comments: 7, boosters: ['a', 'b', 'c'] };
-    const result = renderToString(<ActionColumn post={post} />);
+    const rpc = (() => Promise.resolve()) as any;
+    const result = renderToString(
+      <ActionColumn post={post} rpc={rpc} onOpenComments={() => {}} />
+    );
     const clean = result.replace(/<!--.*?-->/g, '');
     expect(clean).toContain('aria-label="Boost"');
     expect(clean).toContain('aria-label="Zap"');

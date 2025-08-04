@@ -57,27 +57,10 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
       { type: 'module' }
     );
     rpcRef.current = createRPCClient(worker);
-
-    const globals = globalThis as any;
-    globals.workerSsb = {
-      publish: (data: any) => rpcRef.current?.('publish', data),
-    };
-    globals.zap = (p: any) => {
-      if (authorPubKey) {
-        rpcRef.current?.('sendZap', authorPubKey, 1, p.id);
-      }
-    };
-    globals.openComments = (p: any) => {
-      if (p.id === postId) setCommentsOpen(true);
-    };
-
     return () => {
       worker.terminate();
-      delete globals.workerSsb;
-      delete globals.zap;
-      delete globals.openComments;
     };
-  }, [postId, authorPubKey]);
+  }, []);
 
   const reveal = () => setRevealed(true);
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -96,7 +79,13 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
         transition={{ duration: 0.4 }}
       >
         <VideoPlayer magnet={magnet} postId={postId} />
-        {postId && <ActionColumn post={post} />}
+        {postId && (
+          <ActionColumn
+            post={post}
+            rpc={rpcRef.current}
+            onOpenComments={() => setCommentsOpen(true)}
+          />
+        )}
         {hidden && (
           <BlurOverlay
             aria-label="NSFW content hidden"
@@ -133,6 +122,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
           postId={postId}
           open={commentsOpen}
           onOpenChange={setCommentsOpen}
+          rpc={rpcRef.current}
         />
       )}
       {authorPubKey && (
