@@ -3,6 +3,7 @@
  * React component for PublishBtn.
  */
 import React from 'react';
+import { Toast } from './Toast';
 
 /**
  * PublishBtn remains disabled until a magnet link is provided.
@@ -18,7 +19,6 @@ export const PublishBtn: React.FC<PublishBtnProps> = ({ magnet, onPublish }) => 
   const handleClick = async () => {
     await onPublish();
     setShow(true);
-    setTimeout(() => setShow(false), 3000);
   };
 
   return (
@@ -31,9 +31,10 @@ export const PublishBtn: React.FC<PublishBtnProps> = ({ magnet, onPublish }) => 
         Publish
       </button>
       {show && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded">
-          Posted! Your followers will sync when online
-        </div>
+        <Toast
+          message="Posted! Your followers will sync when online"
+          onHide={() => setShow(false)}
+        />
       )}
     </>
   );

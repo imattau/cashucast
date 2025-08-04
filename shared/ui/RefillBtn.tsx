@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { useBalanceStore } from './balanceStore';
+import { Toast } from './Toast';
 
 /** Button to trigger wallet refill. Attempts to mint and falls back with a toast if unreachable. */
 export const RefillBtn: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = (
@@ -18,7 +19,6 @@ export const RefillBtn: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> 
       await mint(100);
     } catch {
       setToast(true);
-      setTimeout(() => setToast(false), 3000);
     }
   };
 
@@ -32,9 +32,10 @@ export const RefillBtn: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> 
         Refill
       </button>
       {toast && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded">
-          Mint unreachable. Transaction stored locally.
-        </div>
+        <Toast
+          message="Mint unreachable. Transaction stored locally."
+          onHide={() => setToast(false)}
+        />
       )}
     </>
   );

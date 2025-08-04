@@ -6,6 +6,7 @@ import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { createRPCClient } from '../rpc';
+import { Toast } from './Toast';
 
 /**
  * TranscodeModal uses ffmpeg.wasm to transcode a selected file into a
@@ -26,7 +27,7 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
   onComplete,
 }) => {
   const [progress, setProgress] = React.useState(0);
-  const [showSnackbar, setShowSnackbar] = React.useState(false);
+  const [toast, setToast] = React.useState(false);
 
   React.useEffect(() => {
     if (!open || !file) return;
@@ -71,7 +72,7 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
         if (!cancelled) {
           setProgress(100);
           onComplete(magnet);
-          setShowSnackbar(true);
+          setToast(true);
         }
       } catch (err) {
         if (!cancelled) setProgress(100);
@@ -102,10 +103,11 @@ export const TranscodeModal: React.FC<TranscodeModalProps> = ({
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
-      {showSnackbar && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded">
-          Transcode complete
-        </div>
+      {toast && (
+        <Toast
+          message="Transcode complete"
+          onHide={() => setToast(false)}
+        />
       )}
     </>
   );
