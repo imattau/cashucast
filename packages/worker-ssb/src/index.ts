@@ -1,4 +1,4 @@
-import sodium from 'libsodium-wrappers-sumo';
+import * as sodium from 'libsodium-wrappers-sumo';
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
 import randomAccessIdb from 'random-access-idb';
 
