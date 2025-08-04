@@ -160,6 +160,26 @@ describe('Onboarding steps', () => {
     expect(container.textContent).not.toContain('Loading...');
   });
 
+  it('allows cancelling to restart onboarding', async () => {
+    const { container, root } = setupDom();
+    await act(async () => {
+      root.render(<Onboarding />);
+    });
+    const newBtn = Array.from(container.querySelectorAll('button')).find((b) =>
+      b.textContent?.includes('New Account'),
+    )!;
+    await act(async () => {
+      newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const cancelBtn = Array.from(container.querySelectorAll('button')).find(
+      (b) => b.textContent === 'Cancel',
+    )!;
+    await act(async () => {
+      cancelBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    expect(container.textContent).toContain('Step 1 of 3');
+  });
+
   it('displays avatar placeholder before selecting an image', async () => {
     const { container, root } = setupDom();
     await act(async () => {

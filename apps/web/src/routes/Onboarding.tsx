@@ -196,7 +196,21 @@ function OnboardingContent() {
       <div aria-live="polite" className="sr-only">
         {stepTitle}
       </div>
-      <div className="text-sm text-gray-500">Step {step} of 3</div>
+      <div className="flex justify-between items-center text-sm text-gray-500">
+        <span>Step {step} of 3</span>
+        {step > 1 && (
+          <button
+            type="button"
+            onClick={() => {
+              setStep(1);
+              setMode(null);
+            }}
+            className="hover:underline"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
       {step === 1 && (
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold">Choose how to get started</h2>
@@ -364,7 +378,6 @@ function OnboardingContent() {
             <button
               className="rounded bg-gray-700 hover:bg-gray-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
               onClick={() => setStep(1)}
-              disabled={generating}
             >
               Back
             </button>
