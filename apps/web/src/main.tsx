@@ -7,6 +7,16 @@ import "../index.css";
 import { createRoot } from "react-dom/client";
 
 async function bootstrap() {
+  // Polyfill Node's `process` globally when running in the browser.
+  if (!(globalThis as any).process) {
+    (globalThis as any).process = {
+      env: {},
+      browser: true,
+      nextTick: (cb: (...args: any[]) => void) => setTimeout(cb, 0),
+      exit: () => {},
+    };
+  }
+
   // Polyfill Node's `Buffer` globally when running in the browser. Vite
   // externalizes built-in modules, so we dynamically load the `buffer`
   // package's implementation instead.
