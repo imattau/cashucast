@@ -18,7 +18,7 @@ export const FollowBtn: React.FC<FollowBtnProps> = ({ creatorId }) => {
 
   return (
     <button
-      className="px-3 py-1 rounded bg-primary text-sm"
+      className="px-3 py-1 rounded bg-primary text-sm min-tap"
       onClick={() => toggleFollow(creatorId)}
     >
       {isFollowing ? 'Unfollow' : 'Follow'}

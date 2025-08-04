@@ -41,7 +41,7 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ onFinish }) => {
       <p className="mb-4">Add this app to your home screen.</p>
       <button
         onClick={install}
-        className="rounded bg-primary px-4 py-2"
+        className="rounded bg-primary px-4 py-2 min-tap"
         autoFocus
       >
         {deferred ? 'Install' : 'Continue'}

@@ -101,7 +101,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
           <div className="p-4 pointer-events-auto">
             <button
               type="button"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 min-tap"
               onClick={(e) => {
                 e.stopPropagation();
                 if (authorPubKey) setProfileOpen(true);

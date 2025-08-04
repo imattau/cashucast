@@ -91,7 +91,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
           <div className={`flex items-center justify-between p-4 ${text ? 'mb-[-8px]' : ''}`}>
             <button
               type="button"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 min-tap"
               onClick={(e) => {
                 e.stopPropagation();
                 if (authorPubKey) setProfileOpen(true);
@@ -114,6 +114,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
                     e.stopPropagation();
                     setCommentsOpen(true);
                   }}
+                  className="flex items-center justify-center min-tap"
                 >
                   <MessageCircle className="h-5 w-5" />
                 </button>

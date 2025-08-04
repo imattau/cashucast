@@ -42,7 +42,7 @@ export const BottomNav: React.FC = () => {
           href="/"
           aria-label="Home"
           aria-current={path === '/' ? 'page' : undefined}
-          className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
+          className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring min-tap flex items-center justify-center"
           animate={{ scale: path === '/' ? 1.2 : 1 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
         >
@@ -53,7 +53,7 @@ export const BottomNav: React.FC = () => {
           href="/discover"
           aria-label="Discover"
           aria-current={path === '/discover' ? 'page' : undefined}
-          className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
+          className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring min-tap flex items-center justify-center"
           animate={{ scale: path === '/discover' ? 1.2 : 1 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
         >
@@ -64,7 +64,7 @@ export const BottomNav: React.FC = () => {
           href="/profile"
           aria-label="Profile"
           aria-current={path === '/profile' ? 'page' : undefined}
-          className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
+          className="text-gray-900 dark:text-gray-100 focus:outline-none focus:ring min-tap flex items-center justify-center"
           animate={{ scale: path === '/profile' ? 1.2 : 1 }}
           transition={{ type: 'spring', stiffness: 400, damping: 20 }}
         >

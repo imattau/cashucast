@@ -120,7 +120,7 @@ export default function SearchBar() {
         <button
           aria-label="Search"
           onClick={() => setOpen(true)}
-          className="p-2"
+          className="p-2 min-tap flex items-center justify-center"
         >
           <Search className="h-5 w-5" />
         </button>
