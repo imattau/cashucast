@@ -187,9 +187,8 @@ function OnboardingContent() {
       setProfile(profile);
     }
     setToast(true);
-    setTimeout(() => {
-      window.location.href = '/';
-    }, 1000);
+    window.history.pushState(null, '', '/');
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   return (
