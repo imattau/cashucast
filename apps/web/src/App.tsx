@@ -10,8 +10,9 @@ import SearchBar from './components/SearchBar';
 
 export default function App() {
   const { profile } = useProfile();
+  const hasProfile = Boolean(profile?.ssbPk);
 
-  if (!profile?.ssbPk) {
+  if (!hasProfile) {
     return <Onboarding />;
   }
 
@@ -24,10 +25,11 @@ export default function App() {
   }, []);
 
   const RouteComponent = ROUTES[path];
+
   return (
     <>
       {RouteComponent ? <RouteComponent /> : <div>Not Found</div>}
-      {profile?.ssbPk && <SearchBar />}
+      <SearchBar />
     </>
   );
 }
