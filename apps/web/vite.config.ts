@@ -48,7 +48,7 @@ export default defineConfig({
       'react-easy-crop/dist': 'react-easy-crop',
       'ssb-blob-store': path.resolve(
         __dirname,
-        '../ssb-blob-store/index.ts',
+        '../../packages/ssb-blob-store/index.ts',
       ),
     },
   },
