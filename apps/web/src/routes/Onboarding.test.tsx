@@ -160,7 +160,7 @@ describe('Onboarding steps', () => {
     expect(container.textContent).not.toContain('Loading...');
   });
 
-  it('allows cancelling to restart onboarding', async () => {
+  it('allows canceling to restart onboarding', async () => {
     const { container, root } = setupDom();
     await act(async () => {
       root.render(<Onboarding />);
@@ -171,6 +171,7 @@ describe('Onboarding steps', () => {
     await act(async () => {
       newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
+    expect(container.textContent).toContain('Step 2 of 3');
     const cancelBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent === 'Cancel',
     )!;
@@ -378,7 +379,7 @@ describe('Onboarding steps', () => {
     expect(container.textContent).toContain('Invalid profile backup');
   });
 
-  it('shows step indicator and allows canceling to restart', async () => {
+  it('shows step indicator and Cancel resets onboarding', async () => {
     const { container, root } = setupDom();
     await act(async () => {
       root.render(<Onboarding />);
