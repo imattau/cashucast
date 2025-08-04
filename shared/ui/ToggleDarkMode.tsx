@@ -9,8 +9,8 @@ export const ToggleDarkMode: React.FC<React.ButtonHTMLAttributes<HTMLButtonEleme
   props,
 ) => {
   const [dark, setDark] = React.useState(() => {
-    if (typeof window === 'undefined') return false;
-    return localStorage.getItem('theme') === 'dark';
+    if (typeof document === 'undefined') return false;
+    return document.documentElement.classList.contains('dark');
   });
 
   React.useEffect(() => {
