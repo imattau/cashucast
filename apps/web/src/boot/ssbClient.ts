@@ -1,8 +1,7 @@
 /*
  * Licensed under GPL-3.0-or-later
  * Boot module for initializing the SSB client.
- */
-import sodium from 'libsodium-wrappers-sumo';
+*/
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
 import randomAccessIdb from 'random-access-idb';
 
@@ -10,6 +9,7 @@ let ssb: any;
 
 export async function initSsb() {
   if (ssb) return ssb;
+  const { default: sodium } = await import('libsodium-wrappers-sumo');
   await sodium.ready;
   try {
     ssb = createBrowserSsb('cashucast-ssb', {
