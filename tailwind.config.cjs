@@ -17,16 +17,6 @@ module.exports = {
         surface:  '#121212',
         subtleBg:'#1F1F1F',
       },
-      keyframes: {
-        fadeUp: {
-          from: { opacity: '0', transform: 'translateY(0.5rem)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
-        },
-        slideLeft: {
-          from: { transform: 'translateX(100%)' },
-          to: { transform: 'translateX(0)' },
-        },
-      },
       transitionTimingFunction: {
         ez: 'cubic-bezier(0.25,0.1,0.25,1)',
       },
