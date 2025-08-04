@@ -13,7 +13,8 @@ import { Profile } from './Profile';
 import { MoreVertical, MessageCircle } from 'lucide-react';
 import { ZapButton } from './ZapButton';
 import { CommentsDrawer } from './CommentsDrawer';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { prefersReducedMotion } from './prefersReducedMotion';
 
 export interface TimelineCardProps {
   /** URL for the author's avatar */
@@ -58,6 +59,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
   const hidden = !!nsfw && !showNSFW && !revealed;
   const [profileOpen, setProfileOpen] = React.useState(false);
   const [commentsOpen, setCommentsOpen] = React.useState(false);
+  const reduceMotion = useReducedMotion();
 
   const reveal = () => setRevealed(true);
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -71,9 +73,9 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
     <>
       <motion.article
         className="relative min-h-[100dvh] w-full rounded-card shadow-sm overflow-hidden"
-        initial={{ opacity: 0, y: 20 }}
+        initial={prefersReducedMotion(reduceMotion, { opacity: 0, y: 20 })}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={prefersReducedMotion(reduceMotion, { duration: 0.4 })}
       >
         <VideoPlayer magnet={magnet} postId={postId} />
         {hidden && (

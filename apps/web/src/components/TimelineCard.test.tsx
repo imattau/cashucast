@@ -14,6 +14,7 @@ vi.mock('framer-motion', () => ({
   motion: {
     article: (props: any) => <article {...props} />,
   },
+  useReducedMotion: () => false,
 }));
 
 vi.mock('../../shared/rpc', () => ({
@@ -43,6 +44,7 @@ vi.mock('../../shared/ui', async () => {
     FabRecord: ({ className }: { className?: string }) => (
       <button aria-label="Record" className={className} />
     ),
+    prefersReducedMotion: (_reduce: boolean, props: any) => props,
   };
 });
 
