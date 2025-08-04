@@ -7,6 +7,7 @@ import randomAccessIdb from 'random-access-idb';
 import ssbBlobStore from 'ssb-blob-store';
 import { Buffer } from 'buffer';
 import * as sodium from 'libsodium-wrappers-sumo';
+import { cache as blobCache, prune } from '../../../../packages/worker-ssb/src/blobCache';
 
 let ssb: any;
 
@@ -37,6 +38,20 @@ export async function initSsb() {
       replication: { legacy: false },
       caps: { shs: Buffer.from('<YOUR_APP_KEY>', 'base64') },
     });
+    if (typeof ssb.on === 'function') {
+      ssb.on('rpc:connect', (peer: any) => {
+        if (ssb.ebt && typeof ssb.ebt.request === 'function') {
+          ssb.ebt.request(peer.id, true);
+        }
+      });
+
+      if (ssb.blobs && typeof ssb.blobs.on === 'function') {
+        ssb.blobs.on('download', (hash: string, bytes: number) => {
+          blobCache.set(hash, { bytes, ts: Date.now() });
+          prune(ssb);
+        });
+      }
+    }
   } catch (err) {
     ssb = {
       db: { publish: () => {} },
