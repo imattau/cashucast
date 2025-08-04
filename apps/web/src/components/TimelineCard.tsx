@@ -11,10 +11,11 @@ import {
   BottomSheet,
   Profile,
   FabRecord,
+  prefersReducedMotion,
 } from '../../shared/ui';
 import { CommentsDrawer } from './CommentsDrawer';
 import ActionColumn from './ActionColumn';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { createRPCClient } from '../../shared/rpc';
 
 export interface TimelineCardProps {
@@ -49,6 +50,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
   const [profileOpen, setProfileOpen] = React.useState(false);
   const [commentsOpen, setCommentsOpen] = React.useState(false);
   const rpcRef = React.useRef<ReturnType<typeof createRPCClient> | null>(null);
+  const reduceMotion = useReducedMotion();
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -74,9 +76,9 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
     <>
       <motion.article
         className="relative h-[90vh] w-full rounded-card shadow-sm overflow-hidden"
-        initial={{ opacity: 0, y: 20 }}
+        initial={prefersReducedMotion(reduceMotion, { opacity: 0, y: 20 })}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={prefersReducedMotion(reduceMotion, { duration: 0.4 })}
       >
         <VideoPlayer magnet={magnet} postId={postId} />
         {postId && (
