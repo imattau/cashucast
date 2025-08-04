@@ -7,6 +7,14 @@ settings:
 overrides:
   random-access-chrome-file: npm:random-access-idb@^1.2.2
 
+patchedDependencies:
+  ssb-bendy-butt@1.0.2:
+    hash: 4534b3de6640aa3268a10052e0657a3a86e46fc1e0c55fcdd34ee76dc5ad9f27
+    path: patches/ssb-bendy-butt@1.0.2.patch
+  ssb-subset-ql@1.0.1:
+    hash: 30f85f4aa19e4f44bfda7eb189637acc36ad2d187fb8f41410bea4cf9bb1254a
+    path: patches/ssb-subset-ql@1.0.1.patch
+
 importers:
 
   .:
@@ -7788,7 +7796,7 @@ snapshots:
       pull-stream: 3.7.0
       ssb-db2: 6.3.3
 
-  ssb-bendy-butt@1.0.2:
+  ssb-bendy-butt@1.0.2(patch_hash=4534b3de6640aa3268a10052e0657a3a86e46fc1e0c55fcdd34ee76dc5ad9f27):
     dependencies:
       bencode: 2.0.3
       ssb-bfe: 3.7.0
@@ -8048,7 +8056,7 @@ snapshots:
       pull-defer: 0.2.3
       pull-stream: 3.7.0
       push-stream-to-pull-stream: 1.0.5
-      ssb-bendy-butt: 1.0.2
+      ssb-bendy-butt: 1.0.2(patch_hash=4534b3de6640aa3268a10052e0657a3a86e46fc1e0c55fcdd34ee76dc5ad9f27)
       ssb-buttwoo: 0.3.3
       ssb-classic: 1.1.0
       ssb-index-feeds: 0.10.2
@@ -8083,7 +8091,7 @@ snapshots:
       ssb-db2: 6.3.3
       ssb-keys: 8.5.0
       ssb-ref: 2.16.0
-      ssb-subset-ql: 1.0.1
+      ssb-subset-ql: 1.0.1(patch_hash=30f85f4aa19e4f44bfda7eb189637acc36ad2d187fb8f41410bea4cf9bb1254a)
       ssb-uri2: 2.4.1
     transitivePeerDependencies:
       - supports-color
@@ -8171,7 +8179,7 @@ snapshots:
       ssb-ebt: 9.1.2
       ssb-meta-feeds: 0.29.0
       ssb-network-errors: 1.0.1
-      ssb-subset-ql: 1.0.1
+      ssb-subset-ql: 1.0.1(patch_hash=30f85f4aa19e4f44bfda7eb189637acc36ad2d187fb8f41410bea4cf9bb1254a)
     transitivePeerDependencies:
       - supports-color
 
@@ -8200,7 +8208,7 @@ snapshots:
     dependencies:
       ssb-ref: 2.16.0
 
-  ssb-subset-ql@1.0.1:
+  ssb-subset-ql@1.0.1(patch_hash=30f85f4aa19e4f44bfda7eb189637acc36ad2d187fb8f41410bea4cf9bb1254a):
     dependencies:
       nano-equal: 2.0.2
       ssb-db2: 6.3.3

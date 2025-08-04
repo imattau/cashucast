@@ -1,0 +1,15 @@
+diff --git a/validation.js b/validation.js
+index c4a6fb0700d74d1b72ba0657fc7fe4694f6ca80f..740efc815ba8ae229abc8096c6fa172c2a2d630e 100644
+--- a/validation.js
++++ b/validation.js
+@@ -158,8 +158,8 @@ function _validateSignature(signatureBFE, authorBFE, payload, hmacKey) {
+     return new Error(`invalid message: signature, expected a valid BFE signature buffer`)
+   }
+   const signature = signatureBFE.subarray(2)
+-  const public = authorBFE.subarray(2).toString('base64') + '.ed25519'
+-  const keys = { public, curve: 'ed25519' }
++  const publicKey = authorBFE.subarray(2).toString('base64') + '.ed25519'
++  const keys = { public: publicKey, curve: 'ed25519' }
+   const payloadBen = bencode.encode(payload)
+   if (
+     !ssbKeys.verify(keys, signature.toString('base64'), hmacKey, payloadBen)
