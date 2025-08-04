@@ -26,9 +26,6 @@ export default function App() {
   }
 
   const hasProfile = Boolean(profile?.ssbPk);
-  if (!hasProfile) {
-    return <Onboarding />;
-  }
 
   const [path, setPath] = React.useState(() => window.location.pathname);
 
@@ -38,12 +35,19 @@ export default function App() {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
+  React.useEffect(() => {
+    setPath(window.location.pathname);
+  }, [hasProfile]);
+
   const RouteComponent = ROUTES[path];
 
   return (
     <>
-      {RouteComponent ? <RouteComponent /> : <div>Not Found</div>}
-      <SearchBar />
+      {!hasProfile && <Onboarding />}
+      <div id="app-container" hidden={!hasProfile}>
+        {RouteComponent ? <RouteComponent /> : <div>Not Found</div>}
+        <SearchBar />
+      </div>
     </>
   );
 }

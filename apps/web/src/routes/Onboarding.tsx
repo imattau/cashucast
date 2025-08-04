@@ -623,11 +623,24 @@ function OnboardingContent() {
   );
 }
 
+function AriaHidingOverlay() {
+  useEffect(() => {
+    const app = document.getElementById('app-container');
+    if (app) app.setAttribute('aria-hidden', 'true');
+    return () => {
+      if (app) app.removeAttribute('aria-hidden');
+    };
+  }, []);
+  return (
+    <Dialog.Overlay className="fixed inset-0 bg-black/50 dark:bg-white/20 z-40" />
+  );
+}
+
 export default function Onboarding() {
   return (
     <Dialog.Root open>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50 dark:bg-white/20 z-40" />
+        <AriaHidingOverlay />
         <Dialog.Content className="fixed inset-0 flex items-center justify-center z-50">
           <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
           <Dialog.Description className="sr-only">
