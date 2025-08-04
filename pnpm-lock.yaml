@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  random-access-chrome-file: npm:random-access-idb@^1.2.2
+
 importers:
 
   .:
@@ -2737,9 +2740,6 @@ packages:
   randexp@0.4.6:
     resolution: {integrity: sha512-80WNmd9DA0tmZrw9qQa62GPPWfuXJknrmVmLcxvq4uZBdYqb1wYoKTmnlGUchvVWe0XiLupYkBoXVOxz3C8DYQ==}
     engines: {node: '>=0.12'}
-
-  random-access-chrome-file@1.2.0:
-    resolution: {integrity: sha512-M1NOdkHEcjRB+acKrdQkwf8aMTnZUIGboiH6i2PMNkjfChBIJiB4j4MuhpOn+u+XU2n7GqpocPN4bzfv0jrBsg==}
 
   random-access-file@2.2.1:
     resolution: {integrity: sha512-RGU0xmDqdOyEiynob1KYSeh8+9c9Td1MJ74GT1viMEYAn8SJ9oBtWCXLsYZukCF46yududHOdM449uRYbzBrZQ==}
@@ -6416,10 +6416,6 @@ snapshots:
       discontinuous-range: 1.0.0
       ret: 0.1.15
 
-  random-access-chrome-file@1.2.0:
-    dependencies:
-      random-access-storage: 1.4.3
-
   random-access-file@2.2.1:
     dependencies:
       mkdirp-classic: 0.5.3
@@ -6458,7 +6454,7 @@ snapshots:
   random-access-web@2.0.3:
     dependencies:
       '@sammacbeth/random-access-idb-mutable-file': 0.1.1
-      random-access-chrome-file: 1.2.0
+      random-access-chrome-file: random-access-idb@1.2.2
       random-access-idb: 1.2.2
       random-access-idb-mutable-file: 0.3.0
       random-access-memory: 3.1.4
