@@ -5,11 +5,16 @@
 import React from 'react';
 import { ROUTES } from './router';
 import { useProfile } from '../shared/store/profile';
-import { OnboardingDialog } from './routes/Onboarding';
+import Onboarding from './routes/Onboarding';
 import SearchBar from './components/SearchBar';
 
 export default function App() {
-  const profile = useProfile((s) => s.profile);
+  const { profile } = useProfile();
+
+  if (!profile?.ssbPk) {
+    return <Onboarding />;
+  }
+
   const [path, setPath] = React.useState(() => window.location.pathname);
 
   React.useEffect(() => {
@@ -23,7 +28,6 @@ export default function App() {
     <>
       {RouteComponent ? <RouteComponent /> : <div>Not Found</div>}
       {profile?.ssbPk && <SearchBar />}
-      <OnboardingDialog />
     </>
   );
 }
