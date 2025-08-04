@@ -14,6 +14,7 @@ import { touch } from '../../../../packages/worker-ssb/src/blobCache';
 import { z } from 'zod';
 import { UserPlus, Upload, DownloadCloud } from 'lucide-react';
 import { Avatar } from '../../shared/ui/Avatar';
+import 'react-easy-crop/react-easy-crop.css';
 
 // schemas for validating imported backups
 const ProfileBackupSchema = z.object({
