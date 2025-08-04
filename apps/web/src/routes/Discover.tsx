@@ -34,6 +34,7 @@ export default function Discover() {
     setOpen(true);
     setQ('#' + tag);
     window.history.pushState(null, '', '/search');
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   return (
