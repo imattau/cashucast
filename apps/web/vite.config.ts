@@ -43,6 +43,8 @@ export default defineConfig({
       dns: path.resolve(__dirname, 'empty-module.js'),
       'bittorrent-dht': path.resolve(__dirname, 'dht-shim.js'),
       'torrent-discovery': path.resolve(__dirname, 'empty-module.js'),
+      // react-easy-crop's CSS was moved under dist in v5
+      'react-easy-crop/dist': 'react-easy-crop',
     },
   },
   optimizeDeps: {
