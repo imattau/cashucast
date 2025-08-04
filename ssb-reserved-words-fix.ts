@@ -62,6 +62,7 @@ export default function ssbReservedWordsFix(): VitePlugin {
             "var keys = ssbKeys.loadOrCreateSync(path.join(dir, 'secret'))",
             'var keys = overwriteConfig.keys || ssbKeys.generate()'
           );
+        transformed += '\nexport default { init };';
         return { code: transformed, map: null };
       }
       if (normalized.includes('ssb-browser-core/dist/bundle-core.js')) {
@@ -139,6 +140,7 @@ export function ssbReservedWordsFixEsbuild(): EsbuildPlugin {
             "var keys = ssbKeys.loadOrCreateSync(path.join(dir, 'secret'))",
             'var keys = overwriteConfig.keys || ssbKeys.generate()'
           );
+        code += '\nexport default { init };';
         return { contents: code, loader: 'js' };
       });
 
