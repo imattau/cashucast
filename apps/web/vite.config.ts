@@ -24,6 +24,7 @@ export default defineConfig({
     },
   },
   resolve: {
+    dedupe: ['libsodium-wrappers', 'libsodium-wrappers-sumo'],
     alias: {
       path: path.resolve(__dirname, 'path-shim.ts'),
       // stub fs for browser compatibility
