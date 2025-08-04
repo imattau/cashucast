@@ -14,9 +14,6 @@ patchedDependencies:
   ssb-subset-ql@1.0.1:
     hash: 30f85f4aa19e4f44bfda7eb189637acc36ad2d187fb8f41410bea4cf9bb1254a
     path: patches/ssb-subset-ql@1.0.1.patch
-  libsodium@0.7.15:
-    hash: bfb03bc223b03563035e5afa08bbeca3334937f514b9a3a418e325924f410a53
-    path: patches/libsodium@0.7.15.patch
 
 importers:
 
