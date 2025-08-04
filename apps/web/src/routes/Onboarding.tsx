@@ -14,6 +14,7 @@ import { touch } from '../../../../packages/worker-ssb/src/blobCache';
 import { z } from 'zod';
 import { UserPlus, Upload, DownloadCloud } from 'lucide-react';
 import { Avatar } from '../../shared/ui/Avatar';
+import { Toast } from '../../shared/ui/Toast';
 import 'react-easy-crop/react-easy-crop.css';
 
 // schemas for validating imported backups
@@ -613,13 +614,11 @@ function OnboardingContent() {
         </div>
       )}
       {toast && (
-        <div
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded"
-          role="status"
-          aria-live="assertive"
-        >
-          Welcome to CashuCast!
-        </div>
+        <Toast
+          message="Welcome to CashuCast!"
+          duration={1000}
+          onHide={() => setToast(false)}
+        />
       )}
     </div>
   );
