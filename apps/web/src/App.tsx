@@ -15,7 +15,9 @@ export default function App() {
   );
 
   React.useEffect(() => {
-    const unsub = useProfile.persist.onFinish(() => setHydrated(true));
+    const unsub = useProfile.persist.onFinishHydration(() =>
+      setHydrated(true),
+    );
     return unsub;
   }, []);
 
