@@ -3,6 +3,7 @@
  * React component for TagInput.
  */
 /* wraps Tagify; lower-cases, strips leading #, max 10 tags */
+import '@yaireo/tagify/dist/tagify.css';
 import Tags from '@yaireo/tagify/dist/react.tagify';
 
 export default function TagInput({
