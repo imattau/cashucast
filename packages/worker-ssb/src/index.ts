@@ -1,8 +1,13 @@
 import * as sodium from 'libsodium-wrappers-sumo';
+import ssbFriends from 'ssb-friends';
+import ssbSearch2 from 'ssb-search2';
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
 import randomAccessIdb from 'random-access-idb';
 import ssbBlobStore from 'ssb-blob-store';
 import { cache as blobCache, prune } from './blobCache';
+
+const ssbPlugins: any[] = (globalThis as any).ssbPlugins || ((globalThis as any).ssbPlugins = []);
+ssbPlugins.push(ssbFriends, ssbSearch2);
 
 let ssb: any;
 
@@ -43,6 +48,10 @@ export async function initSsb() {
         rm: () => {},
       },
     };
+  }
+
+  if (ssb?.search2?.start) {
+    await ssb.search2.start();
   }
 
   if (ssb?.on && ssb.ebt?.request) {

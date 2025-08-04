@@ -9,7 +9,6 @@
  */
 import { createRPCHandler } from '../../shared/rpc';
 import type { Post } from '../../shared/types';
-import MiniSearch from 'minisearch';
 import { get as getHistory } from '../../shared/store/history-worker';
 
 // `ssb-browser-core` and its transitive dependencies expect Node globals such
@@ -68,13 +67,6 @@ const toBase64 = (buf: ArrayBuffer): string => {
 const ssbLog: any[] = (globalThis as any).__cashuSSBLog || [];
 (globalThis as any).__cashuSSBLog = ssbLog;
 
-// simple full-text index using MiniSearch
-const mini = new MiniSearch({ fields: ['text'], storeFields: ['id'] });
-
-// index any existing posts in the log
-for (const msg of ssbLog) {
-  if (msg.type === 'post') mini.add({ id: msg.id, text: msg.text || '' });
-}
 
 createRPCHandler(self as any, {
   /**
@@ -123,7 +115,6 @@ createRPCHandler(self as any, {
       ts: post.ts ?? Date.now(),
     };
     ssbLog.push({ type: 'post', ...fullPost });
-    mini.add({ id, text: fullPost.text || '' });
     for (const r of post.reports ?? []) {
       ssbLog.push({ type: 'report', target: id, ...r });
     }
@@ -276,16 +267,12 @@ createRPCHandler(self as any, {
   /**
    * Perform a full-text search over the indexed posts.
    *
-   * @param query - Search term to match against post text.
-   * @param limit - Maximum number of results to return.
+   * @param text - Search term to match against post text.
    * @returns Array of posts matching the query.
    */
-  searchPosts: async (query: string, limit = 20) => {
-    const results = mini.search(query, { prefix: true }).slice(0, limit);
-    const posts = new Map(
-      ssbLog.filter((m) => m.type === 'post').map((p: any) => [p.id, p])
-    );
-    return results.map((r) => posts.get(r.id)).filter(Boolean);
+  searchPosts: async (text: string) => {
+    const ssb = await ensureSSB();
+    return ssb.search2.query({ text, limit: 25 });
   },
   /**
    * Record a report for a post which will influence moderation filtering.
