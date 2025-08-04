@@ -41,6 +41,8 @@ vi.mock('react-easy-crop', () => ({
 
 vi.mock('../../../../packages/worker-ssb/src/instance', () => ({
   getSSB: () => ({
+    id: 'test-id',
+    publish: (_msg: any, cb: any) => cb && cb(null),
     blobs: {
       add: () => ({
         write: () => {},

@@ -200,6 +200,22 @@ function OnboardingContent() {
     } else if (mode === 'import' && profile) {
       setProfile(profile);
     }
+    const ssb = getSSB();
+    try {
+      await new Promise<void>((resolve, reject) =>
+        ssb.publish(
+          {
+            type: 'about',
+            about: ssb.id,
+            name: username,
+            ...(avatarHash ? { image: avatarHash } : {}),
+          },
+          (err: any) => (err ? reject(err) : resolve()),
+        ),
+      );
+    } catch (err) {
+      console.warn('Failed to publish profile', err);
+    }
     setToast(true);
     window.history.pushState(null, '', '/');
     window.dispatchEvent(new PopStateEvent('popstate'));
