@@ -72,32 +72,26 @@ function OnboardingContent() {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
 
-  useEffect(() => {
-    if (step === 2 && mode === 'new' && !keys && !mnemonic) {
-      setGenerating(true);
-      const ssbWorker = new Worker(
-        new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
-        { type: 'module' },
-      );
-      const cashuWorker = new Worker(
-        new URL('../../../../packages/worker-cashu/index.ts', import.meta.url),
-        { type: 'module' },
-      );
-      const ssbCall = createRPCClient(ssbWorker);
-      const cashuCall = createRPCClient(cashuWorker);
-      (async () => {
-        const k: any = await ssbCall('initKeys');
-        if (k) setKeys(k);
-        const m: any = await cashuCall('initWallet');
-        setMnemonic(m);
-        setGenerating(false);
-      })();
-      return () => {
-        ssbWorker.terminate();
-        cashuWorker.terminate();
-      };
-    }
-  }, [step, mode, keys, mnemonic]);
+  const generateKeysAndMnemonic = useCallback(async () => {
+    setGenerating(true);
+    const ssbWorker = new Worker(
+      new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
+      { type: 'module' },
+    );
+    const cashuWorker = new Worker(
+      new URL('../../../../packages/worker-cashu/index.ts', import.meta.url),
+      { type: 'module' },
+    );
+    const ssbCall = createRPCClient(ssbWorker);
+    const cashuCall = createRPCClient(cashuWorker);
+    const k: any = await ssbCall('initKeys');
+    if (k) setKeys(k);
+    const m: any = await cashuCall('initWallet');
+    setMnemonic(m);
+    ssbWorker.terminate();
+    cashuWorker.terminate();
+    setGenerating(false);
+  }, []);
 
   const onCropComplete = useCallback((_, areaPixels: any) => {
     setCroppedArea(areaPixels);
@@ -376,12 +370,13 @@ function OnboardingContent() {
             </button>
             <button
               className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
-              onClick={() => {
+              onClick={async () => {
                 const err = validateUsername(username);
                 if (err) {
                   setUsernameError(err);
                   return;
                 }
+                await generateKeysAndMnemonic();
                 setStep(3);
               }}
               disabled={generating}

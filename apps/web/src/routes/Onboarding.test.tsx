@@ -156,10 +156,8 @@ describe('Onboarding steps', () => {
     await act(async () => {
       newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
-    // wait to ensure no unmount occurs after async effects
-    await new Promise((r) => setTimeout(r, 0));
-    await new Promise((r) => setTimeout(r, 0));
     expect(container.textContent).toContain('Profile Details');
+    expect(container.textContent).not.toContain('Loading...');
   });
 
   it('displays avatar placeholder before selecting an image', async () => {
