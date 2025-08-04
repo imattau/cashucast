@@ -360,7 +360,7 @@ function OnboardingContent() {
             <div className="flex flex-col items-center">
               <img
                 src={avatarPreview}
-                className="w-32 h-32 rounded-full border object-cover mt-2"
+                className="w-32 h-32 object-cover rounded-full border-2 border-gray-200 mt-2"
               />
             </div>
           )}
@@ -545,7 +545,7 @@ function OnboardingContent() {
               <img
                 src={avatarPreview}
                 alt="Avatar preview"
-                className="w-[128px] h-[128px] rounded-full border object-cover"
+                className="w-32 h-32 object-cover rounded-full border-2 border-gray-200"
               />
             ) : (
               <div className="w-[128px] h-[128px] rounded-full border">
