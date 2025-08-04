@@ -521,14 +521,14 @@ function OnboardingContent() {
           <button
             className="rounded bg-blue-700 hover:bg-blue-800 text-white px-4 py-3 min-w-[44px] min-h-[44px]"
             onClick={() => {
-              if (!profileBackup || !walletBackup) return;
+              if (mode !== 'import' || (!profileBackup && !walletBackup)) return;
               const profileData: any = { ...profileBackup };
-              profileData.cashuMnemonic = walletBackup.cashuMnemonic;
+              if (walletBackup) profileData.cashuMnemonic = walletBackup.cashuMnemonic;
               importProfile(profileData);
               setStep(3);
             }}
             disabled={
-              !(profileBackup && walletBackup && !profileError && !walletError) ||
+              !((profileBackup || walletBackup) && !profileError && !walletError) ||
               profileLoading ||
               walletLoading
             }

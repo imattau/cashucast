@@ -163,7 +163,7 @@ describe('Onboarding steps', () => {
   });
 
   it(
-    'shows profile success message when dropping valid profile backup and enables Next after wallet backup',
+    'shows profile success message and enables Next with profile or wallet backup',
     async () => {
       const { container, root } = setupDom();
       await act(async () => {
@@ -191,7 +191,7 @@ describe('Onboarding steps', () => {
       const nextBtn = Array.from(container.querySelectorAll('button')).find(
         (b) => b.textContent === 'Next',
       )!;
-      expect(nextBtn.disabled).toBe(true);
+      expect(nextBtn.disabled).toBe(false);
       const walletFile = {
         text: () => Promise.resolve(JSON.stringify({ cashuMnemonic: 'mnemonic' })),
       } as any;
@@ -229,7 +229,7 @@ describe('Onboarding steps', () => {
     const nextBtn = Array.from(container.querySelectorAll('button')).find(
       (b) => b.textContent === 'Next',
     )!;
-    expect(nextBtn.disabled).toBe(true);
+    expect(nextBtn.disabled).toBe(false);
   });
 
   it('misplacing backups shows errors without affecting other drop zone', async () => {
