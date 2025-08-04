@@ -26,7 +26,7 @@ export const PublishBtn: React.FC<PublishBtnProps> = ({ magnet, onPublish }) => 
       <button
         disabled={!magnet}
         onClick={handleClick}
-        className="px-4 py-2 bg-primary text-white rounded disabled:bg-surface"
+        className="px-4 py-2 bg-primary rounded disabled:bg-surface"
       >
         Publish
       </button>

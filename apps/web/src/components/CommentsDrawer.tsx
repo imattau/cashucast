@@ -78,7 +78,7 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
             />
             <button
               type="submit"
-              className="rounded bg-purple-600 px-4 py-1 text-white"
+              className="rounded bg-purple-600 px-4 py-1"
             >
               Send
             </button>

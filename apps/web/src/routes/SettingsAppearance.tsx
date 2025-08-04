@@ -36,13 +36,13 @@ export const SettingsAppearance: React.FC = () => {
       <div className="space-x-2">
         <button
           onClick={onExport}
-          className="rounded bg-primary px-3 py-2 text-white"
+          className="rounded bg-primary px-3 py-2"
         >
           Export Backup
         </button>
         <button
           onClick={onReset}
-          className="rounded bg-red-600 px-3 py-2 text-white"
+          className="rounded bg-red-600 px-3 py-2"
         >
           Reset App
         </button>

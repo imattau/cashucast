@@ -65,7 +65,7 @@ export const SettingsNetwork: React.FC = () => {
               addTracker(newTracker.trim());
               setNewTracker('');
             }}
-            className="rounded bg-primary px-3 py-2 text-white"
+            className="rounded bg-primary px-3 py-2"
           >
             Add
           </button>

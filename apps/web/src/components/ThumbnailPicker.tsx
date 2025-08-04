@@ -127,7 +127,7 @@ export default function ThumbnailPicker({ file, onSelect }: ThumbnailPickerProps
             />
           </div>
           <button
-            className="mt-2 rounded bg-blue-500 px-4 py-2 text-white"
+            className="mt-2 rounded bg-blue-500 px-4 py-2"
             onClick={createCroppedImage}
           >
             Use

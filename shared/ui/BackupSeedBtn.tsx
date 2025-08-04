@@ -25,7 +25,7 @@ export const BackupSeedBtn: React.FC<React.ButtonHTMLAttributes<HTMLButtonElemen
     <button
       {...props}
       onClick={handleClick}
-      className={`px-3 py-1 bg-green-600 text-white rounded ${props.className ?? ''}`}
+      className={`px-3 py-1 bg-green-600 rounded ${props.className ?? ''}`}
     >
       Backup Seed
     </button>
