@@ -15,6 +15,7 @@ describe('BottomNav', () => {
     expect(html).not.toContain('href="/record"');
     expect(html).toContain('+');
     expect(html).toContain('Profile');
+    expect(html).toContain('aria-current="page"');
   });
 
   it('hides on wider screens', () => {
