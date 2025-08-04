@@ -579,14 +579,14 @@ function OnboardingContent() {
 
 export default function Onboarding() {
   return (
-    <Dialog.Root open>
-      <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-      <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8">
+    <Dialog.Root open defaultOpen>
+      <Dialog.Overlay className="fixed inset-0 bg-black/50 z-40" />
+      <Dialog.Content className="fixed inset-0 flex items-center justify-center z-50 p-4">
         <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
         <Dialog.Description className="sr-only">
           Set up your profile to start using CashuCast
         </Dialog.Description>
-        <div className="w-full max-w-md rounded bg-white p-4 sm:p-6 md:p-8">
+        <div className="bg-white rounded-xl p-6 w-full max-w-md">
           <OnboardingContent />
         </div>
       </Dialog.Content>
@@ -600,13 +600,13 @@ export function OnboardingDialog() {
   useEffect(() => setOpen(!profile), [profile]);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-      <Dialog.Content className="fixed inset-0 flex items-center justify-center p-4 sm:p-6 md:p-8">
+      <Dialog.Overlay className="fixed inset-0 bg-black/50 z-40" />
+      <Dialog.Content className="fixed inset-0 flex items-center justify-center z-50 p-4">
         <Dialog.Title className="sr-only">Onboarding</Dialog.Title>
         <Dialog.Description className="sr-only">
           Set up your profile to start using CashuCast
         </Dialog.Description>
-        <div className="w-full max-w-md rounded bg-white p-4 sm:p-6 md:p-8">
+        <div className="bg-white rounded-xl p-6 w-full max-w-md">
           <OnboardingContent />
         </div>
       </Dialog.Content>
