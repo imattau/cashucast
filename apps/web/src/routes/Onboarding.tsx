@@ -15,6 +15,7 @@ import { z } from 'zod';
 import { UserPlus, Upload, DownloadCloud } from 'lucide-react';
 import { Avatar } from '../../shared/ui/Avatar';
 import { Toast } from '../../shared/ui/Toast';
+import { Button } from '../../shared/ui/Button';
 import 'react-easy-crop/dist/react-easy-crop.css';
 
 // schemas for validating imported backups
@@ -222,50 +223,34 @@ function OnboardingContent() {
           <p className="text-gray-700">
             Create a new profile or import one you already have.
           </p>
-          <button
+          <Button
             type="button"
             onClick={() => {
               setMode('new');
               setStep(2);
             }}
-            className="
-            w-full flex items-center gap-3
-            bg-primary
-            dark:bg-primary
-            px-5 py-4
-            rounded-lg
-            transition-colors
-            hover:bg-primary/90
-          "
+            className="w-full flex items-center gap-3 px-5 py-4 transition-colors hover:bg-primary/90"
           >
             <UserPlus size={24} />
             <div className="text-left">
               <p className="font-semibold">New Account</p>
               <p className="text-sm text-white/80">Start from scratch</p>
             </div>
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={() => {
               setMode('import');
               setStep(2);
             }}
-            className="
-            w-full flex items-center gap-3
-            bg-primary
-            dark:bg-primary
-            px-5 py-4
-            rounded-lg
-            transition-colors
-            hover:bg-primary/90
-          "
+            className="w-full flex items-center gap-3 px-5 py-4 transition-colors hover:bg-primary/90"
           >
             <DownloadCloud size={24} />
             <div className="text-left">
               <p className="font-semibold">Import Existing</p>
               <p className="text-sm text-white/80">Bring your backup</p>
             </div>
-          </button>
+          </Button>
         </div>
       )}
       {step === 2 && mode === 'new' && (
@@ -368,8 +353,8 @@ function OnboardingContent() {
                   onCropComplete={onCropComplete}
                 />
               </div>
-              <button
-                className="rounded bg-primary hover:bg-primary px-4 py-3 min-tap"
+              <Button
+                className="min-tap"
                 onClick={async () => {
                   const preview = await saveAvatar();
                   if (!preview) return;
@@ -384,7 +369,7 @@ function OnboardingContent() {
                 }}
               >
                 Use Avatar
-              </button>
+              </Button>
             </div>
           )}
           {avatarPreview && (
@@ -396,8 +381,8 @@ function OnboardingContent() {
             </div>
           )}
           <div className="flex justify-end">
-            <button
-              className="rounded bg-primary hover:bg-primary px-4 py-3 min-tap"
+            <Button
+              className="min-tap"
               onClick={async () => {
                 const err = validateUsername(username);
                 if (err) {
@@ -410,7 +395,7 @@ function OnboardingContent() {
               disabled={generating}
             >
               Next
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -536,8 +521,8 @@ function OnboardingContent() {
             )}
           </Dropzone>
             <div className="flex justify-end">
-          <button
-            className="rounded bg-primary hover:bg-primary px-4 py-3 min-tap"
+          <Button
+            className="min-tap"
             onClick={() => {
               if (mode !== 'import' || (!profileBackup && !walletBackup)) return;
               const profileData: any = { ...profileBackup };
@@ -552,7 +537,7 @@ function OnboardingContent() {
             }
           >
             Next
-          </button>
+          </Button>
         </div>
       </div>
       )}
@@ -576,12 +561,9 @@ function OnboardingContent() {
             <span>{mode === 'new' ? username : profile?.username}</span>
           </div>
             <div className="flex justify-end">
-          <button
-            className="rounded bg-primary hover:bg-primary px-4 py-3 min-tap"
-            onClick={confirm}
-          >
+          <Button className="min-tap" onClick={confirm}>
             Confirm
-          </button>
+          </Button>
           </div>
         </div>
       )}
