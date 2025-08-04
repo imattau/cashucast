@@ -223,34 +223,36 @@ function OnboardingContent() {
           <p className="text-gray-700">
             Create a new profile or import one you already have.
           </p>
-          <Button
-            type="button"
-            onClick={() => {
-              setMode('new');
-              setStep(2);
-            }}
-            className="w-full flex items-center gap-3 px-5 py-4 transition-colors hover:bg-primary/90"
-          >
-            <UserPlus size={24} />
-            <div className="text-left">
-              <p className="font-semibold">New Account</p>
-              <p className="text-sm text-white/80">Start from scratch</p>
-            </div>
-          </Button>
-          <Button
-            type="button"
-            onClick={() => {
-              setMode('import');
-              setStep(2);
-            }}
-            className="w-full flex items-center gap-3 px-5 py-4 transition-colors hover:bg-primary/90"
-          >
-            <DownloadCloud size={24} />
-            <div className="text-left">
-              <p className="font-semibold">Import Existing</p>
-              <p className="text-sm text-white/80">Bring your backup</p>
-            </div>
-          </Button>
+          <div className="max-w-sm w-full mx-auto flex flex-col gap-4">
+            <Button
+              type="button"
+              onClick={() => {
+                setMode('new');
+                setStep(2);
+              }}
+              className="w-full flex items-center gap-3 px-5 py-4 transition-colors hover:bg-primary/90"
+            >
+              <UserPlus size={24} />
+              <div className="text-left">
+                <p className="font-semibold">New Account</p>
+                <p className="text-sm text-white/80">Start from scratch</p>
+              </div>
+            </Button>
+            <Button
+              type="button"
+              onClick={() => {
+                setMode('import');
+                setStep(2);
+              }}
+              className="w-full flex items-center gap-3 px-5 py-4 transition-colors hover:bg-primary/90"
+            >
+              <DownloadCloud size={24} />
+              <div className="text-left">
+                <p className="font-semibold">Import Existing</p>
+                <p className="text-sm text-white/80">Bring your backup</p>
+              </div>
+            </Button>
+          </div>
         </div>
       )}
       {step === 2 && mode === 'new' && (
