@@ -292,6 +292,20 @@ createRPCHandler(self as any, {
     return msg;
   },
   /**
+   * Follow a user by their public key.
+   */
+  follow: async (id: string) => {
+    const ssb = await ensureSSB();
+    ssb.friends.follow(id, true, () => {});
+  },
+  /**
+   * Stop following a user by their public key.
+   */
+  unfollow: async (id: string) => {
+    const ssb = await ensureSSB();
+    ssb.friends.follow(id, false, () => {});
+  },
+  /**
    * Block posts from a particular user by their public key.
    *
    * @param pubKey - Public key identifying the user to block.
