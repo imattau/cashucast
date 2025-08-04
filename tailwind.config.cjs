@@ -40,6 +40,10 @@ module.exports = {
           filter:
             'drop-shadow(0 10px 8px rgba(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgba(0 0 0 / 0.1))',
         },
+        '.min-tap': {
+          minWidth: '44px',
+          minHeight: '44px',
+        },
       });
     }),
   ],
