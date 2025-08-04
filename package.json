@@ -30,6 +30,7 @@
     "react-dropzone": "^14.3.8",
     "react-easy-crop": "^5.5.0",
     "ssb-browser-core": "14.0.0",
+    "webtorrent": "^2.8.0",
     "worker-dom": "^0.1.0",
     "wrtc": "^0.4.7",
     "zod": "^4.0.14",
@@ -53,6 +54,10 @@
   "pnpm": {
     "overrides": {
       "random-access-chrome-file": "npm:random-access-idb@^1.2.2"
+    },
+    "patchedDependencies": {
+      "ssb-bendy-butt@1.0.2": "patches/ssb-bendy-butt@1.0.2.patch",
+      "ssb-subset-ql@1.0.1": "patches/ssb-subset-ql@1.0.1.patch"
     }
   }
 }

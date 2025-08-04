@@ -4,12 +4,21 @@
  */
 import { defineConfig } from 'vite';
 import path from 'path';
+import ssbReservedWordsFix, {
+  ssbReservedWordsFixEsbuild,
+} from '../../ssb-reserved-words-fix';
 
 export default defineConfig({
+  plugins: [ssbReservedWordsFix()],
   resolve: {
     alias: {
       // Stub fs to prevent node filesystem access in the worker bundle
       fs: path.resolve(__dirname, 'empty-fs.js'),
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      plugins: [ssbReservedWordsFixEsbuild()],
     },
   },
 });

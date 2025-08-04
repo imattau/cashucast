@@ -1,0 +1,20 @@
+diff --git a/ql0.js b/ql0.js
+index fc8d67d32e0225b95e6c1025106f3d1cc7a0a143..dd1b1c3c05e6bf08ce0f82aaca26993b3b881dab 100644
+--- a/ql0.js
++++ b/ql0.js
+@@ -102,12 +102,12 @@ function toOperator(query, dedicated = false) {
+  */
+ function stringify(query) {
+   validate(query)
+-  const { author, type, private } = query
++  const { author, type, private: isPrivate } = query
+   // Doesn't use JSON.stringify because we want to ensure this exact order
+   if (type === null) {
+-    return `{"author":"${author}","type":null,"private":${private}}`
++    return `{"author":"${author}","type":null,"private":${isPrivate}}`
+   } else {
+-    return `{"author":"${author}","type":"${type}","private":${private}}`
++    return `{"author":"${author}","type":"${type}","private":${isPrivate}}`
+   }
+ }
+ 
