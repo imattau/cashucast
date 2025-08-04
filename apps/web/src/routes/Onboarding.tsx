@@ -307,11 +307,11 @@ function OnboardingContent() {
                 <Avatar
                   name="Placeholder"
                   size={128}
-                  className="border"
+                  className="border z-0"
                 />
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center bg-white/75 text-gray-500"
+                    className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/60 text-gray-500"
                   >
                     <Upload className="h-6 w-6 mb-1" />
                     <span className="text-xs text-center px-1">
