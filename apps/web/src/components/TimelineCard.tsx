@@ -126,7 +126,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({ post }) => {
             <div className="bg-gradient-to-t from-black/70 p-4 pointer-events-auto">{text}</div>
           )}
         </div>
-        <FabRecord />
+        <FabRecord className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-auto" />
       </motion.article>
       {postId && (
         <CommentsDrawer
