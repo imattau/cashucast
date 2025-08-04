@@ -228,7 +228,7 @@ function OnboardingContent() {
               setMode('import');
               setStep(2);
             }}
-            className="w-full flex items-center gap-3 border border-white/30 text-white px-5 py-4 rounded-lg hover:bg-white/5 transition-colors"
+            className="w-full flex items-center gap-3 bg-primary text-white px-5 py-4 rounded-lg shadow hover:bg-primary/90 transition-colors"
           >
             <DownloadCloud size={24} />
             <div className="text-left">
