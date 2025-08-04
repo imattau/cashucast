@@ -49,5 +49,10 @@
     "jsdom": "^26.1.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "random-access-chrome-file": "npm:random-access-idb@^1.2.2"
+    }
   }
 }
