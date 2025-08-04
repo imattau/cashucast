@@ -9,7 +9,7 @@ let ssb: any;
 
 export async function initSsb() {
   if (ssb) return ssb;
-  const { default: sodium } = await import('libsodium-wrappers-sumo');
+  const sodium = await import('libsodium-wrappers-sumo').then(m => m);
   await sodium.ready;
   try {
     ssb = createBrowserSsb('cashucast-ssb', {
