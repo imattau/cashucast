@@ -57,7 +57,8 @@
     },
     "patchedDependencies": {
       "ssb-bendy-butt@1.0.2": "patches/ssb-bendy-butt@1.0.2.patch",
-      "ssb-subset-ql@1.0.1": "patches/ssb-subset-ql@1.0.1.patch"
+      "ssb-subset-ql@1.0.1": "patches/ssb-subset-ql@1.0.1.patch",
+      "libsodium@0.7.15": "patches/libsodium@0.7.15.patch"
     }
   }
 }
