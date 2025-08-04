@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { createRPCClient } from '../../shared/rpc';
+import type { createRPCClient } from '../../shared/rpc';
 
 // Radix Dialog; 70 vh on phones, 100 vh desktop.
 // Shows existing comments via worker-ssb query.
@@ -14,34 +14,24 @@ interface CommentsDrawerProps {
   postId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  rpc: ReturnType<typeof createRPCClient> | null;
 }
 
 export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
   postId,
   open,
   onOpenChange,
+  rpc,
 }) => {
   const [comments, setComments] = React.useState<string[]>([]);
   const [text, setText] = React.useState('');
-  const rpcRef = React.useRef<ReturnType<typeof createRPCClient> | null>(null);
 
   React.useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const worker = new Worker(
-      new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
-      { type: 'module' }
-    );
-    rpcRef.current = createRPCClient(worker);
-    return () => worker.terminate();
-  }, []);
-
-  React.useEffect(() => {
-    const rpc = rpcRef.current;
     if (!rpc || !open) return;
     rpc('queryComments', postId)
       .then((c) => setComments((c as string[]) || []))
       .catch(() => setComments([]));
-  }, [postId, open]);
+  }, [postId, open, rpc]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +41,7 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
     setComments((prev) => [...prev, trimmed]);
     setText('');
     try {
-      await rpcRef.current?.('publishComment', { postId, text: trimmed });
+      await rpc?.('publishComment', { postId, text: trimmed });
     } catch (_) {
       // remove optimistic comment on failure
       setComments((prev) => prev.slice(0, -1));
