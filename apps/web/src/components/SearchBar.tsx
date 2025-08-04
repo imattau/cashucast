@@ -65,6 +65,7 @@ export default function SearchBar() {
     setResults([]);
     if (window.location.pathname === '/search') {
       window.history.pushState(null, '', '/');
+      window.dispatchEvent(new PopStateEvent('popstate'));
     }
   }
 
@@ -91,6 +92,7 @@ export default function SearchBar() {
       setResults(posts);
       if (window.location.pathname !== '/search') {
         window.history.pushState(null, '', '/search');
+        window.dispatchEvent(new PopStateEvent('popstate'));
       }
     }, 300);
     return () => clearTimeout(handle);
