@@ -32,7 +32,7 @@ export const ToggleDarkMode: React.FC<React.ButtonHTMLAttributes<HTMLButtonEleme
         props.onClick?.(e);
         setDark((d) => !d);
       }}
-      className={`px-2 py-1 rounded bg-subtleBg text-gray-900 dark:bg-surface dark:text-gray-100 ${
+      className={`px-2 py-1 rounded bg-subtleBg text-gray-900 dark:bg-surface-800 dark:text-gray-100 ${
         props.className ?? ''
       }`}
     >

@@ -40,10 +40,10 @@ export const Stepper: React.FC = () => {
   return (
     <Dialog.Root open={open}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+        <Dialog.Overlay className="fixed inset-0 bg-on-surface/50 dark:bg-on-surface-dark/50" />
         <Dialog.Content
           aria-modal="true"
-          className="fixed left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded bg-white p-4 sm:p-6 md:p-8 mx-4 sm:mx-0 focus:outline-none"
+          className="fixed left-1/2 top-1/2 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded bg-surface-100 dark:bg-surface-800 text-on-surface dark:text-on-surface-dark p-4 sm:p-6 md:p-8 mx-4 sm:mx-0 focus:outline-none"
         >
           <div
             role="progressbar"

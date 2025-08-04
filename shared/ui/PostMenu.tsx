@@ -48,7 +48,7 @@ export const PostMenu: React.FC<PostMenuProps> = ({
         ⋮
       </button>
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 w-40 rounded-md bg-white shadow-lg ring-1 ring-black/5">
+        <div className="absolute right-0 z-10 mt-2 w-40 rounded-md bg-surface-100 dark:bg-surface-800 shadow-lg ring-1 ring-black/5">
           <div className="py-1">
             <button
               className="block w-full px-4 py-2 text-left text-sm hover:bg-subtleBg"

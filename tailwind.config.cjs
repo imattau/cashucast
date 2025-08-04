@@ -14,9 +14,13 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary:  '#FF0759',   /* TikTok hot-pink */
-        surface:  '#121212',
-        subtleBg:'#1F1F1F',
+        primary: '#FF0759', /* TikTok hot-pink */
+        'primary-light': '#FF8A90',
+        'surface-100': '#FFFFFF',
+        'surface-800': '#121212',
+        'on-surface': '#000000',
+        'on-surface-dark': '#FFFFFF',
+        subtleBg: '#1F1F1F',
       },
       transitionTimingFunction: {
         ez: 'cubic-bezier(0.25,0.1,0.25,1)',
