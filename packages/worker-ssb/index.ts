@@ -12,11 +12,20 @@ import type { Post } from '../../shared/types';
 import MiniSearch from 'minisearch';
 import { get as getHistory } from '../../shared/store/history-worker';
 
-// `ssb-browser-core` and its transitive dependencies expect a Node-like
-// `Buffer` to exist on the global object during module evaluation. When this
-// worker is bundled for the browser the global `Buffer` does not exist yet and
-// those modules throw a `ReferenceError`. To avoid that we polyfill `Buffer`
-// before dynamically importing modules that rely on it.
+// `ssb-browser-core` and its transitive dependencies expect Node globals such
+// as `process` and `Buffer` to exist during module evaluation. When this worker
+// is bundled for the browser those globals are absent and the modules throw
+// `ReferenceError`s. To avoid that we polyfill the minimal pieces required
+// before dynamically importing modules that rely on them.
+if (!(globalThis as any).process) {
+  (globalThis as any).process = {
+    env: {},
+    browser: true,
+    // Mimic Node's nextTick using `setTimeout`.
+    nextTick: (cb: (...args: any[]) => void) => setTimeout(cb, 0),
+    exit: () => {},
+  };
+}
 if (!globalThis.Buffer) {
   const { Buffer } = await import('buffer/');
   (globalThis as any).Buffer = Buffer;
