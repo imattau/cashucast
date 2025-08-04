@@ -3,6 +3,7 @@
  * Configuration for vitest.
  */
 import { defineConfig } from 'vitest/config';
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   test: {
@@ -11,6 +12,9 @@ export default defineConfig({
   resolve: {
     alias: {
       'react-easy-crop/dist': 'react-easy-crop',
+      'ssb-blob-store': fileURLToPath(
+        new URL('./packages/ssb-blob-store/index.ts', import.meta.url),
+      ),
     },
   },
 });

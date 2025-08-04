@@ -22,6 +22,10 @@ export default defineConfig({
     alias: {
       // Stub fs to prevent node filesystem access in the worker bundle
       fs: path.resolve(__dirname, 'empty-fs.js'),
+      'ssb-blob-store': path.resolve(
+        __dirname,
+        '../ssb-blob-store/index.ts',
+      ),
     },
   },
   optimizeDeps: {

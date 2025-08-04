@@ -4,6 +4,8 @@
 */
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
 import randomAccessIdb from 'random-access-idb';
+import ssbBlobStore from 'ssb-blob-store';
+import { Buffer } from 'buffer';
 import * as sodium from 'libsodium-wrappers-sumo';
 
 let ssb: any;
@@ -14,12 +16,26 @@ export async function initSsb() {
   try {
     ssb = createBrowserSsb('cashucast-ssb', {
       storage: randomAccessIdb,
-      crypto: {
-        sign: sodium.crypto_sign_detached,
-        verify: sodium.crypto_sign_open_detached,
-        secretbox: sodium.crypto_secretbox_easy,
-        openSecretbox: sodium.crypto_secretbox_open_easy,
+      blobs: ssbBlobStore({
+        storage: randomAccessIdb,
+      }),
+      connections: {
+        incoming: {
+          tunnel: [
+            {
+              scope: 'public',
+              transform: 'shs',
+              portal: 'wss://room.cashucast.app',
+            },
+          ],
+        },
+        outgoing: {
+          tunnel: [{ transform: 'shs' }],
+        },
       },
+      friends: { hops: 2 },
+      replication: { legacy: false },
+      caps: { shs: Buffer.from('<YOUR_APP_KEY>', 'base64') },
     });
   } catch (err) {
     ssb = {

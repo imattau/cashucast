@@ -31,6 +31,7 @@
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",
     "react-easy-crop": "^5.5.0",
+    "ssb-blob-store": "workspace:*",
     "ssb-browser-core": "14.0.0",
     "webtorrent": "^2.8.0",
     "worker-dom": "^0.1.0",

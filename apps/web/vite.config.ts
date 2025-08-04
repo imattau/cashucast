@@ -46,6 +46,10 @@ export default defineConfig({
       'torrent-discovery': path.resolve(__dirname, 'empty-module.js'),
       // react-easy-crop's CSS was moved under dist in v5
       'react-easy-crop/dist': 'react-easy-crop',
+      'ssb-blob-store': path.resolve(
+        __dirname,
+        '../ssb-blob-store/index.ts',
+      ),
     },
   },
   optimizeDeps: {
