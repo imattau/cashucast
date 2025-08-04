@@ -263,7 +263,7 @@ function OnboardingContent() {
               id="username"
               name="username"
               autoComplete="username"
-              className="mt-1 block w-full rounded border px-4 py-3 min-h-[44px] font-normal bg-white dark:bg-gray-700 text-black dark:text-white placeholder:text-black dark:placeholder:text-gray-300"
+              className="mt-1 block w-full rounded border px-4 py-3 min-h-[44px] font-normal bg-surface-100 dark:bg-surface-800 text-on-surface dark:text-on-surface-dark placeholder:text-on-surface dark:placeholder:text-on-surface-dark"
               placeholder="Username"
               value={username}
               onChange={(e) => {
@@ -315,7 +315,7 @@ function OnboardingContent() {
                       autoComplete: 'off',
                       'aria-describedby': 'avatar-upload-caption',
                     })}
-                    className="text-black placeholder:text-black"
+                    className="text-on-surface dark:text-on-surface-dark placeholder:text-on-surface dark:placeholder:text-on-surface-dark"
                   />
                 </label>
                 <Avatar
@@ -325,7 +325,7 @@ function OnboardingContent() {
                 />
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/60 text-gray-500 dark:bg-gray-800/60 dark:text-gray-300"
+                    className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center bg-surface-100/60 text-gray-500 dark:bg-surface-800/60 dark:text-gray-300"
                   >
                     <Upload className="h-6 w-6 mb-1" />
                     <span className="text-xs text-center px-1">
@@ -445,7 +445,7 @@ function OnboardingContent() {
                       autoComplete: 'off',
                       'aria-describedby': 'profile-upload-caption',
                     })}
-                    className="text-black placeholder:text-black"
+                    className="text-on-surface dark:text-on-surface-dark placeholder:text-on-surface dark:placeholder:text-on-surface-dark"
                   />
                 </label>
                 <p id="profile-upload-caption">Drop profile backup JSON</p>
@@ -504,7 +504,7 @@ function OnboardingContent() {
                       autoComplete: 'off',
                       'aria-describedby': 'wallet-upload-caption',
                     })}
-                    className="text-black placeholder:text-black"
+                    className="text-on-surface dark:text-on-surface-dark placeholder:text-on-surface dark:placeholder:text-on-surface-dark"
                   />
                 </label>
                 <p id="wallet-upload-caption">Drop wallet backup JSON</p>
@@ -587,7 +587,7 @@ function AriaHidingOverlay() {
     };
   }, []);
   return (
-    <Dialog.Overlay className="fixed inset-0 bg-black/50 dark:bg-white/20 z-40" />
+    <Dialog.Overlay className="fixed inset-0 bg-on-surface/50 dark:bg-on-surface-dark/20 z-40" />
   );
 }
 
@@ -601,7 +601,7 @@ export default function Onboarding() {
           <Dialog.Description className="sr-only">
             Set up your profile to start using CashuCast
           </Dialog.Description>
-          <div className="w-full max-w-md max-h-[90vh] overflow-auto bg-white dark:bg-gray-800 text-black dark:text-white rounded-xl p-6">
+          <div className="w-full max-w-md max-h-[90vh] overflow-auto bg-surface-100 dark:bg-surface-800 text-on-surface dark:text-on-surface-dark rounded-xl p-6">
             <OnboardingContent />
           </div>
         </Dialog.Content>

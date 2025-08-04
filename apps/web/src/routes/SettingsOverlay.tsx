@@ -13,8 +13,8 @@ export default function SettingsOverlay() {
 
   return (
     <Dialog.Root open onOpenChange={(o) => { if (!o) window.history.back(); }}>
-      <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-      <Dialog.Content className="fixed inset-0 flex flex-col bg-white dark:bg-surface">
+      <Dialog.Overlay className="fixed inset-0 bg-on-surface/50 dark:bg-on-surface-dark/50" />
+      <Dialog.Content className="fixed inset-0 flex flex-col bg-surface-100 dark:bg-surface-800">
         <header className="flex items-center justify-between border-b p-4">
           <h1 className="text-xl font-semibold">Settings</h1>
           <Dialog.Close aria-label="Close" className="text-xl">×</Dialog.Close>
