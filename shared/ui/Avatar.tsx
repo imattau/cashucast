@@ -3,6 +3,7 @@
  * React component for Avatar.
  */
 import React from 'react';
+import MuiAvatar from '@mui/material/Avatar';
 
 export interface AvatarProps {
   name: string;
@@ -13,6 +14,11 @@ export interface AvatarProps {
 
 /**
  * Renders a circular avatar image or the first letter of the name.
+ *
+ * Material Design 3 avatar spec:
+ * https://m3.material.io/components/avatar/overview
+ * MUI Avatar docs:
+ * https://mui.com/material-ui/react-avatar/
  */
 export const Avatar: React.FC<AvatarProps> = ({
   name,
@@ -22,18 +28,16 @@ export const Avatar: React.FC<AvatarProps> = ({
 }) => {
   const dimension = typeof size === 'number' ? `${size}px` : size;
   const baseClass =
-    'flex items-center justify-center rounded-full bg-surface dark:bg-surface-dark overflow-hidden text-gray-600';
+    'rounded-full overflow-hidden bg-surface dark:bg-surface-dark text-on-surface dark:text-on-surface-dark';
   return (
-    <div
+    <MuiAvatar
+      alt={name}
+      src={url}
       className={`${baseClass} ${className ?? ''}`}
-      style={{ width: dimension, height: dimension }}
+      sx={{ width: dimension, height: dimension }}
     >
-      {url ? (
-        <img src={url} alt={name} className="h-full w-full object-cover" />
-      ) : (
-        <span className="font-semibold">{name.charAt(0).toUpperCase()}</span>
-      )}
-    </div>
+      {url ? null : name.charAt(0).toUpperCase()}
+    </MuiAvatar>
   );
 };
 

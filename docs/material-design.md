@@ -20,3 +20,10 @@
 
 These resources show how to build interfaces that align with Material Design 3.
 
+## Avatar
+
+The Avatar component follows the Material Design 3 guidelines for representing users.
+
+- [M3 avatar spec](https://m3.material.io/components/avatar/overview)
+- [MUI Avatar docs](https://mui.com/material-ui/react-avatar/)
+

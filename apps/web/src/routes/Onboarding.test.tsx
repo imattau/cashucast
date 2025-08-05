@@ -179,10 +179,10 @@ describe('Onboarding steps', () => {
     await act(async () => {
       newBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
-    const avatarSpan = container.querySelector(
-      '[aria-describedby="avatar-upload-caption"] .rounded-full span',
+    const avatar = container.querySelector(
+      '[aria-describedby="avatar-upload-caption"] .rounded-full',
     );
-    expect(avatarSpan?.textContent).toBe('P');
+    expect(avatar?.textContent).toBe('P');
   });
 
   it(
