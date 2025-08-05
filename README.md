@@ -69,6 +69,14 @@ Create an `.env` file in `apps/web` to configure the web app and SSB worker:
 
 An example file is provided at `apps/web/.env.example`.
 
+### libsodium WASM file
+
+Both the web app and the SSB worker depend on the `libsodium-sumo.wasm` binary from
+`libsodium-wrappers-sumo`. A Vite plugin copies this file to the output directory
+and verifies that the copy exists. The check runs in development and production:
+missing files trigger a warning during `vite dev` and cause production builds to
+fail.
+
 ## Running tests
 
 Unit tests can be run with the helper script:
