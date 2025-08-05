@@ -3,14 +3,23 @@
  * React component for InstallBanner.
  */
 import React from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 export interface InstallBannerProps {
   onFinish: () => void;
 }
 
-/** Step prompting the user to install the PWA. */
+/**
+ * Step prompting the user to install the PWA.
+ * Material 3 banner spec: https://m3.material.io/components/banners/overview
+ * MUI Snackbar: https://mui.com/material-ui/react-snackbar/
+ * MUI Alert: https://mui.com/material-ui/react-alert/
+ */
 export const InstallBanner: React.FC<InstallBannerProps> = ({ onFinish }) => {
   const [deferred, setDeferred] = React.useState<any>(null);
+  const [open, setOpen] = React.useState(true);
 
   React.useEffect(() => {
     const handler = (e: any) => {
@@ -21,9 +30,15 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ onFinish }) => {
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
+  const handleClose = (_?: any, reason?: string) => {
+    if (reason === 'clickaway') return;
+    setOpen(false);
+    onFinish();
+  };
+
   const install = async () => {
     if (!deferred) {
-      onFinish();
+      handleClose();
       return;
     }
     deferred.prompt();
@@ -31,21 +46,24 @@ export const InstallBanner: React.FC<InstallBannerProps> = ({ onFinish }) => {
       await deferred.userChoice;
     } finally {
       setDeferred(null);
-      onFinish();
+      handleClose();
     }
   };
 
   return (
-    <div>
-      <h2 className="mb-2 text-lg font-semibold">Install App</h2>
-      <p className="mb-4">Add this app to your home screen.</p>
-      <button
-        onClick={install}
-        className="rounded bg-primary px-4 py-2 min-tap"
-        autoFocus
+    <Snackbar open={open} onClose={handleClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+      <Alert
+        severity="info"
+        action={
+          <Button color="inherit" size="small" onClick={install} autoFocus>
+            {deferred ? 'Install' : 'Continue'}
+          </Button>
+        }
+        onClose={handleClose}
+        sx={{ width: '100%' }}
       >
-        {deferred ? 'Install' : 'Continue'}
-      </button>
-    </div>
+        Add this app to your home screen.
+      </Alert>
+    </Snackbar>
   );
 };
