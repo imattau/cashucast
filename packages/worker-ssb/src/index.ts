@@ -1,4 +1,3 @@
-import 'libsodium-sumo';
 import * as sodium from 'libsodium-wrappers-sumo';
 import ssbFriends from 'ssb-friends';
 import ssbSearch2 from 'ssb-search2';
