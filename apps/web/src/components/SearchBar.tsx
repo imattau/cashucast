@@ -18,7 +18,7 @@ import type { Post } from '../../shared/types';
  * - `q`: the current search query.
  * - `setOpen`, `setQ`, `setResults`: update helpers for the store.
  *
- * @returns Fixed-position JSX that shows an input when open or a button when collapsed.
+ * @returns JSX that shows an input when open or a button when collapsed.
  */
 export default function SearchBar() {
   const { open, q, setOpen, setQ, setResults } = useSearch();
@@ -99,7 +99,7 @@ export default function SearchBar() {
   }, [q, setResults]);
 
   return (
-    <div ref={containerRef} className="fixed top-2 right-2 z-50">
+    <div ref={containerRef} className="ml-auto">
       {open ? (
         <>
           <label htmlFor="search" className="sr-only">

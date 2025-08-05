@@ -6,7 +6,7 @@ import React from 'react';
 import { ROUTES } from './router';
 import { useProfile } from '../shared/store/profile';
 import Onboarding from './routes/Onboarding';
-import SearchBar from './components/SearchBar';
+import TopNav from './components/TopNav';
 import BottomNav from './components/BottomNav';
 
 export default function App() {
@@ -46,9 +46,9 @@ export default function App() {
     <>
       {!hasProfile && <Onboarding />}
       <div id="app-container" hidden={!hasProfile}>
+        <TopNav />
         {RouteComponent ? <RouteComponent /> : <div>Not Found</div>}
         <BottomNav path={path} />
-        <SearchBar />
       </div>
     </>
   );
