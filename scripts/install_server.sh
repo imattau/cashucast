@@ -3,6 +3,8 @@
 # Usage (as root):  curl -sL https://raw.githubusercontent.com/<your-org>/cashucast/main/scripts/install_server.sh | bash
 set -e
 
+: "${SSB_APP_KEY:?SSB_APP_KEY environment variable must be set}"
+
 CONTAINER_RUNTIME=${CONTAINER_RUNTIME:-$(command -v podman >/dev/null 2>&1 && echo podman || echo docker)}
 
 BASE_PKGS="caddy ufw fail2ban git"
