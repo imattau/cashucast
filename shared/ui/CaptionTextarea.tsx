@@ -3,9 +3,13 @@
  * React component for CaptionTextarea.
  */
 import React from 'react';
+import TextField from '@mui/material/TextField';
+
+// Material 3 text field spec: https://m3.material.io/components/text-fields/overview
+// MUI TextField docs: https://mui.com/material-ui/react-text-field/
 
 /**
- * CaptionTextarea is a simple textarea for adding captions to a clip.
+ * CaptionTextarea is a simple text field for adding captions to a clip.
  */
 export interface CaptionTextareaProps {
   value: string;
@@ -13,18 +17,16 @@ export interface CaptionTextareaProps {
 }
 
 export const CaptionTextarea: React.FC<CaptionTextareaProps> = ({ value, onChange }) => (
-  <>
-    <label htmlFor="caption" className="sr-only">
-      Caption
-    </label>
-    <textarea
-      id="caption"
-      name="caption"
-      className="w-full p-2 border rounded"
-      placeholder="Add a caption"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </>
+  <TextField
+    id="caption"
+    name="caption"
+    label="Caption"
+    placeholder="Add a caption"
+    multiline
+    fullWidth
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    helperText="Write a caption for your clip"
+  />
 );
 
