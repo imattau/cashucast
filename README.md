@@ -12,6 +12,10 @@ React application backed by a collection of web workers for wallet, gossip and t
 - 🧩 Modular worker architecture (`worker-*` packages) enabling isolated, testable logic.
 - 🧪 `vitest` unit tests and Playwright component tests.
 
+## UI design
+
+UI components follow the Material Design 3 system. See [Material Design notes](docs/material-design.md) for a summary and helpful MUI links.
+
 ## Development environment
 
 Bootstrap a fresh Linux machine with all dependencies by running:
