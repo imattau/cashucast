@@ -34,7 +34,7 @@ export const Profile: React.FC<ProfileProps> = ({
   return (
     <div className="flex flex-col gap-4 p-4">
       {blocked && (
-        <div className="rounded bg-subtleBg p-2 text-center text-sm text-gray-700">
+        <div className="rounded bg-surface dark:bg-surface-dark p-2 text-center text-sm text-gray-700">
           You have blocked this user.
         </div>
       )}

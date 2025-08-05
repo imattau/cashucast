@@ -55,7 +55,7 @@ const FabRecord: React.FC<FabRecordProps> = ({ className }) => {
         onTouchEnd={endPress}
         onMouseLeave={endPress}
         aria-label="Record"
-        className={`${positionClass} z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary-light drop-shadow-lg motion-safe:hover:scale-105 sm:hidden`}
+        className={`${positionClass} z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-secondary drop-shadow-lg motion-safe:hover:scale-105 sm:hidden`}
       >
         +
       </button>

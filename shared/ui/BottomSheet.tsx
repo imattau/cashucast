@@ -44,7 +44,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-on-surface/50 dark:bg-on-surface-dark/50" />
         <Dialog.Content
-          className="fixed inset-x-0 bottom-0 rounded-t-2xl bg-surface-100 dark:bg-surface-800 shadow-lg transition-transform duration-300 motion-reduce:transition-none motion-reduce:duration-0"
+          className="fixed inset-x-0 bottom-0 rounded-t-2xl bg-surface dark:bg-surface-dark shadow-lg transition-transform duration-300 motion-reduce:transition-none motion-reduce:duration-0"
           style={{ transform: `translateY(${drag}px)` }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}

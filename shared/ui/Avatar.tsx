@@ -22,7 +22,7 @@ export const Avatar: React.FC<AvatarProps> = ({
 }) => {
   const dimension = typeof size === 'number' ? `${size}px` : size;
   const baseClass =
-    'flex items-center justify-center rounded-full bg-subtleBg overflow-hidden text-gray-600';
+    'flex items-center justify-center rounded-full bg-surface dark:bg-surface-dark overflow-hidden text-gray-600';
   return (
     <div
       className={`${baseClass} ${className ?? ''}`}

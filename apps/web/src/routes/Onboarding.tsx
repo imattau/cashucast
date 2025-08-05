@@ -286,7 +286,7 @@ function OnboardingContent() {
               id="username"
               name="username"
               autoComplete="username"
-              className="mt-1 block w-full rounded border px-4 py-3 min-h-[44px] font-normal bg-surface-100 dark:bg-surface-800 text-on-surface dark:text-on-surface-dark placeholder:text-on-surface dark:placeholder:text-on-surface-dark"
+              className="mt-1 block w-full rounded border px-4 py-3 min-h-[44px] font-normal bg-surface dark:bg-surface-dark text-on-surface dark:text-on-surface-dark placeholder:text-on-surface dark:placeholder:text-on-surface-dark"
               placeholder="Username"
               value={username}
               onChange={(e) => {
@@ -348,7 +348,7 @@ function OnboardingContent() {
                 />
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center bg-surface-100/60 text-gray-500 dark:bg-surface-800/60 dark:text-gray-300"
+                    className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center bg-surface/60 text-gray-500 dark:bg-surface-dark/60 dark:text-gray-300"
                   >
                     <Upload className="h-6 w-6 mb-1" />
                     <span className="text-xs text-center px-1">
@@ -365,7 +365,7 @@ function OnboardingContent() {
           {avatarSrc && !avatarPreview && (
             <div className="flex flex-col items-center">
               {/* Explicit sizing ensures Cropper renders correctly */}
-              <div className="relative w-64 h-64 bg-subtleBg mb-4">
+              <div className="relative w-64 h-64 bg-surface dark:bg-surface-dark mb-4">
                 <Cropper
                   image={avatarSrc}
                   crop={crop}
@@ -624,7 +624,7 @@ export default function Onboarding() {
           <Dialog.Description className="sr-only">
             Set up your profile to start using CashuCast
           </Dialog.Description>
-          <div className="w-full max-w-md max-h-[90vh] overflow-auto bg-surface-100 dark:bg-surface-800 text-on-surface dark:text-on-surface-dark rounded-xl p-6">
+          <div className="w-full max-w-md max-h-[90vh] overflow-auto bg-surface dark:bg-surface-dark text-on-surface dark:text-on-surface-dark rounded-xl p-6">
             <OnboardingContent />
           </div>
         </Dialog.Content>

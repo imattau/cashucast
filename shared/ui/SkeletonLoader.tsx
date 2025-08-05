@@ -14,7 +14,7 @@ export interface SkeletonLoaderProps {
  */
 export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({ className }) => {
   return (
-    <div className={`relative overflow-hidden bg-subtleBg ${className ?? ''}`}>
+    <div className={`relative overflow-hidden bg-surface dark:bg-surface-dark ${className ?? ''}`}>
       <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-skeleton-shimmer" />
     </div>
   );
