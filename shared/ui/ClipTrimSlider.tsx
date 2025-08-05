@@ -1,8 +1,12 @@
 /*
  * Licensed under GPL-3.0-or-later
  * React component for ClipTrimSlider.
+ *
+ * Material 3 slider spec: https://m3.material.io/components/sliders/overview
+ * MUI Slider docs: https://mui.com/material-ui/react-slider/
  */
 import React from 'react';
+import Slider from '@mui/material/Slider';
 
 /**
  * ClipTrimSlider provides simple start and end range sliders to trim a clip.
@@ -20,40 +24,20 @@ export const ClipTrimSlider: React.FC<ClipTrimSliderProps> = ({
   end,
   onChange,
 }) => {
-  const handleStart = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (value <= end) onChange(value, end);
-  };
-  const handleEnd = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (value >= start) onChange(start, value);
+  const handleChange = (_: Event, value: number | number[]) => {
+    const [newStart, newEnd] = value as number[];
+    onChange(newStart, newEnd);
   };
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor="start" className="sr-only">
-        Start time
-      </label>
-      <input
-        id="start"
-        name="start"
-        type="range"
+      <Slider
+        value={[start, end]}
+        onChange={handleChange}
         min={0}
         max={duration}
-        value={start}
-        onChange={handleStart}
-      />
-      <label htmlFor="end" className="sr-only">
-        End time
-      </label>
-      <input
-        id="end"
-        name="end"
-        type="range"
-        min={0}
-        max={duration}
-        value={end}
-        onChange={handleEnd}
+        valueLabelDisplay="auto"
+        aria-label="Clip range"
       />
       <div className="text-sm text-center">
         {start}s - {end}s
