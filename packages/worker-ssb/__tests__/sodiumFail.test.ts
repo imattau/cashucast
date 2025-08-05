@@ -5,7 +5,6 @@
 import { describe, it, expect, vi } from 'vitest';
 
 const sodiumError = new Error('boom');
-vi.mock('libsodium-sumo', () => ({}));
 const ready = Promise.reject(sodiumError);
 ready.catch(() => {});
 vi.mock('libsodium-wrappers-sumo', () => ({ ready }));
