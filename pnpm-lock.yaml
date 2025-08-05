@@ -48,6 +48,9 @@ importers:
       framer-motion:
         specifier: ^12.23.12
         version: 12.23.12(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      libsodium-sumo:
+        specifier: ^0.7.15
+        version: 0.7.15
       libsodium-wrappers-sumo:
         specifier: latest
         version: 0.7.15

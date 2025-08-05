@@ -39,7 +39,8 @@
     "worker-dom": "^0.1.0",
     "wrtc": "^0.4.7",
     "zod": "^4.0.14",
-    "zustand": "^5.0.7"
+    "zustand": "^5.0.7",
+    "libsodium-sumo": "^0.7.15"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
