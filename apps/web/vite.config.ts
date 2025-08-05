@@ -10,9 +10,32 @@ import ssbReservedWordsFix, {
 import path from 'path';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
+import { copyFileSync, existsSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+function copyLibsodiumWasm() {
+  let outDir: string;
+  return {
+    name: 'copy-libsodium-wasm',
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      const source = fileURLToPath(
+        new URL(
+          '../../node_modules/libsodium-wrappers-sumo/dist/modules-sumo/libsodium-sumo.wasm',
+          import.meta.url,
+        ),
+      );
+      if (existsSync(source)) {
+        copyFileSync(source, path.resolve(outDir, 'libsodium-sumo.wasm'));
+      }
+    },
+  };
+}
 
 export default defineConfig({
-  plugins: [ssbReservedWordsFix(), react()],
+  plugins: [ssbReservedWordsFix(), react(), copyLibsodiumWasm()],
   css: {
     postcss: {
       plugins: [
