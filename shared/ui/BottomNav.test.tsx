@@ -13,7 +13,7 @@ describe('BottomNav', () => {
     expect(html).toContain('Home');
     expect(html).toContain('Discover');
     expect(html).toContain('Profile');
-    expect(html).toContain('+');
+    expect(html).toContain('FiberManualRecordRoundedIcon');
     expect(html).toContain('Mui-selected');
   });
 
