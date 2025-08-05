@@ -9,9 +9,26 @@ ssbPlugins.push(ssbFriends, ssbSearch2);
 
 let ssb: any;
 
+function createStubSsb() {
+  return {
+    db: { publish: () => {} },
+    blobs: {
+      add: () => ({ write() {}, end(cb: any) { cb(null, 'hash'); } }),
+      get: () => {},
+      rm: () => {},
+    },
+  };
+}
+
 export async function initSsb() {
   if (ssb) return ssb;
-  await sodium.ready;
+  try {
+    await sodium.ready;
+  } catch (err) {
+    console.error('Failed to initialize libsodium. SSB features are disabled.', err);
+    ssb = createStubSsb();
+    return ssb;
+  }
   const { init: createBrowserSsb } = await import('ssb-browser-core/net.js');
   const randomAccessIdb = (await import('random-access-idb')).default;
   const ssbBlobStore = (await import('ssb-blob-store')).default;
@@ -41,14 +58,7 @@ export async function initSsb() {
     });
   } catch (err) {
     // Fallback stub for environments without IndexedDB
-    ssb = {
-      db: { publish: () => {} },
-      blobs: {
-        add: () => ({ write() {}, end(cb: any) { cb(null, 'hash'); } }),
-        get: () => {},
-        rm: () => {},
-      },
-    };
+    ssb = createStubSsb();
   }
 
   if (ssb?.search2?.start) {
