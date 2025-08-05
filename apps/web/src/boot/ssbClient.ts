@@ -6,7 +6,8 @@ import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
 import randomAccessIdb from 'random-access-idb';
 import ssbBlobStore from 'ssb-blob-store';
 import { Buffer } from 'buffer';
-import * as sodium from 'libsodium-wrappers-sumo';
+import 'libsodium-sumo';
+import sodium from 'libsodium-wrappers-sumo';
 import { cache as blobCache, prune } from '../../../../packages/worker-ssb/src/blobCache';
 
 let ssb: any;
