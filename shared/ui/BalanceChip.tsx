@@ -3,7 +3,11 @@
  * React component for BalanceChip.
  */
 import React, { useEffect, useState } from 'react';
+import Chip from '@mui/material/Chip';
 import { useBalanceStore } from './balanceStore';
+
+// Material 3 chip spec: https://m3.material.io/components/chips/overview
+// MUI Chip docs: https://mui.com/material-ui/react-chip/
 
 export const BalanceChip: React.FC = () => {
   const balance =
@@ -19,12 +23,12 @@ export const BalanceChip: React.FC = () => {
   }, [balance]);
 
   return (
-    <span
-      className={`px-2 py-1 rounded-full text-sm bg-green-200 text-gray-900 dark:bg-green-700 dark:text-white ${
-        animate ? 'motion-safe:animate-pulse' : ''
-      }`}
-    >
-      {balance} sats
-    </span>
+    <Chip
+      label={`${balance} sats`}
+      color="success"
+      size="small"
+      className={animate ? 'motion-safe:animate-pulse' : ''}
+      sx={{ px: 1 }}
+    />
   );
 };
