@@ -5,6 +5,8 @@
 import React from "react";
 import "../index.css";
 import { createRoot } from "react-dom/client";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import theme from "./theme";
 
 async function bootstrap() {
   // Polyfill Node's `process` globally when running in the browser.
@@ -39,7 +41,14 @@ async function bootstrap() {
   const container = document.getElementById("root")!;
   const root = createRoot(container);
   const { default: App } = await import("./App");
-  root.render(<React.StrictMode><App /></React.StrictMode>);
+  root.render(
+    <React.StrictMode>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </React.StrictMode>,
+  );
 }
 
 bootstrap();
