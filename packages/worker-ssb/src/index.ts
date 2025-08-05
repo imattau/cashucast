@@ -1,5 +1,5 @@
 import 'libsodium-sumo';
-import sodium from 'libsodium-wrappers-sumo';
+import * as sodium from 'libsodium-wrappers-sumo';
 import ssbFriends from 'ssb-friends';
 import ssbSearch2 from 'ssb-search2';
 import { init as createBrowserSsb } from 'ssb-browser-core/net.js';

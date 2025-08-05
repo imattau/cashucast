@@ -7,7 +7,7 @@ import randomAccessIdb from 'random-access-idb';
 import ssbBlobStore from 'ssb-blob-store';
 import { Buffer } from 'buffer';
 import 'libsodium-sumo';
-import sodium from 'libsodium-wrappers-sumo';
+import * as sodium from 'libsodium-wrappers-sumo';
 import { cache as blobCache, prune } from '../../../../packages/worker-ssb/src/blobCache';
 
 let ssb: any;
