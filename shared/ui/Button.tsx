@@ -1,14 +1,20 @@
 /*
  * Licensed under GPL-3.0-or-later
  * React component for Button.
+ *
+ * Material 3 button spec: https://m3.material.io/components/buttons/overview
+ * MUI Button docs: https://mui.com/material-ui/react-button/
  */
 import React from 'react';
+import MuiButton, { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+export type ButtonProps = MuiButtonProps;
 
-export const Button: React.FC<ButtonProps> = ({ className = '', ...props }) => {
-  const base =
-    'rounded-lg px-4 py-3 bg-primary text-white hover:bg-primary disabled:opacity-50 min-tap';
-  return <button className={`${base} ${className}`.trim()} {...props} />;
-};
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ variant = 'contained', color = 'primary', ...props }, ref) => (
+    <MuiButton ref={ref} variant={variant} color={color} {...props} />
+  ),
+);
+
+Button.displayName = 'Button';
 
