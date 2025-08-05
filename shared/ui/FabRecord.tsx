@@ -3,12 +3,19 @@
  * React component for FabRecord.
  */
 import React, { useRef } from 'react';
+import Fab from '@mui/material/Fab';
+import FiberManualRecordRounded from '@mui/icons-material/FiberManualRecordRounded';
 
 export interface FabRecordProps {
   /** Optional positioning classes for the button */
   className?: string;
 }
 
+/**
+ * Material 3 floating action button for recording.
+ * Spec: https://m3.material.io/components/floating-action-button/overview
+ * Docs: https://mui.com/material-ui/react-floating-action-button/
+ */
 const FabRecord: React.FC<FabRecordProps> = ({ className }) => {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const longPressRef = useRef(false);
@@ -48,17 +55,17 @@ const FabRecord: React.FC<FabRecordProps> = ({ className }) => {
 
   return (
     <>
-      <button
+      <Fab
         onMouseDown={startPress}
         onTouchStart={startPress}
         onMouseUp={endPress}
         onTouchEnd={endPress}
         onMouseLeave={endPress}
         aria-label="Record"
-        className={`${positionClass} z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-secondary drop-shadow-lg motion-safe:hover:scale-105 sm:hidden`}
+        className={`${positionClass} z-50 h-16 w-16 bg-gradient-to-r from-primary to-secondary drop-shadow-lg motion-safe:hover:scale-105 sm:hidden`}
       >
-        +
-      </button>
+        <FiberManualRecordRounded />
+      </Fab>
       <input
         type="file"
         accept="video/*"
