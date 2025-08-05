@@ -2,27 +2,46 @@ import { readFileSync, writeFileSync, readdirSync } from 'fs';
 import path from 'path';
 
 const pnpmDir = path.join('node_modules', '.pnpm');
-let libsodiumPath;
-try {
-  const entry = readdirSync(pnpmDir).find((name) => name.startsWith('libsodium@'));
-  if (!entry) throw new Error('not found');
-  libsodiumPath = path.join(pnpmDir, entry, 'node_modules', 'libsodium', 'dist', 'modules', 'libsodium.js');
-} catch (err) {
-  console.warn('libsodium not found, skipping patch');
-  process.exit(0);
+
+function patchPackage(prefix, relativePath, target, replacement) {
+  let file;
+  try {
+    const entry = readdirSync(pnpmDir).find((name) => name.startsWith(prefix));
+    if (!entry) throw new Error('not found');
+    file = path.join(pnpmDir, entry, 'node_modules', ...relativePath);
+  } catch {
+    console.warn(`${prefix} not found, skipping patch`);
+    return;
+  }
+
+  let content = readFileSync(file, 'utf8');
+  if (content.includes(replacement)) {
+    console.log(`${prefix} already patched`);
+    return;
+  }
+  if (!content.includes(target)) {
+    console.warn(`${prefix} patch target not found`);
+    return;
+  }
+  content = content.replace(target, replacement);
+  writeFileSync(file, content);
+  console.log(`Patched ${prefix} to handle missing document.currentScript`);
 }
 
-let content = readFileSync(libsodiumPath, 'utf8');
-const target = 'document.currentScript&&(c=document.currentScript.src),c=c.startsWith("blob:")?"":c.substr(0,c.replace(/[?#].*/,"").lastIndexOf("/")+1)';
-const replacement = 'typeof document!="undefined"&&document.currentScript&&(c=document.currentScript.src),c="string"==typeof c?c.startsWith("blob:")?"":c.substr(0,c.replace(/[?#].*/,"").lastIndexOf("/")+1):""';
-if (content.includes(replacement)) {
-  console.log('libsodium already patched');
-  process.exit(0);
-}
-if (!content.includes(target)) {
-  console.warn('libsodium patch target not found');
-  process.exit(0);
-}
-content = content.replace(target, replacement);
-writeFileSync(libsodiumPath, content);
-console.log('Patched libsodium to handle missing document.currentScript');
+const baseTarget = 'document.currentScript&&(VAR=document.currentScript.src),VAR=VAR.startsWith("blob:")?"":VAR.substr(0,VAR.replace(/[?#].*/,"").lastIndexOf("/")+1)';
+const baseReplacement = 'typeof document!="undefined"&&document.currentScript&&(VAR=document.currentScript.src),VAR="string"==typeof VAR?VAR.startsWith("blob:")?"":VAR.substr(0,VAR.replace(/[?#].*/,"").lastIndexOf("/")+1):""';
+
+patchPackage(
+  'libsodium@',
+  ['libsodium', 'dist', 'modules', 'libsodium.js'],
+  baseTarget.replace(/VAR/g, 'c'),
+  baseReplacement.replace(/VAR/g, 'c'),
+);
+
+patchPackage(
+  'libsodium-sumo@',
+  ['libsodium-sumo', 'dist', 'modules-sumo', 'libsodium-sumo.js'],
+  baseTarget.replace(/VAR/g, 'a'),
+  baseReplacement.replace(/VAR/g, 'a'),
+);
+
