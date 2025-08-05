@@ -25,7 +25,7 @@ function patchPackage(prefix, relativePath, target, replacement) {
   }
   content = content.replace(target, replacement);
   writeFileSync(file, content);
-  console.log(`Patched ${prefix} to handle missing document.currentScript`);
+  console.log(`Patched ${prefix}`);
 }
 
 const baseTarget = 'document.currentScript&&(VAR=document.currentScript.src),VAR=VAR.startsWith("blob:")?"":VAR.substr(0,VAR.replace(/[?#].*/,"").lastIndexOf("/")+1)';
@@ -43,5 +43,23 @@ patchPackage(
   ['libsodium-sumo', 'dist', 'modules-sumo', 'libsodium-sumo.js'],
   baseTarget.replace(/VAR/g, 'a'),
   baseReplacement.replace(/VAR/g, 'a'),
+);
+
+const globalTarget = '}(this);';
+const globalReplacement =
+  '}(typeof globalThis !== "undefined" ? globalThis : this);';
+
+patchPackage(
+  'libsodium-wrappers@',
+  ['libsodium-wrappers', 'dist', 'modules', 'libsodium-wrappers.js'],
+  globalTarget,
+  globalReplacement,
+);
+
+patchPackage(
+  'libsodium-wrappers-sumo@',
+  ['libsodium-wrappers-sumo', 'dist', 'modules-sumo', 'libsodium-wrappers.js'],
+  globalTarget,
+  globalReplacement,
 );
 
