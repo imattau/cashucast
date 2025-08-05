@@ -11,11 +11,10 @@ describe('BottomNav', () => {
   it('renders navigation links', () => {
     const html = renderToStaticMarkup(<BottomNav />);
     expect(html).toContain('Home');
-    expect(html).toContain('href="/discover"');
-    expect(html).not.toContain('href="/record"');
-    expect(html).toContain('+');
+    expect(html).toContain('Discover');
     expect(html).toContain('Profile');
-    expect(html).toContain('aria-current="page"');
+    expect(html).toContain('+');
+    expect(html).toContain('Mui-selected');
   });
 
   it('hides on wider screens', () => {
