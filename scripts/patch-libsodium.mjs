@@ -5,31 +5,49 @@ const pnpmDir = path.join('node_modules', '.pnpm');
 
 function patchPackage(prefix, relativePath, target, replacement) {
   let file;
+  let entry;
   try {
-    const entry = readdirSync(pnpmDir).find((name) => name.startsWith(prefix));
-    if (!entry) throw new Error('not found');
+    entry = readdirSync(pnpmDir).find((name) => name.startsWith(prefix));
+    if (!entry) throw new Error('package not found');
     file = path.join(pnpmDir, entry, 'node_modules', ...relativePath);
   } catch {
-    console.warn(`${prefix} not found, skipping patch`);
-    return;
+    console.error(
+      `${prefix} not found. The package version may have changed.\n` +
+        'Update scripts/patch-libsodium.mjs to match the new version.',
+    );
+    process.exit(1);
   }
 
-  let content = readFileSync(file, 'utf8');
+  let content;
+  try {
+    content = readFileSync(file, 'utf8');
+  } catch {
+    console.error(
+      `Failed to read ${file} for ${prefix}. The package layout may have changed.\n` +
+        'Update scripts/patch-libsodium.mjs accordingly.',
+    );
+    process.exit(1);
+  }
   if (content.includes(replacement)) {
     console.log(`${prefix} already patched`);
     return;
   }
   if (!content.includes(target)) {
-    console.warn(`${prefix} patch target not found`);
-    return;
+    console.error(
+      `${prefix} patch target not found. The package contents may have changed.\n` +
+        'Inspect the file and update scripts/patch-libsodium.mjs with the new target and replacement.',
+    );
+    process.exit(1);
   }
   content = content.replace(target, replacement);
   writeFileSync(file, content);
   console.log(`Patched ${prefix}`);
 }
 
-const baseTarget = 'document.currentScript&&(VAR=document.currentScript.src),VAR=VAR.startsWith("blob:")?"":VAR.substr(0,VAR.replace(/[?#].*/,"").lastIndexOf("/")+1)';
-const baseReplacement = 'typeof document!="undefined"&&document.currentScript&&(VAR=document.currentScript.src),VAR="string"==typeof VAR?VAR.startsWith("blob:")?"":VAR.substr(0,VAR.replace(/[?#].*/,"").lastIndexOf("/")+1):""';
+const baseTarget =
+  'document.currentScript&&(VAR=document.currentScript.src),VAR=VAR.startsWith("blob:")?"":VAR.substr(0,VAR.replace(/[?#].*/,"").lastIndexOf("/")+1)';
+const baseReplacement =
+  'typeof document!="undefined"&&document.currentScript&&(VAR=document.currentScript.src),VAR="string"==typeof VAR?VAR.startsWith("blob:")?"":VAR.substr(0,VAR.replace(/[?#].*/,"").lastIndexOf("/")+1):""';
 
 patchPackage(
   'libsodium@',
