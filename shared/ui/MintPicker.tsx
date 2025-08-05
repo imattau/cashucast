@@ -3,18 +3,30 @@
  * React component for MintPicker.
  */
 import React from 'react';
+import Select, { SelectProps } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
-/** Simple mint picker placeholder component. */
-export const MintPicker: React.FC<
-  React.SelectHTMLAttributes<HTMLSelectElement>
-> = ({ className, children, ...props }) => {
+/**
+ * Simple mint picker component.
+ * Material 3 menu spec: https://m3.material.io/components/menus/overview
+ * MUI Select docs: https://mui.com/material-ui/api/select/
+ */
+export const MintPicker: React.FC<SelectProps<string>> = ({
+  className,
+  children,
+  defaultValue = '',
+  ...props
+}) => {
   return (
-    <select
+    <Select
       {...props}
-      className={`w-full p-2 border rounded ${className ?? ''}`}
+      className={className}
+      defaultValue={defaultValue}
+      displayEmpty
+      fullWidth
     >
-      <option value="">Default Mint</option>
+      <MenuItem value="">Default Mint</MenuItem>
       {children}
-    </select>
+    </Select>
   );
 };
