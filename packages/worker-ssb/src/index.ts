@@ -37,7 +37,7 @@ export async function initSsb() {
       },
       friends: { hops: 2 },
       replication: { legacy: false },
-      caps: { shs: Buffer.from('<YOUR_APP_KEY>', 'base64') },
+      caps: { shs: Buffer.from(process.env.SSB_APP_KEY!, 'base64') },
     });
   } catch (err) {
     // Fallback stub for environments without IndexedDB

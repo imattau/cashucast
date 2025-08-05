@@ -62,9 +62,12 @@ starting so changes are always picked up on launch.
 
 ### Environment variables
 
-The development server recognises a few optional variables for overriding network endpoints:
+Create an `.env` file in `apps/web` to configure the web app and SSB worker:
 
+- `SSB_APP_KEY` – Base64-encoded capability string used to join the Secure Scuttlebutt network. This value must match the room server's app key.
 - `VITE_DHT_URL` – WebSocket URL of the DHT bootstrap node. Defaults to `ws://localhost:6881`.
+
+An example file is provided at `apps/web/.env.example`.
 
 ## Running tests
 
@@ -86,6 +89,8 @@ curl -sL https://raw.githubusercontent.com/<your-org>/cashucast/main/scripts/ins
 
 The script installs Caddy, a container runtime, fetches this repository and launches the production Docker
 Compose stack located under `infra/docker`.
+
+Set the `SSB_APP_KEY` environment variable (base64 encoded) before building or deploying the web app. In CI, store this value as a secret named `SSB_APP_KEY`.
 
 ## Helper scripts
 
