@@ -3,6 +3,9 @@
  * React component for Profile.
  */
 import React from 'react';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
 import { Avatar } from './Avatar';
 import { FollowBtn } from './FollowBtn';
 import { ZapStats } from './ZapStats';
@@ -20,6 +23,9 @@ export interface ProfileProps {
 
 /**
  * Profile view for a creator with follow and zap stats.
+ *
+ * Material 3 card spec: https://m3.material.io/components/cards/overview
+ * MUI Card docs: https://mui.com/material-ui/react-card/
  */
 export const Profile: React.FC<ProfileProps> = ({
   creatorId,
@@ -32,24 +38,26 @@ export const Profile: React.FC<ProfileProps> = ({
     (s) => s.creators[creatorId]?.followers ?? 0,
   );
   return (
-    <div className="flex flex-col gap-4 p-4">
-      {blocked && (
-        <div className="rounded bg-surface dark:bg-surface-dark p-2 text-center text-sm text-gray-700">
-          You have blocked this user.
-        </div>
-      )}
-      <header className="flex items-center gap-4">
-        <Avatar name={name} url={avatarUrl} />
-        <div className="flex flex-col">
-          <h2 className="font-semibold">{name}</h2>
-          <ZapStats creatorId={creatorId} />
-          <span className="text-sm text-gray-600">{followers} followers</span>
-        </div>
-        <div className="ml-auto">
-          <FollowBtn creatorId={creatorId} />
-        </div>
-      </header>
-      <ProfileGrid clips={clips} />
-    </div>
+    <Card sx={{ p: 2 }}>
+      <CardHeader
+        avatar={<Avatar name={name} url={avatarUrl} />}
+        title={name}
+        subheader={
+          <div className="flex flex-col">
+            <ZapStats creatorId={creatorId} />
+            <span className="text-sm text-gray-600">{followers} followers</span>
+          </div>
+        }
+        action={<FollowBtn creatorId={creatorId} />}
+      />
+      <CardContent sx={{ pt: 0 }}>
+        {blocked && (
+          <div className="rounded bg-surface dark:bg-surface-dark p-2 text-center text-sm text-gray-700 mb-4">
+            You have blocked this user.
+          </div>
+        )}
+        <ProfileGrid clips={clips} />
+      </CardContent>
+    </Card>
   );
 };

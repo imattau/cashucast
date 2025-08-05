@@ -35,3 +35,10 @@ Bottom sheets slide up from the bottom of the screen to reveal contextual action
 - [M3 bottom sheet spec](https://m3.material.io/components/bottom-sheets/overview)
 - [MUI SwipeableDrawer docs](https://mui.com/material-ui/react-drawer/#swipeable)
 
+## Card
+
+Cards group related information and actions. The profile view uses a Material 3 card via MUI's `Card`, `CardHeader`, and `CardContent` components.
+
+- [M3 card spec](https://m3.material.io/components/cards/overview)
+- [MUI Card docs](https://mui.com/material-ui/react-card/)
+
