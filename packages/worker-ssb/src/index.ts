@@ -2,9 +2,6 @@ import 'libsodium-sumo';
 import * as sodium from 'libsodium-wrappers-sumo';
 import ssbFriends from 'ssb-friends';
 import ssbSearch2 from 'ssb-search2';
-import { init as createBrowserSsb } from 'ssb-browser-core/net.js';
-import randomAccessIdb from 'random-access-idb';
-import ssbBlobStore from 'ssb-blob-store';
 import { cache as blobCache, prune } from './blobCache';
 
 const ssbPlugins: any[] = (globalThis as any).ssbPlugins || ((globalThis as any).ssbPlugins = []);
@@ -15,6 +12,9 @@ let ssb: any;
 export async function initSsb() {
   if (ssb) return ssb;
   await sodium.ready;
+  const { init: createBrowserSsb } = await import('ssb-browser-core/net.js');
+  const randomAccessIdb = (await import('random-access-idb')).default;
+  const ssbBlobStore = (await import('ssb-blob-store')).default;
   try {
     ssb = createBrowserSsb('cashucast-ssb', {
       storage: randomAccessIdb,
