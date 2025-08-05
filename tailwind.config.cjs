@@ -14,13 +14,16 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: '#FF0759', /* TikTok hot-pink */
-        'primary-light': '#FF8A90',
-        'surface-100': '#FFFFFF',
-        'surface-800': '#121212',
-        'on-surface': '#000000',
-        'on-surface-dark': '#FFFFFF',
-        subtleBg: '#1F1F1F',
+        // Material 3 color roles: https://m3.material.io/styles/color/roles
+        primary: '#6750A4', // Primary https://m3.material.io/styles/color/roles#primary
+        secondary: '#625B71', // Secondary https://m3.material.io/styles/color/roles#secondary
+        background: '#FFFBFE', // Background https://m3.material.io/styles/color/roles#background
+        'background-dark': '#1C1B1F', // Background (Dark)
+        surface: '#FFFBFE', // Surface https://m3.material.io/styles/color/roles#surface
+        'surface-dark': '#1C1B1F', // Surface (Dark)
+        'on-surface': '#1C1B1F', // On Surface https://m3.material.io/styles/color/roles#on-surface
+        'on-surface-dark': '#E6E1E5', // On Surface (Dark)
+        error: '#B3261E', // Error https://m3.material.io/styles/color/roles#error
       },
       transitionTimingFunction: {
         ez: 'cubic-bezier(0.25,0.1,0.25,1)',

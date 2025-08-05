@@ -102,7 +102,7 @@ export const TimelineCard: React.FC<TimelineCardProps> = ({
               <Avatar name={name} url={avatarUrl} size={32} />
               <span className="font-semibold">{name}</span>
               {isModerator && reports > 0 && (
-                <span className="rounded-full bg-subtleBg/80 px-2 py-1 text-xs text-on-surface dark:text-on-surface-dark">
+                <span className="rounded-full bg-surface/80 dark:bg-surface-dark/80 px-2 py-1 text-xs text-on-surface dark:text-on-surface-dark">
                   ⚑ {reports}
                 </span>
               )}

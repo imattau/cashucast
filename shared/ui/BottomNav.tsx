@@ -51,7 +51,7 @@ export const BottomNav: React.FC = () => {
         value={value}
         onChange={handleChange}
         showLabels
-        className={`fixed bottom-0 left-0 right-0 sm:hidden transition-transform duration-300 bg-subtleBg dark:bg-surface-800 ${
+        className={`fixed bottom-0 left-0 right-0 sm:hidden transition-transform duration-300 bg-surface dark:bg-surface-dark ${
           hidden ? 'translate-y-full' : ''
         }`}
       >

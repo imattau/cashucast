@@ -52,7 +52,7 @@ export const CommentsDrawer: React.FC<CommentsDrawerProps> = ({
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-on-surface/50 dark:bg-on-surface-dark/50" />
-        <Dialog.Content className="fixed inset-x-0 bottom-0 flex max-h-[70vh] flex-col rounded-t-md bg-surface-100 dark:bg-surface-800 md:top-0 md:max-h-none md:h-screen">
+        <Dialog.Content className="fixed inset-x-0 bottom-0 flex max-h-[70vh] flex-col rounded-t-md bg-surface dark:bg-surface-dark md:top-0 md:max-h-none md:h-screen">
           <Dialog.Title className="p-4 text-lg font-semibold">Comments</Dialog.Title>
           <div className="flex-1 overflow-y-auto p-4 space-y-2">
             {comments.map((c, i) => (

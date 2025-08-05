@@ -26,7 +26,7 @@ export const WalletModal: React.FC<WalletModalProps> = ({ open, onOpenChange }) 
           <button
             onClick={() => onOpenChange(false)}
             aria-label="Close wallet"
-            className="rounded bg-subtleBg px-2 py-1 min-tap"
+            className="rounded bg-surface dark:bg-surface-dark px-2 py-1 min-tap"
           >
             Close
           </button>

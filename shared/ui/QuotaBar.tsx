@@ -24,7 +24,7 @@ export const QuotaBar: React.FC = () => {
 
   return (
     <div className="space-y-1">
-      <div className="h-2 w-full bg-subtleBg rounded">
+      <div className="h-2 w-full bg-surface dark:bg-surface-dark rounded">
         <div
           className="h-2 bg-green-500 rounded"
           style={{ width: `${pct}%` }}

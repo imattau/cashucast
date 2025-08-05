@@ -48,16 +48,16 @@ export const PostMenu: React.FC<PostMenuProps> = ({
         ⋮
       </button>
       {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 w-40 rounded-md bg-surface-100 dark:bg-surface-800 shadow-lg ring-1 ring-black/5">
+        <div className="absolute right-0 z-10 mt-2 w-40 rounded-md bg-surface dark:bg-surface-dark shadow-lg ring-1 ring-black/5">
           <div className="py-1">
             <button
-              className="block w-full px-4 py-2 text-left text-sm hover:bg-subtleBg min-h-11"
+              className="block w-full px-4 py-2 text-left text-sm hover:bg-surface dark:hover:bg-surface-dark min-h-11"
               onClick={() => setReportOpen(true)}
             >
               Report
             </button>
             <button
-              className="block w-full px-4 py-2 text-left text-sm hover:bg-subtleBg min-h-11"
+              className="block w-full px-4 py-2 text-left text-sm hover:bg-surface dark:hover:bg-surface-dark min-h-11"
               onClick={handleBlock}
             >
               Block author
@@ -70,7 +70,7 @@ export const PostMenu: React.FC<PostMenuProps> = ({
           {reasons.map((r) => (
             <button
               key={r}
-              className="block w-full rounded p-2 text-left hover:bg-subtleBg min-h-11"
+              className="block w-full rounded p-2 text-left hover:bg-surface dark:hover:bg-surface-dark min-h-11"
               onClick={() => handleReport(r)}
             >
               {r}
