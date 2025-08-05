@@ -1,8 +1,13 @@
 /*
  * Licensed under GPL-3.0-or-later
  * React component for PublishBtn.
+ *
+ * Material 3 button spec: https://m3.material.io/components/buttons/overview
+ * MUI Button docs: https://mui.com/material-ui/react-button/
  */
 import React from 'react';
+import Button from '@mui/material/Button';
+import PublishIcon from '@mui/icons-material/Publish';
 import { Toast } from './Toast';
 
 /**
@@ -23,13 +28,15 @@ export const PublishBtn: React.FC<PublishBtnProps> = ({ magnet, onPublish }) => 
 
   return (
     <>
-      <button
+      <Button
         disabled={!magnet}
         onClick={handleClick}
-        className="px-4 py-2 bg-primary rounded disabled:bg-surface dark:disabled:bg-surface-dark min-tap"
+        variant="contained"
+        startIcon={<PublishIcon />}
+        className="min-tap"
       >
         Publish
-      </button>
+      </Button>
       {show && (
         <Toast
           message="Posted! Your followers will sync when online"
