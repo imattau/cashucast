@@ -3,6 +3,8 @@
  * React component for CameraView.
  */
 import React from 'react';
+import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { UploadDropzone } from './UploadDropzone';
 import { SkeletonLoader } from './SkeletonLoader';
 
@@ -15,6 +17,7 @@ export interface CameraViewProps {
 }
 
 export const CameraView: React.FC<CameraViewProps> = ({ onCapture }) => {
+  const theme = useTheme();
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [error, setError] = React.useState(false);
   const [ready, setReady] = React.useState(false);
@@ -56,20 +59,23 @@ export const CameraView: React.FC<CameraViewProps> = ({ onCapture }) => {
   }
 
   return (
-    <div>
-      <div className="relative w-full">
+    // Material 3 layout guidelines: https://m3.material.io/foundations/layout/overview
+    // MUI Box docs: https://mui.com/material-ui/react-box/
+    <Box>
+      <Box position="relative" width="100%" sx={{ mb: theme.spacing(2) }}>
         {!ready && <SkeletonLoader className="w-full aspect-video" />}
-        <video
+        <Box
+          component="video"
           ref={videoRef}
           autoPlay
           playsInline
-          className={`w-full ${ready ? 'block' : 'hidden'}`}
+          sx={{ width: '100%', display: ready ? 'block' : 'none' }}
         />
-      </div>
-      <button className="mt-2 min-tap" onClick={handleCapture}>
+      </Box>
+      <button className="min-tap" onClick={handleCapture}>
         Capture
       </button>
-    </div>
+    </Box>
   );
 };
 
