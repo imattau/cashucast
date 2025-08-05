@@ -1,8 +1,13 @@
 /*
  * Licensed under GPL-3.0-or-later
  * React component for PostMenu.
+ *
+ * Material 3 menu spec: https://m3.material.io/components/menus/overview
+ * MUI Menu docs: https://mui.com/material-ui/react-menu/
  */
 import React from 'react';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { BottomSheet } from './BottomSheet';
 
 interface PostMenuProps {
@@ -23,48 +28,54 @@ export const PostMenu: React.FC<PostMenuProps> = ({
   onBlock,
   open: forcedOpen,
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [reportOpen, setReportOpen] = React.useState(false);
-  const isOpen = forcedOpen ?? open;
+  const isOpen = forcedOpen ?? Boolean(anchorEl);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleReport = (reason: string) => {
     onReport(postId, reason);
     setReportOpen(false);
-    setOpen(false);
+    handleMenuClose();
   };
 
   const handleBlock = () => {
     onBlock(authorPubKey);
-    setOpen(false);
+    handleMenuClose();
   };
 
   return (
     <div className="relative inline-block text-left">
       <button
         aria-label="Open post menu"
-        onClick={() => setOpen((o) => !o)}
+        onClick={handleMenuOpen}
         className="p-2 min-tap"
       >
         ⋮
       </button>
-      {isOpen && (
-        <div className="absolute right-0 z-10 mt-2 w-40 rounded-md bg-surface dark:bg-surface-dark shadow-lg ring-1 ring-black/5">
-          <div className="py-1">
-            <button
-              className="block w-full px-4 py-2 text-left text-sm hover:bg-surface dark:hover:bg-surface-dark min-h-11"
-              onClick={() => setReportOpen(true)}
-            >
-              Report
-            </button>
-            <button
-              className="block w-full px-4 py-2 text-left text-sm hover:bg-surface dark:hover:bg-surface-dark min-h-11"
-              onClick={handleBlock}
-            >
-              Block author
-            </button>
-          </div>
-        </div>
-      )}
+      <Menu
+        anchorEl={anchorEl}
+        open={isOpen}
+        onClose={handleMenuClose}
+        anchorReference={forcedOpen ? 'none' : 'anchorEl'}
+      >
+        <MenuItem
+          onClick={() => {
+            setReportOpen(true);
+            handleMenuClose();
+          }}
+        >
+          Report
+        </MenuItem>
+        <MenuItem onClick={handleBlock}>Block author</MenuItem>
+      </Menu>
       <BottomSheet open={reportOpen} onOpenChange={setReportOpen}>
         <div className="p-4 space-y-2">
           {reasons.map((r) => (
