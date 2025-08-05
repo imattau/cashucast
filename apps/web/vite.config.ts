@@ -15,20 +15,41 @@ import { fileURLToPath } from 'url';
 
 function copyLibsodiumWasm() {
   let outDir: string;
+  let rootDir: string;
+  const filename = 'libsodium-sumo.wasm';
+  const source = fileURLToPath(
+    new URL(
+      '../../node_modules/libsodium-wrappers-sumo/dist/modules-sumo/libsodium-sumo.wasm',
+      import.meta.url,
+    ),
+  );
   return {
     name: 'copy-libsodium-wasm',
     configResolved(config) {
       outDir = config.build.outDir;
+      rootDir = config.root;
     },
+    // Copy and verify during development server startup
+    configureServer() {
+      const dest = path.resolve(rootDir, filename);
+      if (!existsSync(source)) {
+        console.warn(`missing ${filename} at ${source}`);
+        return;
+      }
+      copyFileSync(source, dest);
+      if (!existsSync(dest)) {
+        console.warn(`failed to copy ${filename} to dev output`);
+      }
+    },
+    // Copy and verify for production builds
     closeBundle() {
-      const source = fileURLToPath(
-        new URL(
-          '../../node_modules/libsodium-wrappers-sumo/dist/modules-sumo/libsodium-sumo.wasm',
-          import.meta.url,
-        ),
-      );
-      if (existsSync(source)) {
-        copyFileSync(source, path.resolve(outDir, 'libsodium-sumo.wasm'));
+      const dest = path.resolve(outDir, filename);
+      if (!existsSync(source)) {
+        this.error(`missing ${filename} at ${source}`);
+      }
+      copyFileSync(source, dest);
+      if (!existsSync(dest)) {
+        this.error(`failed to copy ${filename} to ${dest}`);
       }
     },
   };
