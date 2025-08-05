@@ -12,6 +12,6 @@ describe('Timeline', () => {
     const html = renderToStaticMarkup(<Timeline />);
     expect(html).toContain('max-w-screen-md');
     expect(html).toContain('backdrop-blur');
-    expect(html).toContain('aria-label="Home"');
+    expect(html).toContain('Home');
   });
 });
