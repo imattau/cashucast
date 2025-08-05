@@ -2,11 +2,23 @@
  * Licensed under GPL-3.0-or-later
  * React component for SettingsStorage.
  */
+import React from 'react';
 import { useSettings } from '../../shared/store/settings';
-import { setMaxCacheMB } from '../../../../packages/worker-ssb/src/blobCache';
+import { createRPCClient } from '../../shared/rpc';
 
 export const SettingsStorage: React.FC = () => {
   const { maxBlobMB, setMaxBlobMB } = useSettings();
+  const rpcRef = React.useRef<ReturnType<typeof createRPCClient> | null>(null);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const worker = new Worker(
+      new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
+      { type: 'module' },
+    );
+    rpcRef.current = createRPCClient(worker);
+    return () => worker.terminate();
+  }, []);
   return (
     <div className="p-4 space-y-4">
       <h2 className="text-xl font-semibold">Storage</h2>
@@ -25,7 +37,7 @@ export const SettingsStorage: React.FC = () => {
         onChange={(e) => {
           const mb = Number(e.target.value);
           setMaxBlobMB(mb);
-          setMaxCacheMB(mb);      // tell blobCache helper
+          rpcRef.current?.('setMaxCacheMB', mb);
         }}
         className="w-full"
       />

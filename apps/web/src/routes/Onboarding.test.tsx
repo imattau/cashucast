@@ -12,7 +12,8 @@ import { createRoot } from 'react-dom/client';
 // silence act(...) warnings in React 19
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 vi.mock('../../shared/rpc', () => ({
-  createRPCClient: () => () => Promise.resolve(undefined),
+  createRPCClient: () => (method: string) =>
+    Promise.resolve(method === 'saveBlob' ? 'hash' : undefined),
 }));
 const dropHandlers: ((files: File[]) => void)[] = [];
 vi.mock('react-dropzone', () => ({
@@ -39,22 +40,6 @@ vi.mock('react-easy-crop', () => ({
   },
 }));
 
-vi.mock('../../../../packages/worker-ssb/src/instance', () => ({
-  getSSB: () => ({
-    id: 'test-id',
-    publish: (_msg: any, cb: any) => cb && cb(null),
-    blobs: {
-      add: () => ({
-        write: () => {},
-        end: (cb: any) => cb(null, 'hash'),
-      }),
-    },
-  }),
-}));
-
-vi.mock('../../../../packages/worker-ssb/src/blobCache', () => ({
-  touch: () => {},
-}));
 
 import Onboarding, { resetOnboardingState } from './Onboarding';
 import { useProfile } from '../../shared/store/profile';

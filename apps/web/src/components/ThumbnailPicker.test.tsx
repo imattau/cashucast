@@ -24,6 +24,14 @@ vi.mock('@ffmpeg/ffmpeg', () => ({
   },
 }));
 
+class MockWorker {
+  postMessage(_: any) {}
+  addEventListener() {}
+  removeEventListener() {}
+  terminate() {}
+}
+(globalThis as any).Worker = MockWorker as any;
+
 import ThumbnailPicker from './ThumbnailPicker';
 
 describe('ThumbnailPicker', () => {

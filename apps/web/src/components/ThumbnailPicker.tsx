@@ -2,13 +2,12 @@
  * Licensed under GPL-3.0-or-later
  * React component for ThumbnailPicker.
  */
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Cropper from 'react-easy-crop';
 import 'react-easy-crop/react-easy-crop.css';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import Dropzone from 'react-dropzone';
-import { getSSB } from '../../../../packages/worker-ssb/src/instance';
-import { touch } from '../../../../packages/worker-ssb/src/blobCache';
+import { createRPCClient } from '../../shared/rpc';
 
 interface ThumbnailPickerProps {
   file: Blob;
@@ -21,6 +20,17 @@ export default function ThumbnailPicker({ file, onSelect }: ThumbnailPickerProps
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
+  const rpcRef = useRef<ReturnType<typeof createRPCClient> | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const worker = new Worker(
+      new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
+      { type: 'module' }
+    );
+    rpcRef.current = createRPCClient(worker);
+    return () => worker.terminate();
+  }, []);
 
   useEffect(() => {
     const run = async () => {
@@ -41,18 +51,12 @@ export default function ThumbnailPicker({ file, onSelect }: ThumbnailPickerProps
   }, [file]);
 
   const saveBlob = async (blob: Blob) => {
-    const ssb = getSSB();
-    const writer = ssb.blobs.add();
-    const data = new Uint8Array(await blob.arrayBuffer());
-    writer.write(data);
-    writer.end((_: any, hash: string) => {
-      touch(hash, data.byteLength);
-      onSelect(hash);
-    });
+    const hash = (await rpcRef.current?.('saveBlob', blob)) as string | undefined;
+    if (hash) onSelect(hash);
   };
 
   const handleSelect = (blob: Blob) => {
-    saveBlob(blob);
+    void saveBlob(blob);
   };
 
   const onCropComplete = useCallback((_croppedArea, croppedAreaPixels) => {
