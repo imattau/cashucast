@@ -9,12 +9,36 @@ import ssbReservedWordsFix, {
 } from '../../ssb-reserved-words-fix';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
+import { copyFileSync, existsSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+function copyLibsodiumWasm() {
+  let outDir: string;
+  return {
+    name: 'copy-libsodium-wasm',
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      const source = fileURLToPath(
+        new URL(
+          '../../node_modules/libsodium-wrappers-sumo/dist/modules-sumo/libsodium-sumo.wasm',
+          import.meta.url,
+        ),
+      );
+      if (existsSync(source)) {
+        copyFileSync(source, path.resolve(outDir, 'libsodium-sumo.wasm'));
+      }
+    },
+  };
+}
 
 export default defineConfig({
   plugins: [
     ssbReservedWordsFix(),
     NodeGlobalsPolyfillPlugin({ buffer: true, process: true }),
     NodeModulesPolyfillPlugin(),
+    copyLibsodiumWasm(),
   ],
   define: { global: 'globalThis' },
   resolve: {
