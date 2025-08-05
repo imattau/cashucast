@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  libsodium-wrappers: latest
-  libsodium-wrappers-sumo: latest
+  libsodium-wrappers: 0.7.15
+  libsodium-wrappers-sumo: 0.7.15
   random-access-chrome-file: npm:random-access-idb@^1.2.2
 
 patchedDependencies:
@@ -52,7 +52,7 @@ importers:
         specifier: ^0.7.15
         version: 0.7.15
       libsodium-wrappers-sumo:
-        specifier: latest
+        specifier: 0.7.15
         version: 0.7.15
       lucide-react:
         specifier: ^0.536.0

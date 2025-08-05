@@ -60,8 +60,8 @@
     "vitest": "^3.2.4"
   },
   "resolutions": {
-    "libsodium-wrappers": "latest",
-    "libsodium-wrappers-sumo": "latest"
+    "libsodium-wrappers": "0.7.15",
+    "libsodium-wrappers-sumo": "0.7.15"
   },
   "pnpm": {
     "overrides": {
