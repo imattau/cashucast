@@ -42,6 +42,7 @@ if (typeof window === 'undefined') {
 // Dynamic import ensures `Buffer` is available before evaluating modules that
 // depend on it (e.g. `ssb-browser-core`).
 const instanceMod: any = await import('./src/instance');
+const blobCacheMod: any = await import('./src/blobCache');
 
 async function ensureSSB() {
   const init = (instanceMod as any).initSsb as
@@ -333,5 +334,27 @@ createRPCHandler(self as any, {
       ssb.db.publish(msg, () => {});
     } catch (_) {}
     return msg;
+  },
+  saveBlob: async (file: Blob) => {
+    const ssb = await ensureSSB();
+    const writer = ssb.blobs.add();
+    const data = new Uint8Array(await file.arrayBuffer());
+    writer.write(data);
+    return await new Promise<string>((resolve, reject) => {
+      writer.end((err: any, hash: string) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        (blobCacheMod.touch as (h: string, b: number) => void)(
+          hash,
+          data.byteLength,
+        );
+        resolve(hash);
+      });
+    });
+  },
+  setMaxCacheMB: async (mb: number) => {
+    (blobCacheMod.setMaxCacheMB as (m: number) => void)(mb);
   },
 });

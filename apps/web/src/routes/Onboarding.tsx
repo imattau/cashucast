@@ -9,8 +9,6 @@ import Cropper from 'react-easy-crop';
 import { createRPCClient } from '../../shared/rpc';
 import { useProfile } from '../../shared/store/profile';
 import { createProfile } from '../../shared/types/profile';
-import { getSSB } from '../../../../packages/worker-ssb/src/instance';
-import { touch } from '../../../../packages/worker-ssb/src/blobCache';
 import { z } from 'zod';
 import { UserPlus, Upload, DownloadCloud } from 'lucide-react';
 import { Avatar } from '../../shared/ui/Avatar';
@@ -123,21 +121,15 @@ function OnboardingContent() {
       canvas.toBlob(async (blob) => {
         if (!blob) return resolve(null);
         try {
-          const ssb = getSSB();
-          const writer = ssb.blobs.add();
-          const data = new Uint8Array(await blob.arrayBuffer());
-          writer.write(data);
-          writer.end((err: any, hash: string) => {
-            if (err) {
-              console.warn('Failed to save avatar blob', err);
-              if (typeof window !== 'undefined' && window.alert)
-                alert('Unable to save avatar for offline use.');
-              return resolve(URL.createObjectURL(blob));
-            }
-            touch(hash, data.byteLength);
-            setAvatarHash(hash);
-            resolve(URL.createObjectURL(blob));
-          });
+          const worker = new Worker(
+            new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
+            { type: 'module' },
+          );
+          const call = createRPCClient(worker);
+          const hash = (await call('saveBlob', blob)) as string;
+          worker.terminate();
+          setAvatarHash(hash);
+          resolve(URL.createObjectURL(blob));
         } catch (err) {
           console.warn('Failed to save avatar blob', err);
           if (typeof window !== 'undefined' && window.alert)
@@ -200,19 +192,19 @@ function OnboardingContent() {
     } else if (mode === 'import' && profile) {
       setProfile(profile);
     }
-    const ssb = getSSB();
     try {
-      await new Promise<void>((resolve, reject) =>
-        ssb.publish(
-          {
-            type: 'about',
-            about: ssb.id,
-            name: username,
-            ...(avatarHash ? { image: avatarHash } : {}),
-          },
-          (err: any) => (err ? reject(err) : resolve()),
-        ),
+      const worker = new Worker(
+        new URL('../../../../packages/worker-ssb/index.ts', import.meta.url),
+        { type: 'module' },
       );
+      const call = createRPCClient(worker);
+      await call('publish', {
+        type: 'about',
+        about: keys?.pk ?? 'local',
+        name: username,
+        ...(avatarHash ? { image: avatarHash } : {}),
+      });
+      worker.terminate();
     } catch (err) {
       console.warn('Failed to publish profile', err);
     }
