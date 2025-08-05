@@ -1,9 +1,9 @@
 /*
  * Licensed under GPL-3.0-or-later
- * React component for BottomSheet.
+ * React component for BottomSheet using MUI SwipeableDrawer.
  */
-import React, { useRef, useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import React from 'react';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 export interface BottomSheetProps {
   open: boolean;
@@ -12,47 +12,34 @@ export interface BottomSheetProps {
 }
 
 /**
- * BottomSheet built with Radix UI Dialog.
- * Supports swipe down to dismiss on touch devices.
+ * BottomSheet built with MUI SwipeableDrawer.
+ * Configured for mobile with swipe-to-dismiss.
  */
 export const BottomSheet: React.FC<BottomSheetProps> = ({
   open,
   onOpenChange,
   children,
 }) => {
-  const startY = useRef<number | null>(null);
-  const [drag, setDrag] = useState(0);
-
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    startY.current = e.clientY;
-  };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (startY.current == null) return;
-    const delta = e.clientY - startY.current;
-    if (delta > 0) setDrag(delta);
-  };
-
-  const handlePointerUp = () => {
-    if (drag > 50) onOpenChange(false);
-    setDrag(0);
-    startY.current = null;
-  };
+  const iOS =
+    typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-on-surface/50 dark:bg-on-surface-dark/50" />
-        <Dialog.Content
-          className="fixed inset-x-0 bottom-0 rounded-t-2xl bg-surface dark:bg-surface-dark shadow-lg transition-transform duration-300 motion-reduce:transition-none motion-reduce:duration-0"
-          style={{ transform: `translateY(${drag}px)` }}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-        >
-          {children}
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+    <SwipeableDrawer
+      anchor="bottom"
+      open={open}
+      onClose={() => onOpenChange(false)}
+      onOpen={() => onOpenChange(true)}
+      disableBackdropTransition={!iOS}
+      disableDiscovery={iOS}
+      ModalProps={{ keepMounted: true }}
+      PaperProps={{
+        className: 'rounded-t-2xl bg-surface dark:bg-surface-dark shadow-lg',
+      }}
+      BackdropProps={{
+        className: 'bg-on-surface/50 dark:bg-on-surface-dark/50',
+      }}
+    >
+      {children}
+    </SwipeableDrawer>
   );
 };

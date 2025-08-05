@@ -27,3 +27,11 @@ The Avatar component follows the Material Design 3 guidelines for representing u
 - [M3 avatar spec](https://m3.material.io/components/avatar/overview)
 - [MUI Avatar docs](https://mui.com/material-ui/react-avatar/)
 
+## Bottom sheet
+
+Bottom sheets slide up from the bottom of the screen to reveal contextual actions or content. Our implementation uses MUI's
+`SwipeableDrawer` configured for mobile.
+
+- [M3 bottom sheet spec](https://m3.material.io/components/bottom-sheets/overview)
+- [MUI SwipeableDrawer docs](https://mui.com/material-ui/react-drawer/#swipeable)
+
