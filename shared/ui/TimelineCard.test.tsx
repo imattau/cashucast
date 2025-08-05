@@ -56,7 +56,8 @@ describe('TimelineCard', () => {
         onBlock={() => {}}
       />,
     );
-    expect(html).toContain('<img src="/alice.png"');
+    expect(html).toContain('src="/alice.png"');
+    expect(html).toContain('alt="Alice"');
     expect(html).toContain('<span class="font-semibold">Alice</span>');
     expect(html).toContain('aria-label="Open post menu"');
     expect(html).toContain('bg-black/60');
