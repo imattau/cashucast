@@ -1,8 +1,12 @@
 /*
  * Licensed under GPL-3.0-or-later
  * React component for ZapButton.
+ *
+ * Material 3 button spec: https://m3.material.io/components/buttons/overview
+ * MUI Button docs: https://mui.com/material-ui/react-button/
  */
 import React, { useRef } from 'react';
+import Button from '@mui/material/Button';
 import { useBalanceStore } from './balanceStore';
 
 export interface ZapButtonProps {
@@ -63,15 +67,16 @@ const ZapOption: React.FC<{
   };
 
   return (
-    <button
-      className="px-2 py-1 bg-purple-600 rounded disabled:opacity-50 min-tap"
+    <Button
+      variant="contained"
       disabled={disabled || balance < amount}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerLeave}
+      className="min-tap"
     >
       {amount}
-    </button>
+    </Button>
   );
 };
 
